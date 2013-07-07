@@ -1,0 +1,22 @@
+body {
+	background: #e7e7e7 url(../images/body-bg.png) 0 0 repeat;
+}
+
+.content {
+	padding-top: 80px;
+}
+
+.navigation {
+	text-align: right;
+	margin-right: -20px;
+}
+
+.card {
+	background: #FAFBFB;
+	border: 1px solid #D7D8D9;
+	border-radius: 3px;
+}
+
+.card-content {
+	padding: 15px;
+}
