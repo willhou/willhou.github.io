@@ -3,12 +3,16 @@ body {
 }
 
 .content {
-	padding-top: 80px;
+	
 }
 
 .navigation {
 	text-align: right;
 	margin-right: -20px;
+}
+
+.emptyheader {
+	height: 80px;
 }
 
 .card {
