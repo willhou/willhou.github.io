@@ -26,11 +26,11 @@
 						<div class="span5">
 							<div class="card-content">
 								<div>I was last at...</div>
-								<h6>Union Square, New York</h6>
+								<h6 id="venue"></h6>
 							</div>
 						</div>
 						<div class="span5">
-							<a href="#fakelink"><img src="http://maps.googleapis.com/maps/api/staticmap?center=40.735792,-73.990852&zoom=16&size=400x400&maptype=roadmap&markers=color:red%7C40.735792,-73.990852&sensor=false&visual_refresh=true"/></a>
+							<a href="#fakelink"><img id="venuemap" src="http://maps.googleapis.com/maps/api/staticmap?center=40.733792,-73.991852&zoom=12&size=400x400&maptype=roadmap&sensor=false&visual_refresh=true"/></a>
 						</div>
 					</div>
 				</div>
@@ -45,16 +45,16 @@
 				<!-- Will Hou tab content -->
 				<div class="tab-pane fade" id="willhou">
 					<div class="card-content">
-						<div>My name is...</div>
+						<div>Hi, I am...</div>
 						<h6>Will Hou</h6>
-						<div>I graduated from...</div>
-						<h6>University of Waterloo</h6>
-						<div>I majored in...</div>
-						<h6>Computer Science</h6>
 						<div>I work at...</div>
 						<h6>Foursquare</h6>
 						<div>as an...</div>
 						<h6>Android Engineer</h6>
+						<div>I graduated from...</div>
+						<h6>University of Waterloo</h6>
+						<div>I majored in...</div>
+						<h6>Computer Science</h6>
 						<div>My favorite quote is</div>
 						<h6><i>"I have no special talent. I am only passionately curious" - Albert Einstein</i></h6>
 						<div>You can contact me at...</div>
@@ -87,6 +87,18 @@
 	  	
 		// Twitter follow button
 		!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+		
+		// Fetch latest checkin from Foursquare
+		var foursquareAPI = "https://api.foursquare.com/v2/users/self/checkins?oauth_token=EDPBYZKKX42DQMYSOG3RRQT0RBYCLZZTTYAOZH20VJAJJ0BX&v=20130713&limit=1";
+		$.getJSON(foursquareAPI)
+		.done(function( data ) {
+			var venue = data.response.checkins.items[0].venue;
+			var location = venue.location;
+			$("#venue").html(venue.name + ", " + location.city);
+			var geopoint = location.lat + "," + location.lng;
+			var mapurl = "http://maps.googleapis.com/maps/api/staticmap?center=" + geopoint + "&zoom=16&size=400x400&maptype=roadmap&markers=color:red%7C" + geopoint + "&sensor=false&visual_refresh=true";
+			$("#venuemap").attr('src', mapurl);
+		});
 		</script>
 	</body>
 	</html>
