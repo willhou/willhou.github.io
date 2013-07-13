@@ -97,7 +97,11 @@
 			$("#venue").html(venue.name + ", " + location.city);
 			var geopoint = location.lat + "," + location.lng;
 			var mapurl = "http://maps.googleapis.com/maps/api/staticmap?center=" + geopoint + "&zoom=16&size=400x400&maptype=roadmap&markers=color:red%7C" + geopoint + "&sensor=false&visual_refresh=true";
-			$("#venuemap").attr('src', mapurl);
+			$("#venuemap").fadeOut(400, function() {
+				$(this).attr('src', mapurl).bind('onreadystatechange load', function() {
+					if (this.complete) $(this).fadeIn(300);
+				});
+			});
 		});
 		</script>
 	</body>
