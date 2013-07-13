@@ -8,31 +8,76 @@
     <link href="https://s3.amazonaws.com/maize/flatui/UI/css/flat-ui.css" rel="stylesheet">
     <link href="stylesheets/stylesheet.css" rel="stylesheet">
     <title>Will Hou</title>
+    <style>
+	    .center {
+		     float: none;
+		     margin-left: auto;
+		     margin-right: auto;
+		}
+    </style>
   </head>
   <body>
     <div class="container">
-      <div class="row emptyheader hidden-phone"></div>
       <div class="row content">
-	    <div class="span2">
-	      <ul class="nav navigation">
-	        <li class="active"><a href="#fakelink">UPDATE</a></li>
-	        <li><a href="#fakelink">STUFF</a></li>
-	        <li><a href="#fakelink">WILL HOU</a></li>
-	      </ul>
+        <div class="span1 offset1">
+          <!-- Tabs -->
+          <ul class="nav navigation affix" id="myTab">
+		    <li class="active"><a href="#update">UPDATE</a></li>
+		    <li><a href="#stuff">STUFF</a></li>
+		    <li><a href="#willhou">WILL HOU</a></li>
+		  </ul>
         </div>
-        <div class="span8 card">
-		  <div class="row">
-			<div class="span4">
-			   <div class="card-content">
-			     <div>I was last at...</div>
-			     <h6>Union Square, New York</h6>
-			   </div>
-			</div>
-			<div class="span4">
-	          <a href="#fakelink"><img src="http://maps.googleapis.com/maps/api/staticmap?center=40.735792,-73.990852&zoom=15&size=400x400&maptype=roadmap&markers=color:red%7C40.735792,-73.990852&sensor=false&visual_refresh=true"/></a>
+		<div class="tab-content span8 card" style="margin-left:10px; padding:0;">
+		  <!-- Update tab content -->
+		  <div class="tab-pane fade active in" id="update">
+			  <div class="row">
+				<div class="span4">
+				   <div class="card-content">
+				     <div>I was last at...</div>
+				     <h6>Union Square, New York</h6>
+				   </div>
+				</div>
+				<div class="span4">
+		          <a href="#fakelink"><img src="http://maps.googleapis.com/maps/api/staticmap?center=40.735792,-73.990852&zoom=16&size=400x400&maptype=roadmap&markers=color:red%7C40.735792,-73.990852&sensor=false&visual_refresh=true"/></a>
+			  </div>
+	        </div>
 		  </div>
-        </div>
+		  <!-- Stuff tab content -->
+		  <div class="tab-pane fade" id="stuff">
+			<div class="card-content">
+		      <div>What I work on...</div>
+		      <h6>Stuff</h6>
+		    </div>
+		  </div>
+		  <!-- Will Hou tab content -->
+		  <div class="tab-pane fade" id="willhou">
+			<div class="card-content">
+		      <div>My name is...</div>
+		      <h6>Will Hou</h6>
+		    </div>
+		  </div>
+		</div>
       </div>
-    </div>
+      
+      <!-- Load JS here for greater good =============================-->
+	  <script src="https://s3.amazonaws.com/maize/flatui/UI/js/jquery-1.8.3.min.js"></script>
+	  <script src="https://s3.amazonaws.com/maize/flatui/UI/js/jquery-ui-1.10.3.custom.min.js"></script>
+	  <script src="https://s3.amazonaws.com/maize/flatui/UI/js/jquery.ui.touch-punch.min.js"></script>
+	  <script src="https://s3.amazonaws.com/maize/flatui/UI/js/bootstrap.min.js"></script>
+	  <script src="https://s3.amazonaws.com/maize/flatui/UI/js/bootstrap-select.js"></script>
+	  <script src="https://s3.amazonaws.com/maize/flatui/UI/js/bootstrap-switch.js"></script>
+	  <script src="https://s3.amazonaws.com/maize/flatui/UI/js/flatui-checkbox.js"></script>
+	  <script src="https://s3.amazonaws.com/maize/flatui/UI/js/flatui-radio.js"></script>
+	  <script src="https://s3.amazonaws.com/maize/flatui/UI/js/jquery.tagsinput.js"></script>
+	  <script src="https://s3.amazonaws.com/maize/flatui/UI/js/jquery.placeholder.js"></script>
+	  <script src="https://s3.amazonaws.com/maize/flatui/UI/js/jquery.stacktable.js"></script>
+	  
+	  <script>
+		  $('#myTab a').click(function (e) {
+			  e.preventDefault();
+			  $(this).tab('show');
+		  })
+		  $('#myTab a:first').tab('show');
+	  </script>
   </body>
 </html>
