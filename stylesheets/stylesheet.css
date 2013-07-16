@@ -26,6 +26,22 @@ body {
 	padding: 15px;
 }
 
+.about {
+	text-align:justify;
+	font-size: x-large;
+}
+
+.about-image {
+	background-image: url('http://farm4.staticflickr.com/3476/3839524470_26164567cc_z.jpg');
+	background-position: center center;
+	min-height: 420px;
+	min-width: 380px;
+}
+
+.secondary {
+	color: silver
+}
+
 #map-canvas {
 	margin: 0;
 	padding: 0;
