@@ -22,24 +22,39 @@ body {
 }
 
 .card-content {
-	min-height: 350px;
 	padding: 15px;
+	height: 100%;
+}
+
+.section {
+	margin-top: 20px;
+}
+
+.foursquare-logo {
+	width: 200px;
+	position: absolute;
+	bottom: 0px;
 }
 
 .about {
 	text-align:justify;
-	font-size: x-large;
+	font-size: large;
 }
 
 .about-image {
 	background-image: url('http://farm4.staticflickr.com/3476/3839524470_26164567cc_z.jpg');
 	background-position: center center;
-	min-height: 470px;
+	min-height: 400px;
 	min-width: 380px;
 }
 
 .secondary {
 	color: silver
+}
+
+.copyright {
+	color: #a3a3a3;
+	font-size: smaller;
 }
 
 #map-canvas {
