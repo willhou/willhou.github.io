@@ -92,10 +92,14 @@
 	<script>
 	  	// Navigation tabs
 	  	$('#myTab a').click(function (e) {
-	  		e.preventDefault();
+	  		/* e.preventDefault(); */
 	  		$(this).tab('show');
 	  	})
-	  	$('#myTab a:first').tab('show');
+	  	
+	  	// Select tab based on hash
+	  	$(document).ready(function(){
+		  	$('a[href="' + window.location.hash + '"]').click()
+		});
 	  	
 		// Enable the visual refresh
 		google.maps.visualRefresh = true;
