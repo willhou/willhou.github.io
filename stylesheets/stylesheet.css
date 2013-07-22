@@ -41,6 +41,15 @@ body {
 	font-size: large;
 }
 
+.about a {
+	color: #34495E;
+}
+
+.about a:hover {
+	color: #1abc9c;
+	text-decoration: underline;
+}
+
 .about-image {
 	background-image: url('http://farm4.staticflickr.com/3476/3839524470_26164567cc_z.jpg');
 	background-position: center center;
