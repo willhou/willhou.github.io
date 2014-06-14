@@ -61,7 +61,8 @@
 							</div>
 						</div>
 						<div class="span5">
-							<img src="images/nexus5.png" />
+							<img src="images/nexus5.png"/>
+							<img src="images/screenshot.jpg" width="244px" height="430px" class="demo"/>
 						</div>
 					</div>
 				</div>
@@ -140,7 +141,7 @@
 		.done(function( data ) {
 			var venue = data.response.checkins.items[0].venue;
 			var location = venue.location;
-			$("#venue").html('<p class="venue"><a href=\'https://foursquare.com/v/'+ venue.id + '\'>' + venue.name + ", " + location.city + "</a></p>");
+			$("#venue").html('<p class="venue"><a target="_blank" href=\'https://foursquare.com/v/'+ venue.id + '\'>' + venue.name + ", " + location.city + "</a></p>");
 			
 			// Position map to venue location
 			var venueLatlng = new google.maps.LatLng(location.lat,location.lng);
