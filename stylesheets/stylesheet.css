@@ -66,8 +66,9 @@ body {
 
 .demo {
 	position:absolute;
-	right:68px;
+	right:120px;
 	top:98px;
+	overflow: hidden;
 }
 
 .about-image {
