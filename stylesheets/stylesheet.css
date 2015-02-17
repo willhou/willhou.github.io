@@ -38,7 +38,7 @@ body {
 
 .about {
 	text-align:justify;
-	font-size: large;
+	font-size: medium;
 }
 
 .about a {
@@ -74,7 +74,7 @@ body {
 .about-image {
 	background-image: url('http://farm4.staticflickr.com/3476/3839524470_26164567cc_z.jpg');
 	background-position: center center;
-	min-height: 400px;
+	min-height: 460px;
 	min-width: 380px;
 }
 
@@ -97,7 +97,7 @@ body {
 /* Instagram badge */
 .ig-b- { display: inline-block; -webkit-transition: none; }
 .ig-b- img { visibility: hidden; }
-.ig-b-:hover { background-position: 0 -60px; transition-property: none; } 
+.ig-b-:hover { background-position: 0 -60px; transition-property: none; }
 .ig-b-:active { background-position: 0 -120px; }
 .ig-b-v-24 { width: 137px; height: 24px; background: url(http://badges.instagram.com/static/images/ig-badge-view-sprite-24.png) no-repeat 0 0; }
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
