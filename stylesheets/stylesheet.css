@@ -72,9 +72,9 @@ body {
 }
 
 .about-image {
-	background-image: url('http://farm4.staticflickr.com/3476/3839524470_26164567cc_z.jpg');
-	background-position: center center;
-	min-height: 460px;
+	background-image: url('../images/profile.png');
+	background-position: top center;
+	min-height: 540px;
 	min-width: 380px;
 }
 
