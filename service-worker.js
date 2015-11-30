@@ -29,7 +29,7 @@ importScripts("scripts/sw/sw-toolbox.js","scripts/sw/runtime-caching.js");
 
 
 /* eslint-disable quotes, comma-spacing */
-var PrecacheConfig = [["basic.html","0b358433ea340a19ef2be7c9ed8621c2"],["index.html","2b0f7f35a2e36c963659753159b516bd"],["manifest.json","56c2bb599a71796058792881ff7caa1d"],["scripts/main.min.js","0fa6e798fe04348afd43b1f7a9930dbf"],["scripts/sw/runtime-caching.js","e3e34dcb62b5d62453b9215961585488"],["scripts/sw/sw-toolbox.js","d5138138ca7071b7e0fc36e90095718e"],["styles/main.css","fd493e290551406fa10af3cf45410123"]];
+var PrecacheConfig = [["index.html","d35148f470ae36623b28bbeca194fc48"],["manifest.json","56c2bb599a71796058792881ff7caa1d"],["scripts/main.min.js","0fa6e798fe04348afd43b1f7a9930dbf"],["scripts/sw/runtime-caching.js","e3e34dcb62b5d62453b9215961585488"],["scripts/sw/sw-toolbox.js","d5138138ca7071b7e0fc36e90095718e"],["styles/main.css","fd493e290551406fa10af3cf45410123"]];
 /* eslint-enable quotes, comma-spacing */
 var CacheNamePrefix = 'sw-precache-v1-web-starter-kit-' + (self.registration ? self.registration.scope : '') + '-';
 
