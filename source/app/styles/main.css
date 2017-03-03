@@ -19,8 +19,13 @@ Note: any .css or .scss files included in the 'styles' directory
 will be correctly compiled during `gulp serve` and `gulp`
  */
 
+@font-face {
+  font-family: AvenirNext;
+  src: url(../fonts/AvenirNextLTPro-Regular.otf);
+  font-weight: 400;
+}
 html, body {
-  font-family: 'Roboto', 'Helvetica', sans-serif;
+  font-family: 'AvenirNext', 'Helvetica', sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -238,7 +243,7 @@ html, body {
   width: 48px;
   height: 48px;
   display: inline-block;
-  background: #f00 url('../images/icon_twitter.svg') no-repeat 50% 50%; 
+  background: #f00 url('../images/icon_twitter.svg') no-repeat 50% 50%;
   background-size: cover;
   fill: #ff0;
 }
