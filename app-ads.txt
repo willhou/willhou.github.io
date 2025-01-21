@@ -1,2 +1,4 @@
 google.com, pub-9243771539778722, DIRECT, f08c47fec0942fa0
 mopub.com, 8a1ee35a25d54696b90dbcd2379b56ea, DIRECT, 74b46c0ea83967ca
+pangleglobal.com, 5011005, DIRECT
+pubmatic.com, 161490, RESELLER, 5d62403b186f2ace
