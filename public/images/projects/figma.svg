@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="360" viewBox="0 0 500 360">
+  <rect width="500" height="360" rx="12" fill="#1E1E1E"/>
+  <rect x="0" y="0" width="48" height="360" fill="#2C2C2C"/>
+  <rect x="48" y="0" width="180" height="360" fill="#252525"/>
+  <rect x="12" y="12" width="24" height="24" rx="4" fill="#F24E1E"/>
+  <rect x="12" y="44" width="24" height="24" rx="4" fill="#A259FF"/>
+  <rect x="12" y="76" width="24" height="24" rx="4" fill="#1ABCFE"/>
+  <rect x="60" y="14" width="100" height="10" rx="3" fill="#444"/>
+  <rect x="60" y="34" width="80" height="8" rx="3" fill="#383838"/>
+  <rect x="60" y="52" width="140" height="8" rx="3" fill="#383838"/>
+  <rect x="60" y="70" width="100" height="8" rx="3" fill="#383838"/>
+  <rect x="280" y="100" width="160" height="160" rx="16" fill="#A259FF" opacity="0.3"/>
+  <rect x="310" y="130" width="100" height="40" rx="8" fill="#A259FF"/>
+  <text x="360" y="156" text-anchor="middle" fill="white" font-family="system-ui" font-size="14" font-weight="600">Button</text>
+  <rect x="300" y="200" width="120" height="8" rx="4" fill="#555"/>
+  <rect x="320" y="220" width="80" height="8" rx="4" fill="#444"/>
+</svg>

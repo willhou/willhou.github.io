@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="500" viewBox="0 0 280 500">
+  <rect width="280" height="500" rx="36" fill="#1A1A2E"/>
+  <rect x="16" y="50" width="248" height="400" rx="4" fill="#16213E"/>
+  <circle cx="40" cy="30" r="8" fill="#E94560"/>
+  <rect x="16" y="50" width="248" height="248" fill="#833471"/>
+  <circle cx="140" cy="174" r="60" fill="#E17055"/>
+  <circle cx="140" cy="174" r="30" fill="#1A1A2E"/>
+  <rect x="30" y="316" width="60" height="8" rx="4" fill="#DFE6E9"/>
+  <rect x="30" y="334" width="180" height="6" rx="3" fill="#636E72"/>
+  <rect x="30" y="350" width="140" height="6" rx="3" fill="#636E72"/>
+  <rect x="30" y="380" width="220" height="40" rx="8" fill="#0984E3"/>
+  <text x="140" y="406" text-anchor="middle" fill="white" font-family="system-ui" font-size="14" font-weight="600">Follow</text>
+</svg>

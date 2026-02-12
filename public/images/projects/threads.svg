@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="500" viewBox="0 0 280 500">
+  <rect width="280" height="500" rx="36" fill="#FAFAFA"/>
+  <rect width="280" height="500" rx="36" fill="none" stroke="#E0E0E0" stroke-width="1"/>
+  <rect x="80" y="14" width="120" height="20" rx="10" fill="#E0E0E0"/>
+  <text x="140" y="60" text-anchor="middle" fill="#000" font-family="system-ui" font-size="16" font-weight="700">Threads</text>
+  <rect x="20" y="80" width="240" height="1" fill="#E0E0E0"/>
+  <circle cx="40" cy="115" r="18" fill="#E0E0E0"/>
+  <rect x="68" y="100" width="80" height="8" rx="4" fill="#1A1A1A"/>
+  <rect x="68" y="114" width="160" height="6" rx="3" fill="#888"/>
+  <rect x="68" y="128" width="120" height="6" rx="3" fill="#888"/>
+  <rect x="20" y="155" width="240" height="1" fill="#F0F0F0"/>
+  <circle cx="40" cy="190" r="18" fill="#E8D5F5"/>
+  <rect x="68" y="175" width="60" height="8" rx="4" fill="#1A1A1A"/>
+  <rect x="68" y="189" width="180" height="6" rx="3" fill="#888"/>
+  <rect x="68" y="203" width="140" height="6" rx="3" fill="#888"/>
+  <rect x="68" y="217" width="100" height="6" rx="3" fill="#888"/>
+  <rect x="20" y="245" width="240" height="1" fill="#F0F0F0"/>
+  <circle cx="40" cy="280" r="18" fill="#D5E8F5"/>
+  <rect x="68" y="265" width="90" height="8" rx="4" fill="#1A1A1A"/>
+  <rect x="68" y="279" width="170" height="6" rx="3" fill="#888"/>
+  <rect x="68" y="293" width="130" height="6" rx="3" fill="#888"/>
+  <rect x="20" y="320" width="240" height="1" fill="#F0F0F0"/>
+  <circle cx="40" cy="355" r="18" fill="#F5D5D5"/>
+  <rect x="68" y="340" width="70" height="8" rx="4" fill="#1A1A1A"/>
+  <rect x="68" y="354" width="150" height="6" rx="3" fill="#888"/>
+  <rect x="68" y="368" width="190" height="6" rx="3" fill="#888"/>
+  <rect x="0" y="450" width="280" height="50" fill="#FAFAFA"/>
+  <rect x="0" y="450" width="280" height="1" fill="#E0E0E0"/>
+  <circle cx="56" cy="475" r="12" fill="none" stroke="#1A1A1A" stroke-width="2"/>
+  <circle cx="140" cy="475" r="12" fill="none" stroke="#999" stroke-width="2"/>
+  <circle cx="224" cy="475" r="12" fill="none" stroke="#999" stroke-width="2"/>
+</svg>

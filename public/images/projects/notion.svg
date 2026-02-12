@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="360" viewBox="0 0 500 360">
+  <rect width="500" height="360" rx="12" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+  <rect x="0" y="0" width="200" height="360" fill="#F7F6F3"/>
+  <rect x="20" y="20" width="24" height="24" rx="4" fill="#000"/>
+  <text x="52" y="38" fill="#37352F" font-family="system-ui" font-size="14" font-weight="600">Notion</text>
+  <rect x="20" y="64" width="160" height="8" rx="4" fill="#E0DDDA"/>
+  <rect x="20" y="84" width="120" height="8" rx="4" fill="#E0DDDA"/>
+  <rect x="20" y="104" width="140" height="8" rx="4" fill="#E0DDDA"/>
+  <rect x="20" y="134" width="100" height="8" rx="4" fill="#E0DDDA"/>
+  <rect x="20" y="154" width="150" height="8" rx="4" fill="#E0DDDA"/>
+  <rect x="20" y="174" width="110" height="8" rx="4" fill="#E0DDDA"/>
+  <text x="350" y="60" text-anchor="middle" fill="#37352F" font-family="Georgia, serif" font-size="28" font-weight="700">Project Plan</text>
+  <rect x="240" y="80" width="220" height="8" rx="4" fill="#E0DDDA"/>
+  <rect x="240" y="100" width="180" height="8" rx="4" fill="#E0DDDA"/>
+  <rect x="240" y="140" width="220" height="30" rx="4" fill="#F1F1EF"/>
+  <rect x="240" y="178" width="220" height="30" rx="4" fill="#F1F1EF"/>
+  <rect x="240" y="216" width="220" height="30" rx="4" fill="#DBEDDB"/>
+  <rect x="240" y="254" width="220" height="30" rx="4" fill="#F1F1EF"/>
+  <rect x="240" y="292" width="220" height="30" rx="4" fill="#FADEC9"/>
+</svg>

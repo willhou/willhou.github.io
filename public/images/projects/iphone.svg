@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="500" viewBox="0 0 280 500">
+  <!-- iPhone classic body -->
+  <rect width="280" height="500" rx="36" fill="#1D1D1F"/>
+  <!-- Speaker grille -->
+  <rect x="110" y="22" width="60" height="6" rx="3" fill="#333"/>
+  <!-- Screen -->
+  <rect x="18" y="80" width="244" height="366" rx="2" fill="#1A3A5C"/>
+  <!-- Status bar -->
+  <rect x="18" y="80" width="244" height="24" fill="#2A5A8C"/>
+  <text x="140" y="96" text-anchor="middle" fill="white" font-family="system-ui" font-size="10" font-weight="600">9:41 AM</text>
+  <!-- Slide to unlock -->
+  <rect x="40" y="410" width="200" height="24" rx="12" fill="#1A3A5C" opacity="0.6"/>
+  <text x="140" y="426" text-anchor="middle" fill="white" font-family="system-ui" font-size="9" opacity="0.6">slide to unlock</text>
+  <!-- App grid row 1 -->
+  <rect x="36" y="118" width="44" height="44" rx="10" fill="#34C759"/>
+  <rect x="94" y="118" width="44" height="44" rx="10" fill="#FF9500"/>
+  <rect x="152" y="118" width="44" height="44" rx="10" fill="#5856D6"/>
+  <rect x="210" y="118" width="44" height="44" rx="10" fill="#FF2D55"/>
+  <text x="58" y="176" text-anchor="middle" fill="white" font-family="system-ui" font-size="7">Phone</text>
+  <text x="116" y="176" text-anchor="middle" fill="white" font-family="system-ui" font-size="7">Mail</text>
+  <text x="174" y="176" text-anchor="middle" fill="white" font-family="system-ui" font-size="7">Safari</text>
+  <text x="232" y="176" text-anchor="middle" fill="white" font-family="system-ui" font-size="7">Music</text>
+  <!-- App grid row 2 -->
+  <rect x="36" y="190" width="44" height="44" rx="10" fill="#007AFF"/>
+  <rect x="94" y="190" width="44" height="44" rx="10" fill="#FF3B30"/>
+  <rect x="152" y="190" width="44" height="44" rx="10" fill="#5AC8FA"/>
+  <rect x="210" y="190" width="44" height="44" rx="10" fill="#FFCC00"/>
+  <text x="58" y="248" text-anchor="middle" fill="white" font-family="system-ui" font-size="7">Settings</text>
+  <text x="116" y="248" text-anchor="middle" fill="white" font-family="system-ui" font-size="7">Photos</text>
+  <text x="174" y="248" text-anchor="middle" fill="white" font-family="system-ui" font-size="7">Weather</text>
+  <text x="232" y="248" text-anchor="middle" fill="white" font-family="system-ui" font-size="7">Notes</text>
+  <!-- App grid row 3 -->
+  <rect x="36" y="262" width="44" height="44" rx="10" fill="#AF52DE"/>
+  <rect x="94" y="262" width="44" height="44" rx="10" fill="#30D158"/>
+  <rect x="152" y="262" width="44" height="44" rx="10" fill="#64D2FF"/>
+  <rect x="210" y="262" width="44" height="44" rx="10" fill="#FF6482"/>
+  <text x="58" y="320" text-anchor="middle" fill="white" font-family="system-ui" font-size="7">iTunes</text>
+  <text x="116" y="320" text-anchor="middle" fill="white" font-family="system-ui" font-size="7">Maps</text>
+  <text x="174" y="320" text-anchor="middle" fill="white" font-family="system-ui" font-size="7">Stocks</text>
+  <text x="232" y="320" text-anchor="middle" fill="white" font-family="system-ui" font-size="7">Camera</text>
+  <!-- Dock -->
+  <rect x="18" y="370" width="244" height="76" rx="0" fill="rgba(0,0,0,0.3)"/>
+  <rect x="36" y="380" width="44" height="44" rx="10" fill="#34C759"/>
+  <rect x="94" y="380" width="44" height="44" rx="10" fill="#007AFF"/>
+  <rect x="152" y="380" width="44" height="44" rx="10" fill="#FF9500"/>
+  <rect x="210" y="380" width="44" height="44" rx="10" fill="#5856D6"/>
+  <!-- Home button -->
+  <circle cx="140" cy="468" r="18" fill="none" stroke="#444" stroke-width="2"/>
+  <rect x="132" y="460" width="16" height="16" rx="3" fill="none" stroke="#444" stroke-width="1.5"/>
+</svg>

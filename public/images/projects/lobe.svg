@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="546" height="336" viewBox="-3 7 546 336">
+  <!-- Laptop body -->
+  <rect x="40" y="10" width="460" height="300" rx="12" fill="#1D1D1F"/>
+  <rect x="52" y="22" width="436" height="268" rx="4" fill="#FFFFFF"/>
+  <!-- Laptop base -->
+  <path d="M0 310 L40 310 Q40 310 42 310 L498 310 Q500 310 500 310 L540 310 L540 330 Q540 340 530 340 L10 340 Q0 340 0 330 Z" fill="#B8B8BC"/>
+  <rect x="210" y="310" width="120" height="6" rx="3" fill="#A0A0A4"/>
+  <!-- Sidebar -->
+  <rect x="52" y="22" width="140" height="268" fill="#F5F5F7"/>
+  <rect x="64" y="40" width="80" height="10" rx="3" fill="#1D1D1F"/>
+  <rect x="64" y="60" width="16" height="16" rx="4" fill="#00B894"/>
+  <text x="86" y="73" fill="#333" font-family="system-ui" font-size="9">Label</text>
+  <rect x="64" y="86" width="110" height="14" rx="4" fill="#00B894"/>
+  <text x="92" y="96" fill="white" font-family="system-ui" font-size="8">Train</text>
+  <rect x="64" y="110" width="60" height="6" rx="3" fill="#DDD"/>
+  <rect x="64" y="124" width="100" height="4" rx="2" fill="#00B894"/>
+  <text x="168" y="128" fill="#888" font-family="system-ui" font-size="7">80%</text>
+  <rect x="64" y="136" width="70" height="4" rx="2" fill="#E17055"/>
+  <text x="138" y="140" fill="#888" font-family="system-ui" font-size="7">74%</text>
+  <rect x="64" y="148" width="90" height="4" rx="2" fill="#E17055"/>
+  <text x="158" y="152" fill="#888" font-family="system-ui" font-size="7">86%</text>
+  <!-- Main content area -->
+  <text x="210" y="44" fill="#333" font-family="system-ui" font-size="10" font-weight="600">All Images</text>
+  <text x="210" y="60" fill="#888" font-family="system-ui" font-size="8">Correct 94%</text>
+  <!-- Image grid row 1 -->
+  <rect x="210" y="68" width="52" height="52" rx="4" fill="#4CAF50" opacity="0.6"/>
+  <rect x="268" y="68" width="52" height="52" rx="4" fill="#81C784" opacity="0.6"/>
+  <rect x="326" y="68" width="52" height="52" rx="4" fill="#66BB6A" opacity="0.6"/>
+  <rect x="384" y="68" width="52" height="52" rx="4" fill="#43A047" opacity="0.6"/>
+  <rect x="442" y="68" width="38" height="52" rx="4" fill="#2E7D32" opacity="0.6"/>
+  <!-- Image grid row 2 -->
+  <text x="210" y="140" fill="#888" font-family="system-ui" font-size="8">Incorrect 6%</text>
+  <rect x="210" y="148" width="52" height="52" rx="4" fill="#A5D6A7" opacity="0.6"/>
+  <rect x="268" y="148" width="52" height="52" rx="4" fill="#C8E6C9" opacity="0.6"/>
+  <rect x="326" y="148" width="52" height="52" rx="4" fill="#388E3C" opacity="0.6"/>
+  <rect x="384" y="148" width="52" height="52" rx="4" fill="#1B5E20" opacity="0.6"/>
+  <!-- Row 3 -->
+  <rect x="210" y="208" width="52" height="52" rx="4" fill="#69F0AE" opacity="0.4"/>
+  <rect x="268" y="208" width="52" height="52" rx="4" fill="#B9F6CA" opacity="0.4"/>
+  <rect x="326" y="208" width="52" height="52" rx="4" fill="#00E676" opacity="0.4"/>
+  <rect x="384" y="208" width="52" height="52" rx="4" fill="#76FF03" opacity="0.4"/>
+</svg>

@@ -1,0 +1,490 @@
+/* Reset */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --fg: #000;
+  --bg: #fff;
+  --nav-color: rgba(0, 0, 0, 0.4);
+  --team-color: rgba(0, 0, 0, 0.4);
+  --about-bg: hsla(0, 0%, 100%, 0.94);
+  --gallery-bg: #fff;
+  --card-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
+  --dot-color: rgba(0, 0, 0, 0.2);
+  --dot-active: rgba(0, 0, 0, 0.6);
+  --content-width: min(1000px, 100% - 300px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg: #fff;
+    --bg: #1a1a1a;
+    --nav-color: rgba(255, 255, 255, 0.4);
+    --team-color: rgba(255, 255, 255, 0.4);
+    --about-bg: hsla(0, 0%, 10%, 0.94);
+    --gallery-bg: #1a1a1a;
+    --card-shadow: 0 0 100px rgba(0, 0, 0, 0.3);
+    --dot-color: rgba(255, 255, 255, 0.2);
+    --dot-active: rgba(255, 255, 255, 0.6);
+  }
+}
+
+html {
+  color-scheme: light dark;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-inter, "Inter"), sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Timeline Wrapper — vertically centers header + cards as a group */
+.timeline-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Header — sits directly above the card gallery */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1000px;
+  margin: 0 auto 3vh;
+  padding: 0 2em;
+  user-select: none;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-name {
+  font-weight: 500;
+  font-size: 1.6em;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.header-year {
+  font-weight: 500;
+  font-size: 1.6em;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+
+/* Animated Number — Robinhood-style rolling digits */
+.animated-number {
+  display: inline-flex;
+}
+
+.digit-slot {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.2em;
+  overflow: hidden;
+  position: relative;
+}
+
+.digit-column {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.digit-number {
+  display: block;
+  height: 1.2em;
+  line-height: 1.2em;
+  text-align: center;
+}
+
+.header-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1em;
+}
+
+.nav-link {
+  color: var(--nav-color);
+  font-weight: 400;
+  text-decoration: none;
+  background: none;
+  border: none;
+  font-size: 0.9em;
+  font-family: inherit;
+  line-height: 1.5;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  color: var(--fg);
+}
+
+/* Timeline — horizontal scroll area */
+.timeline {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: none;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  flex-shrink: 0;
+}
+
+.timeline::-webkit-scrollbar {
+  display: none;
+}
+
+.timeline-track {
+  display: flex;
+  align-items: flex-end;
+  padding-left: max(2em, calc((100vw - 1000px) / 2 + 2em));
+  padding-right: 0;
+  gap: 4em;
+}
+
+.timeline-spacer {
+  flex-shrink: 0;
+  width: max(0px, calc((100vw - 1000px) / 2 + 2em));
+  min-height: 1px;
+}
+
+.timeline-header-wrapper,
+.timeline-card-wrapper {
+  transition: opacity 0.3s ease;
+}
+
+/* Project Card */
+.project-card {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  user-select: none;
+  cursor: pointer;
+}
+
+.project-image-wrapper {
+  position: relative;
+}
+
+.project-image {
+  display: block;
+  max-height: 50vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* About Overlay */
+.about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--about-bg);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-content {
+  max-width: var(--content-width);
+  width: 100%;
+  padding: 2em;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4em;
+  align-items: center;
+}
+
+.about-bio {
+  font-size: 1.25em;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.about-links {
+  display: flex;
+  gap: 1.5em;
+  margin-top: 2em;
+}
+
+.about-link {
+  color: var(--nav-color);
+  text-decoration: none;
+  font-weight: 100;
+  font-size: 1em;
+  transition: color 0.2s;
+}
+
+.about-link:hover {
+  color: var(--fg);
+}
+
+.about-image-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.about-image {
+  max-width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Gallery Overlay */
+.gallery-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 300;
+}
+
+.gallery-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gallery-bg);
+}
+
+.gallery-shared-image {
+  position: absolute;
+  z-index: 2;
+  will-change: left, top, width, height;
+}
+
+.gallery-shared-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.gallery-back {
+  position: absolute;
+  top: 2em;
+  left: 2em;
+  z-index: 4;
+}
+
+.gallery-info-panel {
+  position: absolute;
+  z-index: 3;
+  padding-right: 2em;
+  text-align: right;
+}
+
+.gallery-title {
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.gallery-meta {
+  font-size: 0.85em;
+  color: var(--nav-color);
+}
+
+.gallery-team-inline {
+  margin-top: 0.5em;
+}
+
+.gallery-team-members {
+  color: var(--team-color);
+  font-weight: 100;
+  font-size: 0.85em;
+}
+
+/* Back Button */
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: none;
+  color: var(--fg);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.back-button:hover {
+  opacity: 0.5;
+}
+
+/* Carousel */
+.carousel {
+  width: 100%;
+  max-width: 800px;
+  overflow: hidden;
+  position: relative;
+  touch-action: pan-y;
+}
+
+.carousel-single {
+  display: flex;
+  justify-content: center;
+}
+
+.carousel-track {
+  display: flex;
+  will-change: transform;
+}
+
+.carousel-slide {
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-image {
+  max-width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: var(--card-shadow);
+  pointer-events: none;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 2em;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: var(--dot-color);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.carousel-dot.active {
+  background: var(--dot-active);
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  backdrop-filter: invert(30%) blur(10px);
+  -webkit-backdrop-filter: invert(30%) blur(10px);
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  transition: opacity 0.15s;
+}
+
+/* Responsive: Portrait Mobile */
+@media (max-width: 600px) {
+  html,
+  body {
+    overflow: auto;
+  }
+
+  .timeline-wrapper {
+    position: relative;
+    justify-content: flex-start;
+    padding-top: 3em;
+  }
+
+  .header {
+    padding: 0 1.5em;
+    margin-bottom: 2em;
+  }
+
+  .header-name,
+  .header-year {
+    font-size: 1.3em;
+  }
+
+  .timeline {
+    overflow: visible;
+  }
+
+  .timeline-track {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 1.5em;
+    padding-bottom: 3em;
+    gap: 3em;
+  }
+
+  .project-card {
+    width: 100%;
+  }
+
+  .project-image {
+    max-height: none;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 2em;
+  }
+
+  .about-content {
+    max-width: 100%;
+    padding: 1.5em;
+    padding-top: 6em;
+  }
+
+  .gallery-back {
+    top: 1.5em;
+    left: 1.5em;
+  }
+
+  .gallery-info-panel {
+    text-align: left;
+  }
+}
