@@ -640,3 +640,4 @@ zmaticoo.com,5135063,RESELLER
 zmaticoo.com,5135224,RESELLER
 zmaticoo.com,5135302,RESELLER
 zoomd.com,88478941,RESELLER
+kargo.com,9101,RESELLER,98ccdd9948ed08da
