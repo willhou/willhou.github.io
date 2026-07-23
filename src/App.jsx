@@ -1,25 +1,30 @@
-import { useEffect, useState } from "react";
-
 const work = [
   {
     name: "Roam",
-    discipline: "!nventor / Android",
+    period: "Now",
+    discipline: "!nventor, Android",
     copy: "Building the Roam Android app and bringing its virtual office experience to mobile.",
-    links: [{ label: "Visit Roam", href: "https://ro.am/" }],
+    logo: "/images/logos/roam.png",
+    links: [{ label: "Roam", href: "https://ro.am/" }],
+    current: true,
   },
   {
     name: "DoorDash",
+    period: "Previously",
     discipline: "Product engineering",
-    copy: "Built mobile product experiences used in the moments when speed and clarity mattered most.",
-    links: [{ label: "Visit DoorDash", href: "https://www.doordash.com/" }],
+    copy: "Built mobile product experiences used in moments when speed and clarity mattered most.",
+    logo: "/images/logos/doordash.svg",
+    links: [{ label: "DoorDash", href: "https://www.doordash.com/" }],
   },
   {
     name: "Microsoft",
-    discipline: "Mobile + design systems",
-    copy: "Contributed to Outlook for Android and helped shape the Fluent Design System across products.",
+    period: "Earlier",
+    discipline: "Mobile and design systems",
+    copy: "Contributed to Outlook for Android and helped shape the Fluent Design System.",
+    logo: "/images/logos/microsoft.svg",
     links: [
       {
-        label: "Outlook for Android",
+        label: "Outlook",
         href: "https://www.microsoft.com/en-us/microsoft-365/outlook-mobile-for-android-and-ios",
       },
       {
@@ -29,20 +34,24 @@ const work = [
     ],
   },
   {
-    name: "Sunrise",
-    discipline: "Calendar",
+    name: "Sunrise Calendar",
+    period: "Earlier",
+    discipline: "Android",
     copy: "Worked on a calendar people loved enough to miss. Sunrise was acquired by Microsoft.",
+    logo: "/images/logos/sunrise.png",
     links: [
       {
-        label: "View the archive",
+        label: "Archive",
         href: "https://www.producthunt.com/products/sunrise-calendar",
       },
     ],
   },
   {
     name: "Foursquare",
-    discipline: "Location products",
+    period: "First chapter",
+    discipline: "Mobile engineering",
     copy: "Helped build the mobile experiences behind Swarm and City Guide.",
+    logo: "/images/logos/foursquare.svg",
     links: [
       { label: "Swarm", href: "https://www.swarmapp.com/" },
       { label: "City Guide", href: "https://foursquare.com/city-guide" },
@@ -62,130 +71,80 @@ function Arrow() {
 }
 
 function App() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const nodes = document.querySelectorAll("[data-reveal]");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (reduceMotion) {
-      nodes.forEach((node) => node.classList.add("is-visible"));
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.14 },
-    );
-
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
-  }, []);
-
-  const closeMenu = () => setMenuOpen(false);
-
   return (
     <>
       <a className="skip-link" href="#main">
         Skip to content
       </a>
 
-      <header className="site-header">
-        <a className="monogram" href="#top" aria-label="Will Hou, home" onClick={closeMenu}>
-          WH
-        </a>
-        <nav
-          className={menuOpen ? "site-nav is-open" : "site-nav"}
-          id="primary-navigation"
-          aria-label="Primary"
-        >
-          <a href="#work" onClick={closeMenu}>
-            Work
+      <header className="shell site-header">
+        <nav className="site-nav" aria-label="Primary">
+          <a className="wordmark" href="#top" aria-label="Will Hou, home">
+            <span className="wordmark-mark" aria-hidden="true">
+              WH
+            </span>
+            <span>Will Hou</span>
           </a>
-          <a href="#studio" onClick={closeMenu}>
-            Ezi Studio
-          </a>
-          <a href="mailto:apps@ezi.am" onClick={closeMenu}>
-            Contact
-          </a>
+          <div className="nav-links">
+            <a href="#work">Work</a>
+            <a href="#studio">Ezi Studio</a>
+            <a href="#about">About</a>
+            <a href="mailto:apps@ezi.am">Email</a>
+          </div>
         </nav>
-        <button
-          className="menu-toggle"
-          type="button"
-          aria-expanded={menuOpen}
-          aria-controls="primary-navigation"
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          {menuOpen ? "Close" : "Menu"}
-        </button>
       </header>
 
-      <main id="main">
-        <section className="hero" id="top" aria-labelledby="hero-title">
-          <div className="hero-copy" data-reveal>
-            <p className="eyebrow">Will Hou / !nventor at Roam + founder</p>
-            <h1 id="hero-title">
-              Software with
-              <span>staying power.</span>
-            </h1>
-            <p className="hero-subtitle">
-              Android, product systems, and small experiments from Brooklyn.
+      <main className="shell" id="main">
+        <section className="intro" id="top" aria-labelledby="intro-title">
+          <img
+            className="portrait"
+            src="/images/will-hou-editorial.webp"
+            alt="Portrait of Will Hou"
+            width="1023"
+            height="1537"
+            loading="eager"
+            fetchPriority="high"
+          />
+          <div className="intro-copy">
+            <p className="intro-greeting">Hello, I’m Will.</p>
+            <h1 id="intro-title">I make thoughtful software.</h1>
+            <p className="intro-role">
+              Currently an{" "}
+              <a href="https://ro.am/" target="_blank" rel="noreferrer">
+                !nventor at Roam
+              </a>
+              , working on the Android app.
             </p>
-            <div className="hero-actions">
-              <a className="button button-primary" href="#work">
-                See selected work
-              </a>
-              <a className="button button-secondary" href="mailto:apps@ezi.am">
-                Start a conversation
-              </a>
-            </div>
           </div>
-
-          <figure className="hero-media" data-reveal>
-            <img
-              src="/images/will-hou-editorial.webp"
-              alt="Portrait of Will Hou"
-              width="1023"
-              height="1537"
-              loading="eager"
-              fetchPriority="high"
-            />
-          </figure>
-
-          <p className="hero-name" aria-hidden="true">
-            WILL
-            <br />
-            HOU
+          <p className="intro-note">
+            A product-minded engineer in Brooklyn, focused on tools that are clear, useful, and
+            considerate.
           </p>
         </section>
 
         <section className="work-section" id="work" aria-labelledby="work-title">
-          <div className="section-heading" data-reveal>
-            <h2 id="work-title">Products people remember.</h2>
-            <p>
-              I have spent my career turning complex systems into mobile experiences that feel
-              direct, useful, and human.
-            </p>
+          <div className="section-head">
+            <h2 id="work-title">Career path</h2>
+            <p>Selected work, newest first</p>
           </div>
-
-          <div className="work-list">
+          <div className="timeline">
             {work.map((item) => (
-              <article className="work-item" key={item.name} data-reveal>
-                <div className="work-meta">
-                  <p>{item.discipline}</p>
-                </div>
-                <div className="work-content">
-                  <h3>{item.name}</h3>
-                  <p>{item.copy}</p>
-                </div>
-                <div className="work-links" aria-label={`${item.name} links`}>
+              <article className={item.current ? "role current" : "role"} key={item.name}>
+                <p className="period">{item.period}</p>
+                <h3 className="company-name">
+                  <img
+                    className="company-logo"
+                    src={item.logo}
+                    alt=""
+                    width="24"
+                    height="24"
+                    loading="lazy"
+                  />
+                  <span>{item.name}</span>
+                </h3>
+                <p className="role-title">{item.discipline}</p>
+                <p className="role-detail">{item.copy}</p>
+                <div className="role-links" aria-label={`${item.name} links`}>
                   {item.links.map((link) => (
                     <a href={link.href} key={link.href} target="_blank" rel="noreferrer">
                       {link.label} <Arrow />
@@ -197,42 +156,13 @@ function App() {
           </div>
         </section>
 
-        <section className="craft-section" aria-labelledby="craft-title">
-          <div className="craft-heading" data-reveal>
-            <h2 id="craft-title">Clear thinking, made tangible.</h2>
-          </div>
-
-          <div className="craft-grid">
-            <div className="craft-cell craft-image" data-reveal>
-              <img
-                src="/images/will-hou-editorial.webp"
-                alt=""
-                width="1023"
-                height="1537"
-                loading="lazy"
-              />
-            </div>
-            <div className="craft-cell craft-statement" data-reveal>
-              <p>Make it clear. Make it durable.</p>
-            </div>
-            <article className="craft-cell craft-detail craft-detail-dark" data-reveal>
-              <h3>Mobile craft</h3>
-              <p>Native-feeling interactions, resilient architecture, and careful performance.</p>
-            </article>
-            <article className="craft-cell craft-detail" data-reveal>
-              <h3>Systems thinking</h3>
-              <p>Design and engineering decisions that scale beyond a single screen or launch.</p>
-            </article>
-          </div>
-        </section>
-
-        <section className="studio-section" id="studio" aria-labelledby="studio-title">
-          <div className="studio-copy" data-reveal>
-            <p className="studio-kicker">Built on the side, taken seriously</p>
-            <h2 id="studio-title">Ezi Studio</h2>
+        <section className="lower" aria-label="More about Will">
+          <article id="studio">
+            <p className="kicker">Independent practice</p>
+            <h2>Ezi Studio</h2>
             <p>
-              A small studio started at Waterloo for Android apps, early-stage product consulting,
-              and teams that need experienced engineering judgment.
+              A small studio started at Waterloo for Android apps, personal experiments, and
+              early-stage product consulting.
             </p>
             <a
               className="text-link"
@@ -242,41 +172,39 @@ function App() {
             >
               See an Android app <Arrow />
             </a>
-          </div>
-          <div className="studio-mark" aria-hidden="true" data-reveal>
-            EZI
-          </div>
-        </section>
+          </article>
 
-        <section className="outside-section" aria-labelledby="outside-title">
-          <div data-reveal>
-            <h2 id="outside-title">Away from the keyboard.</h2>
-          </div>
-          <div className="outside-list" data-reveal>
-            <p>Dog walker</p>
-            <p>Skier</p>
-            <p>Arsenal supporter</p>
-          </div>
+          <article id="about">
+            <p className="kicker">Away from the screen</p>
+            <h2>A little more human</h2>
+            <p>
+              I’m often walking the dog, skiing when winter cooperates, or following Arsenal with
+              more optimism than good sense.
+            </p>
+          </article>
+
+          <article>
+            <p className="kicker">Keep in touch</p>
+            <h2>Contact</h2>
+            <div className="contact-list">
+              <a href="mailto:apps@ezi.am">apps@ezi.am</a>
+              <a href="https://github.com/mhhou" target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+            </div>
+          </article>
         </section>
       </main>
 
-      <footer className="site-footer">
-        <div className="footer-lead">
-          <p>Have a good problem?</p>
-          <a href="mailto:apps@ezi.am">
-            apps@ezi.am <Arrow />
-          </a>
-        </div>
-        <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} Will Hou</p>
-          <nav aria-label="Legal and utility links">
-            {utilityLinks.map((link) => (
-              <a href={link.href} key={link.href}>
-                {link.label}
-              </a>
-            ))}
-          </nav>
-        </div>
+      <footer className="shell site-footer">
+        <p>© {new Date().getFullYear()} Will Hou</p>
+        <nav aria-label="Legal and utility links">
+          {utilityLinks.map((link) => (
+            <a href={link.href} key={link.href}>
+              {link.label}
+            </a>
+          ))}
+        </nav>
       </footer>
     </>
   );
