@@ -262,6 +262,9 @@ function App() {
 
       <footer className="shell site-footer">
         <p>© {new Date().getFullYear()} Will Hou</p>
+        <p className="footer-note">
+          All rights reserved. I know it is unlikely for you to steal this, but just in case.
+        </p>
       </footer>
     </>
   );

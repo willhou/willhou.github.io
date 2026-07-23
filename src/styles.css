@@ -491,6 +491,10 @@ button:focus-visible {
 }
 
 .site-footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
   min-height: 94px;
   padding: 1.25rem 0 1.75rem;
   border-top: 1px solid var(--rule);
@@ -500,6 +504,12 @@ button:focus-visible {
 .site-footer p {
   margin: 0;
   font-size: 0.7rem;
+}
+
+.site-footer .footer-note {
+  max-width: 30rem;
+  text-align: right;
+  line-height: 1.5;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -637,6 +647,16 @@ button:focus-visible {
 
   .lower article {
     min-height: auto;
+  }
+
+  .site-footer {
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .site-footer .footer-note {
+    max-width: 28rem;
+    text-align: left;
   }
 }
 
