@@ -210,11 +210,16 @@ button:focus-visible {
   display: none;
 }
 
+.career-divider-inner {
+  position: relative;
+  min-width: 620px;
+}
+
 .career-track {
   position: absolute;
   top: 2.16rem;
-  right: 10%;
-  left: 10%;
+  right: 0;
+  left: 0;
   height: 1px;
   overflow: hidden;
   background: var(--rule);
@@ -233,7 +238,6 @@ button:focus-visible {
 
 .career-stops {
   display: grid;
-  min-width: 620px;
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 

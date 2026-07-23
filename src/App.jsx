@@ -61,7 +61,7 @@ const work = [
   },
 ];
 
-const careerTimeline = work.map((item, workIndex) => ({ ...item, workIndex })).reverse();
+const careerTimeline = work.map((item, workIndex) => ({ ...item, workIndex }));
 
 function Arrow() {
   return <span aria-hidden="true">↗</span>;
@@ -70,7 +70,7 @@ function Arrow() {
 function App() {
   const [activeWork, setActiveWork] = useState(0);
   const roleRefs = useRef([]);
-  const activeTimelineStop = work.length - 1 - activeWork;
+  const activeTimelineStop = activeWork;
 
   function selectWork(index, reveal = false) {
     setActiveWork(index);
@@ -139,37 +139,39 @@ function App() {
         <section className="work-section" id="work" aria-labelledby="work-title">
           <div
             className="career-divider"
-            style={{ "--timeline-progress": activeTimelineStop / (work.length - 1) }}
+            style={{ "--timeline-progress": (activeTimelineStop + 0.5) / work.length }}
           >
-            <span className="career-track" aria-hidden="true">
-              <span className="career-progress" />
-            </span>
-            <div
-              className="career-stops"
-              role="group"
-              aria-label="Work timeline, earliest to current"
-            >
-              {careerTimeline.map((item) => {
-                const isActive = activeWork === item.workIndex;
+            <div className="career-divider-inner">
+              <span className="career-track" aria-hidden="true">
+                <span className="career-progress" />
+              </span>
+              <div
+                className="career-stops"
+                role="group"
+                aria-label="Work timeline, current to earliest"
+              >
+                {careerTimeline.map((item) => {
+                  const isActive = activeWork === item.workIndex;
 
-                return (
-                  <button
-                    className={isActive ? "career-stop active" : "career-stop"}
-                    type="button"
-                    aria-controls={`work-role-${item.workIndex}`}
-                    aria-pressed={isActive}
-                    key={item.name}
-                    onClick={() => selectWork(item.workIndex, true)}
-                    onFocus={() => selectWork(item.workIndex)}
-                    onMouseEnter={() => selectWork(item.workIndex)}
-                  >
-                    <span className="career-marker">
-                      <img src={item.logo} alt="" width="20" height="20" loading="lazy" />
-                    </span>
-                    <span className="career-label">{item.name}</span>
-                  </button>
-                );
-              })}
+                  return (
+                    <button
+                      className={isActive ? "career-stop active" : "career-stop"}
+                      type="button"
+                      aria-controls={`work-role-${item.workIndex}`}
+                      aria-pressed={isActive}
+                      key={item.name}
+                      onClick={() => selectWork(item.workIndex, true)}
+                      onFocus={() => selectWork(item.workIndex)}
+                      onMouseEnter={() => selectWork(item.workIndex)}
+                    >
+                      <span className="career-marker">
+                        <img src={item.logo} alt="" width="20" height="20" loading="lazy" />
+                      </span>
+                      <span className="career-label">{item.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
           <div className="section-head">
