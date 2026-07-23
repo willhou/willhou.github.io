@@ -2,10 +2,10 @@
   font-family:
     "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #1f272b;
-  background: #f6f7f4;
+  background: var(--paper);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --paper: #f6f7f4;
+  --paper: #ffffff;
   --surface: #ffffff;
   --ink: #1f272b;
   --muted: #59656b;
@@ -36,12 +36,16 @@
 }
 
 html {
+  min-height: 100%;
+  background: var(--paper);
   scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   min-width: 320px;
+  min-height: 100vh;
+  min-height: 100svh;
   background: var(--paper);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
@@ -94,59 +98,11 @@ button:focus-visible {
   margin-inline: auto;
 }
 
-.site-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 78px;
-  border-bottom: 1px solid var(--rule);
-}
-
-.wordmark {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.94rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-  text-decoration: none;
-}
-
-.wordmark-mark {
-  display: grid;
-  width: 28px;
-  height: 28px;
-  place-items: center;
-  border: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
-  border-radius: 50%;
-  color: var(--accent);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-.nav-links {
-  display: flex;
-  gap: clamp(1.2rem, 2.2vw, 2.2rem);
-  white-space: nowrap;
-}
-
-.nav-links a {
-  color: var(--muted);
-  font-size: 0.8rem;
-  text-decoration: none;
-  transition: color 160ms ease;
-}
-
-.nav-links a:hover {
-  color: var(--ink);
-}
-
 .intro {
   display: grid;
-  grid-template-columns: 104px minmax(0, 1fr) minmax(240px, 300px);
+  grid-template-columns: 104px minmax(0, 1fr);
   gap: 2.25rem;
-  align-items: end;
+  align-items: center;
   min-height: 340px;
   padding: 4rem 0 3.5rem;
 }
@@ -168,34 +124,34 @@ button:focus-visible {
 }
 
 .intro h1 {
+  max-width: 60rem;
   margin: 0;
-  font-size: clamp(2.65rem, 3.4vw, 3.45rem);
+  font-size: clamp(1.65rem, 2.5vw, 2.45rem);
   font-weight: 440;
-  letter-spacing: -0.045em;
-  line-height: 1.03;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
 }
 
-.intro-role {
-  margin: 0.8rem 0 0;
-  color: var(--muted);
-  font-size: clamp(1rem, 1.3vw, 1.18rem);
-  line-height: 1.45;
-}
-
-.intro-role a {
+.intro h1 a {
   color: var(--accent);
   font-weight: 600;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.22em;
 }
 
-.intro-note {
-  width: min(100%, 300px);
-  justify-self: end;
-  margin: 0 0 0.2rem;
+.intro-details {
+  max-width: 58rem;
+  margin: 1.25rem 0 0;
   color: var(--muted);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   line-height: 1.65;
+}
+
+.intro-details a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
 }
 
 .career-divider {
@@ -212,7 +168,7 @@ button:focus-visible {
 
 .career-divider-inner {
   position: relative;
-  min-width: 620px;
+  min-width: 740px;
 }
 
 .career-track {
@@ -238,7 +194,7 @@ button:focus-visible {
 
 .career-stops {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .career-stop {
@@ -275,11 +231,23 @@ button:focus-visible {
   height: 20px;
   border-radius: 3px;
   object-fit: contain;
-  filter: grayscale(1) contrast(1.08);
-  opacity: 0.62;
-  transition:
-    filter 180ms ease,
-    opacity 180ms ease;
+}
+
+.career-marker img.logo-microsoft,
+.company-logo.logo-microsoft {
+  padding: 2px;
+}
+
+.career-marker img.logo-roam,
+.company-logo.logo-roam {
+  filter: brightness(0) saturate(100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .career-marker img.logo-roam,
+  .company-logo.logo-roam {
+    filter: brightness(0) invert(1);
+  }
 }
 
 .career-label {
@@ -298,15 +266,229 @@ button:focus-visible {
   transform: translateY(-2px);
 }
 
-.career-stop:hover .career-marker img,
-.career-stop.active .career-marker img {
-  filter: grayscale(0.2) contrast(1);
-  opacity: 1;
-}
-
 .career-stop:hover .career-label,
 .career-stop.active .career-label {
   color: var(--accent);
+}
+
+.timeline-surprise {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.timeline-future {
+  top: 0.4rem;
+  left: 0;
+  width: 48px;
+  height: 16px;
+  color: var(--ink);
+}
+
+.pixel-ufo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+  color: inherit;
+  box-shadow:
+    8px 0 currentColor,
+    10px 0 currentColor,
+    6px 2px currentColor,
+    8px 2px currentColor,
+    10px 2px currentColor,
+    12px 2px currentColor,
+    4px 4px currentColor,
+    6px 4px currentColor,
+    8px 4px currentColor,
+    10px 4px currentColor,
+    12px 4px currentColor,
+    14px 4px currentColor,
+    2px 6px currentColor,
+    4px 6px currentColor,
+    6px 6px currentColor,
+    8px 6px currentColor,
+    10px 6px currentColor,
+    12px 6px currentColor,
+    14px 6px currentColor,
+    16px 6px currentColor,
+    0 8px currentColor,
+    2px 8px currentColor,
+    4px 8px currentColor,
+    6px 8px currentColor,
+    8px 8px currentColor,
+    10px 8px currentColor,
+    12px 8px currentColor,
+    14px 8px currentColor,
+    16px 8px currentColor,
+    18px 8px currentColor,
+    2px 10px currentColor,
+    4px 10px currentColor,
+    6px 10px currentColor,
+    8px 10px currentColor,
+    10px 10px currentColor,
+    12px 10px currentColor,
+    14px 10px currentColor,
+    16px 10px currentColor,
+    6px 12px currentColor,
+    8px 12px currentColor,
+    10px 12px currentColor,
+    12px 12px currentColor;
+  animation: ufo-hover 700ms ease-in-out infinite alternate;
+}
+
+.pixel-ufo::after {
+  position: absolute;
+  top: 8px;
+  left: 4px;
+  width: 2px;
+  height: 2px;
+  background: var(--accent);
+  box-shadow:
+    6px 0 var(--accent),
+    12px 0 var(--accent);
+  content: "";
+}
+
+.timeline-past {
+  top: 0.9rem;
+  right: 0;
+  width: 48px;
+  height: 22px;
+  color: var(--ink);
+}
+
+.pixel-dino {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+  color: inherit;
+  box-shadow:
+    10px 0 currentColor,
+    12px 0 currentColor,
+    14px 0 currentColor,
+    16px 0 currentColor,
+    18px 0 currentColor,
+    8px 2px currentColor,
+    10px 2px currentColor,
+    12px 2px currentColor,
+    14px 2px currentColor,
+    16px 2px currentColor,
+    18px 2px currentColor,
+    20px 2px currentColor,
+    8px 4px currentColor,
+    10px 4px currentColor,
+    14px 4px currentColor,
+    16px 4px currentColor,
+    18px 4px currentColor,
+    20px 4px currentColor,
+    8px 6px currentColor,
+    10px 6px currentColor,
+    12px 6px currentColor,
+    14px 6px currentColor,
+    16px 6px currentColor,
+    18px 6px currentColor,
+    20px 6px currentColor,
+    8px 8px currentColor,
+    10px 8px currentColor,
+    12px 8px currentColor,
+    14px 8px currentColor,
+    0 10px currentColor,
+    6px 10px currentColor,
+    8px 10px currentColor,
+    10px 10px currentColor,
+    12px 10px currentColor,
+    14px 10px currentColor,
+    0 12px currentColor,
+    2px 12px currentColor,
+    4px 12px currentColor,
+    6px 12px currentColor,
+    8px 12px currentColor,
+    10px 12px currentColor,
+    12px 12px currentColor,
+    14px 12px currentColor,
+    2px 14px currentColor,
+    4px 14px currentColor,
+    6px 14px currentColor,
+    8px 14px currentColor,
+    10px 14px currentColor,
+    12px 14px currentColor,
+    4px 16px currentColor,
+    6px 16px currentColor,
+    10px 16px currentColor,
+    12px 16px currentColor,
+    4px 18px currentColor,
+    12px 18px currentColor;
+  animation: dino-bob 240ms steps(2, end) infinite;
+}
+
+.pixel-dino::after {
+  position: absolute;
+  top: 4px;
+  left: 16px;
+  width: 2px;
+  height: 2px;
+  background: var(--paper);
+  content: "";
+}
+
+.career-divider-inner:has(.career-stop:first-child:is(:hover, :focus-visible))
+  .timeline-future {
+  animation: ufo-glide-out 1.6s linear infinite;
+}
+
+.career-divider-inner:has(.career-stop:last-child:is(:hover, :focus-visible)) .timeline-past {
+  animation: dino-walk-out 1.4s steps(8, end) infinite;
+}
+
+@keyframes ufo-glide-out {
+  0% {
+    opacity: 0;
+    transform: translateX(26px);
+  }
+
+  15%,
+  82% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+
+@keyframes dino-walk-out {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+
+  15%,
+  82% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(26px);
+  }
+}
+
+@keyframes dino-bob {
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes ufo-hover {
+  to {
+    transform: translateY(-2px);
+  }
 }
 
 .section-head {
@@ -331,7 +513,7 @@ button:focus-visible {
 
 .timeline {
   display: grid;
-  grid-template-columns: 1.14fr repeat(4, 1fr);
+  grid-template-columns: 1.14fr repeat(5, 1fr);
   min-height: 286px;
   margin-bottom: 4rem;
   border-top: 1px solid var(--rule);
@@ -392,12 +574,10 @@ button:focus-visible {
   flex: 0 0 24px;
   border-radius: 4px;
   object-fit: contain;
-  filter: grayscale(1) contrast(1.12);
-  opacity: 0.76;
 }
 
 .role-title {
-  margin: 0 0 0.9rem 2.65rem;
+  margin: 0 0 0.9rem calc(24px + 0.65rem);
   color: var(--muted);
   font-size: 0.76rem;
 }
@@ -423,75 +603,20 @@ button:focus-visible {
   padding-top: 1.15rem;
 }
 
-.role-links a,
-.text-link {
+.role-links a {
   color: var(--accent);
   font-size: 0.72rem;
   font-weight: 600;
   text-decoration: none;
 }
 
-.role-links a span,
-.text-link span {
+.role-links a span {
   display: inline-block;
   transition: transform 160ms ease;
 }
 
-.role-links a:hover span,
-.text-link:hover span {
+.role-links a:hover span {
   transform: translate(2px, -2px);
-}
-
-.lower {
-  display: grid;
-  grid-template-columns: 1.2fr 0.9fr 0.68fr;
-  gap: 3rem;
-  padding-bottom: 3.25rem;
-}
-
-.lower article {
-  min-height: 175px;
-}
-
-.kicker {
-  margin: 0 0 1rem;
-  color: var(--faint);
-  font-size: 0.7rem;
-}
-
-.lower h2 {
-  margin: 0 0 0.75rem;
-  font-size: 1.3rem;
-  font-weight: 560;
-  letter-spacing: -0.03em;
-}
-
-.lower p {
-  max-width: 31rem;
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.87rem;
-  line-height: 1.65;
-}
-
-.text-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 1.25rem;
-}
-
-.contact-list {
-  display: grid;
-  gap: 0.5rem;
-  color: var(--muted);
-  font-size: 0.82rem;
-}
-
-.contact-list a {
-  width: fit-content;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.22em;
 }
 
 .site-footer {
@@ -516,28 +641,9 @@ button:focus-visible {
   line-height: 1.5;
 }
 
-@media (prefers-color-scheme: dark) {
-  .company-logo,
-  .career-marker img,
-  .career-stop:hover .career-marker img,
-  .career-stop.active .career-marker img {
-    filter: grayscale(1) invert(1) brightness(1.2) contrast(0.82);
-    opacity: 0.84;
-  }
-}
-
 @media (max-width: 1050px) {
-  .intro {
-    grid-template-columns: 104px minmax(0, 1fr);
-  }
-
-  .intro-note {
-    grid-column: 2;
-    justify-self: start;
-  }
-
   .timeline {
-    grid-template-columns: repeat(5, minmax(235px, 1fr));
+    grid-template-columns: repeat(6, minmax(235px, 1fr));
     overflow-x: auto;
     overscroll-behavior-inline: contain;
     scroll-snap-type: inline proximity;
@@ -553,28 +659,6 @@ button:focus-visible {
     width: min(100% - 40px, 680px);
   }
 
-  .site-nav {
-    min-height: 68px;
-  }
-
-  .wordmark {
-    gap: 0.55rem;
-  }
-
-  .wordmark-mark {
-    width: 26px;
-    height: 26px;
-  }
-
-  .nav-links {
-    gap: 1rem;
-  }
-
-  .nav-links a:nth-child(2),
-  .nav-links a:nth-child(3) {
-    display: none;
-  }
-
   .intro {
     grid-template-columns: 80px minmax(0, 1fr);
     gap: 1.25rem;
@@ -588,17 +672,7 @@ button:focus-visible {
   }
 
   .intro h1 {
-    font-size: clamp(2.25rem, 10vw, 3.2rem);
-  }
-
-  .intro-role {
-    font-size: 0.96rem;
-  }
-
-  .intro-note {
-    grid-column: 1 / -1;
-    width: 100%;
-    max-width: 31rem;
+    font-size: clamp(1.35rem, 5.5vw, 1.9rem);
   }
 
   .section-head {
@@ -644,15 +718,6 @@ button:focus-visible {
     max-width: 30rem;
   }
 
-  .lower {
-    grid-template-columns: 1fr;
-    gap: 2.7rem;
-  }
-
-  .lower article {
-    min-height: auto;
-  }
-
   .site-footer {
     flex-direction: column;
     gap: 0.55rem;
@@ -674,5 +739,19 @@ button:focus-visible {
   *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .career-divider-inner:has(.career-stop:first-child:is(:hover, :focus-visible))
+    .timeline-future,
+  .career-divider-inner:has(.career-stop:last-child:is(:hover, :focus-visible))
+    .timeline-past {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
+
+  .pixel-ufo,
+  .pixel-dino {
+    animation: none;
   }
 }

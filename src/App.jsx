@@ -7,13 +7,14 @@ const work = [
     discipline: "!nventor, Android",
     copy: "Building the Roam Android app and bringing its virtual office experience to mobile.",
     logo: "/images/logos/roam.png",
+    logoClass: "logo-roam",
     links: [{ label: "Roam", href: "https://ro.am/" }],
     current: true,
   },
   {
     name: "DoorDash",
     period: "Previously",
-    discipline: "Product engineering",
+    discipline: "Product and infrastructure",
     copy: "Built mobile product experiences used in moments when speed and clarity mattered most.",
     logo: "/images/logos/doordash.svg",
     links: [{ label: "DoorDash", href: "https://www.doordash.com/" }],
@@ -24,6 +25,7 @@ const work = [
     discipline: "Mobile and design systems",
     copy: "Contributed to Outlook for Android and helped shape the Fluent Design System.",
     logo: "/images/logos/microsoft.svg",
+    logoClass: "logo-microsoft",
     links: [
       {
         label: "Outlook",
@@ -41,6 +43,7 @@ const work = [
     discipline: "Android",
     copy: "Worked on a calendar people loved enough to miss. Sunrise was acquired by Microsoft.",
     logo: "/images/logos/sunrise.png",
+    logoClass: "logo-sunrise",
     links: [
       {
         label: "Archive",
@@ -59,6 +62,14 @@ const work = [
       { label: "City Guide", href: "https://foursquare.com/city-guide" },
     ],
   },
+  {
+    name: "University of Waterloo",
+    period: "Education",
+    discipline: "BMath, Computer Science",
+    copy: "Earned a BMath in Computer Science and started Ezi Studio while studying at Waterloo.",
+    logo: "/images/logos/waterloo.png",
+    links: [{ label: "Waterloo", href: "https://uwaterloo.ca/" }],
+  },
 ];
 
 const careerTimeline = work.map((item, workIndex) => ({ ...item, workIndex }));
@@ -71,6 +82,10 @@ function App() {
   const [activeWork, setActiveWork] = useState(0);
   const roleRefs = useRef([]);
   const activeTimelineStop = activeWork;
+  const timelineProgress =
+    activeTimelineStop === work.length - 1
+      ? 1
+      : (activeTimelineStop + 0.5) / work.length;
 
   function selectWork(index, reveal = false) {
     setActiveWork(index);
@@ -91,23 +106,6 @@ function App() {
         Skip to content
       </a>
 
-      <header className="shell site-header">
-        <nav className="site-nav" aria-label="Primary">
-          <a className="wordmark" href="#top" aria-label="Will Hou, home">
-            <span className="wordmark-mark" aria-hidden="true">
-              WH
-            </span>
-            <span>Will Hou</span>
-          </a>
-          <div className="nav-links">
-            <a href="#work">Work</a>
-            <a href="#studio">Ezi Studio</a>
-            <a href="#about">About</a>
-            <a href="mailto:apps@ezi.am">Email</a>
-          </div>
-        </nav>
-      </header>
-
       <main className="shell" id="main">
         <section className="intro" id="top" aria-labelledby="intro-title">
           <img
@@ -121,25 +119,45 @@ function App() {
           />
           <div className="intro-copy">
             <p className="intro-greeting">Hello, I’m Will.</p>
-            <h1 id="intro-title">I make thoughtful software.</h1>
-            <p className="intro-role">
-              Currently an{" "}
+            <h1 id="intro-title">
+              A product-minded engineer in Brooklyn, currently an{" "}
               <a href="https://ro.am/" target="_blank" rel="noreferrer">
                 !nventor at Roam
               </a>
-              , working on the Android app.
+              , working on the Android app and focused on tools that are clear, useful, and
+              considerate.
+            </h1>
+            <p className="intro-details">
+              I also run Ezi Studio for{" "}
+              <a
+                href="https://play.google.com/store/apps/details?id=com.maize.digitalClock"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Android apps
+              </a>
+              , personal experiments, and early-stage product consulting. Away from the screen,
+              I’m usually walking the dog, skiing, or following Arsenal. Find me on{" "}
+              <a
+                href="https://www.linkedin.com/in/william-hou-07282130/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                LinkedIn
+              </a>{" "}
+              and{" "}
+              <a href="https://github.com/mhhou" target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              .
             </p>
           </div>
-          <p className="intro-note">
-            A product-minded engineer in Brooklyn, focused on tools that are clear, useful, and
-            considerate.
-          </p>
         </section>
 
         <section className="work-section" id="work" aria-labelledby="work-title">
           <div
             className="career-divider"
-            style={{ "--timeline-progress": (activeTimelineStop + 0.5) / work.length }}
+            style={{ "--timeline-progress": timelineProgress }}
           >
             <div className="career-divider-inner">
               <span className="career-track" aria-hidden="true">
@@ -165,18 +183,31 @@ function App() {
                       onMouseEnter={() => selectWork(item.workIndex)}
                     >
                       <span className="career-marker">
-                        <img src={item.logo} alt="" width="20" height="20" loading="lazy" />
+                        <img
+                          className={item.logoClass}
+                          src={item.logo}
+                          alt=""
+                          width="20"
+                          height="20"
+                          loading="lazy"
+                        />
                       </span>
                       <span className="career-label">{item.name}</span>
                     </button>
                   );
                 })}
               </div>
+              <span className="timeline-surprise timeline-future" aria-hidden="true">
+                <span className="pixel-ufo" />
+              </span>
+              <span className="timeline-surprise timeline-past" aria-hidden="true">
+                <span className="pixel-dino" />
+              </span>
             </div>
           </div>
           <div className="section-head">
-            <h2 id="work-title">Work over time</h2>
-            <p>Selected work, newest first</p>
+            <h2 id="work-title">Career over time</h2>
+            <p>Work and education, newest first</p>
           </div>
           <div className="timeline">
             {work.map((item, index) => (
@@ -199,7 +230,7 @@ function App() {
                 <p className="period">{item.period}</p>
                 <h3 className="company-name">
                   <img
-                    className="company-logo"
+                    className={["company-logo", item.logoClass].filter(Boolean).join(" ")}
                     src={item.logo}
                     alt=""
                     width="24"
@@ -222,44 +253,6 @@ function App() {
           </div>
         </section>
 
-        <section className="lower" aria-label="More about Will">
-          <article id="studio">
-            <p className="kicker">Independent practice</p>
-            <h2>Ezi Studio</h2>
-            <p>
-              A small studio started at Waterloo for Android apps, personal experiments, and
-              early-stage product consulting.
-            </p>
-            <a
-              className="text-link"
-              href="https://play.google.com/store/apps/details?id=com.maize.digitalClock"
-              target="_blank"
-              rel="noreferrer"
-            >
-              See an Android app <Arrow />
-            </a>
-          </article>
-
-          <article id="about">
-            <p className="kicker">Away from the screen</p>
-            <h2>A little more human</h2>
-            <p>
-              I’m often walking the dog, skiing when winter cooperates, or following Arsenal with
-              more optimism than good sense.
-            </p>
-          </article>
-
-          <article>
-            <p className="kicker">Keep in touch</p>
-            <h2>Contact</h2>
-            <div className="contact-list">
-              <a href="mailto:apps@ezi.am">apps@ezi.am</a>
-              <a href="https://github.com/mhhou" target="_blank" rel="noreferrer">
-                GitHub
-              </a>
-            </div>
-          </article>
-        </section>
       </main>
 
       <footer className="shell site-footer">
