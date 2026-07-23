@@ -14,6 +14,9 @@
   --accent: #3f6489;
   --accent-soft: #e8eef3;
   --focus: #31577d;
+  --selection-accent: rgb(31 39 43 / 68%);
+  --selection-tint: rgb(31 39 43 / 2%);
+  --marker-shadow: 0 4px 12px rgb(31 39 43 / 14%);
   color-scheme: light dark;
 }
 
@@ -28,6 +31,9 @@
     --accent: #8dafd0;
     --accent-soft: #202d38;
     --focus: #aac8e3;
+    --selection-accent: rgb(255 255 255 / 72%);
+    --selection-tint: rgb(255 255 255 / 4%);
+    --marker-shadow: 0 4px 14px rgb(0 0 0 / 42%);
   }
 }
 
@@ -186,7 +192,7 @@ button:focus-visible {
   display: block;
   width: 100%;
   height: 100%;
-  background: var(--accent);
+  background: var(--selection-accent);
   transform: scaleX(var(--timeline-progress));
   transform-origin: left center;
   transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -223,6 +229,7 @@ button:focus-visible {
   transition:
     border-color 180ms ease,
     background-color 180ms ease,
+    box-shadow 180ms ease,
     transform 180ms ease;
 }
 
@@ -261,14 +268,22 @@ button:focus-visible {
 
 .career-stop:hover .career-marker,
 .career-stop.active .career-marker {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+  box-shadow: var(--marker-shadow);
   transform: translateY(-2px);
+}
+
+@media (prefers-color-scheme: dark) {
+  .career-stop:hover .career-marker,
+  .career-stop.active .career-marker {
+    border-color: var(--selection-accent);
+    background: var(--selection-tint);
+    box-shadow: none;
+  }
 }
 
 .career-stop:hover .career-label,
 .career-stop.active .career-label {
-  color: var(--accent);
+  color: var(--selection-accent);
 }
 
 .timeline-surprise {
@@ -491,6 +506,16 @@ button:focus-visible {
   }
 }
 
+@keyframes selection-gradient-out {
+  from {
+    background-size: 100% 0%;
+  }
+
+  to {
+    background-size: 100% 100%;
+  }
+}
+
 .section-head {
   display: flex;
   align-items: baseline;
@@ -541,8 +566,11 @@ button:focus-visible {
 }
 
 .role.selected {
-  background: linear-gradient(180deg, var(--accent-soft), transparent);
-  box-shadow: inset 0 2px 0 var(--accent);
+  background-image: linear-gradient(180deg, var(--selection-tint), transparent 22%);
+  background-repeat: no-repeat;
+  background-position: top;
+  box-shadow: inset 0 2px 0 var(--selection-accent);
+  animation: selection-gradient-out 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .period {
@@ -552,8 +580,9 @@ button:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 
-.current .period {
-  color: var(--accent);
+.current .period,
+.role.selected .period {
+  color: var(--selection-accent);
   font-weight: 650;
 }
 
@@ -584,7 +613,11 @@ button:focus-visible {
 
 .selected .company-name,
 .selected .role-title {
-  color: var(--accent);
+  color: var(--selection-accent);
+}
+
+.role.selected .role-links a {
+  color: var(--selection-accent);
 }
 
 .role-detail {
@@ -641,12 +674,17 @@ button:focus-visible {
   line-height: 1.5;
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 1240px) {
   .timeline {
-    grid-template-columns: repeat(6, minmax(235px, 1fr));
+    grid-template-columns: repeat(6, minmax(260px, 1fr));
     overflow-x: auto;
     overscroll-behavior-inline: contain;
+    scrollbar-width: none;
     scroll-snap-type: inline proximity;
+  }
+
+  .timeline::-webkit-scrollbar {
+    display: none;
   }
 
   .role {
@@ -752,6 +790,10 @@ button:focus-visible {
 
   .pixel-ufo,
   .pixel-dino {
+    animation: none;
+  }
+
+  .role.selected {
     animation: none;
   }
 }

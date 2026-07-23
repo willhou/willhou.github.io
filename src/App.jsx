@@ -81,6 +81,7 @@ function Arrow() {
 function App() {
   const [activeWork, setActiveWork] = useState(0);
   const roleRefs = useRef([]);
+  const timelineRef = useRef(null);
   const activeTimelineStop = activeWork;
   const timelineProgress =
     activeTimelineStop === work.length - 1
@@ -90,14 +91,29 @@ function App() {
   function selectWork(index, reveal = false) {
     setActiveWork(index);
 
-    if (reveal) {
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      roleRefs.current[index]?.scrollIntoView({
-        behavior: reduceMotion ? "auto" : "smooth",
-        block: "nearest",
-        inline: "center",
-      });
-    }
+    if (!reveal) return;
+
+    const timeline = timelineRef.current;
+    const role = roleRefs.current[index];
+
+    if (!timeline || !role || timeline.scrollWidth <= timeline.clientWidth) return;
+
+    const timelineRect = timeline.getBoundingClientRect();
+    const roleRect = role.getBoundingClientRect();
+    const isOutside =
+      roleRect.left < timelineRect.left || roleRect.right > timelineRect.right;
+
+    if (!isOutside) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    timeline.scrollTo({
+      left:
+        timeline.scrollLeft +
+        roleRect.left -
+        timelineRect.left -
+        (timeline.clientWidth - roleRect.width) / 2,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
   }
 
   return (
@@ -179,8 +195,8 @@ function App() {
                       aria-pressed={isActive}
                       key={item.name}
                       onClick={() => selectWork(item.workIndex, true)}
-                      onFocus={() => selectWork(item.workIndex)}
-                      onMouseEnter={() => selectWork(item.workIndex)}
+                      onFocus={() => selectWork(item.workIndex, true)}
+                      onMouseEnter={() => selectWork(item.workIndex, true)}
                     >
                       <span className="career-marker">
                         <img
@@ -206,10 +222,10 @@ function App() {
             </div>
           </div>
           <div className="section-head">
-            <h2 id="work-title">Career over time</h2>
+            <h2 id="work-title">My journey</h2>
             <p>Work and education, newest first</p>
           </div>
-          <div className="timeline">
+          <div className="timeline" ref={timelineRef}>
             {work.map((item, index) => (
               <article
                 className={[
