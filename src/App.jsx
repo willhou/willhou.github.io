@@ -1,3 +1,5 @@
+import { useRef, useState } from "react";
+
 const work = [
   {
     name: "Roam",
@@ -59,11 +61,30 @@ const work = [
   },
 ];
 
+const careerTimeline = work.map((item, workIndex) => ({ ...item, workIndex })).reverse();
+
 function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
 
 function App() {
+  const [activeWork, setActiveWork] = useState(0);
+  const roleRefs = useRef([]);
+  const activeTimelineStop = work.length - 1 - activeWork;
+
+  function selectWork(index, reveal = false) {
+    setActiveWork(index);
+
+    if (reveal) {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      roleRefs.current[index]?.scrollIntoView({
+        behavior: reduceMotion ? "auto" : "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }
+
   return (
     <>
       <a className="skip-link" href="#main">
@@ -116,13 +137,63 @@ function App() {
         </section>
 
         <section className="work-section" id="work" aria-labelledby="work-title">
+          <div
+            className="career-divider"
+            style={{ "--timeline-progress": activeTimelineStop / (work.length - 1) }}
+          >
+            <span className="career-track" aria-hidden="true">
+              <span className="career-progress" />
+            </span>
+            <div
+              className="career-stops"
+              role="group"
+              aria-label="Work timeline, earliest to current"
+            >
+              {careerTimeline.map((item) => {
+                const isActive = activeWork === item.workIndex;
+
+                return (
+                  <button
+                    className={isActive ? "career-stop active" : "career-stop"}
+                    type="button"
+                    aria-controls={`work-role-${item.workIndex}`}
+                    aria-pressed={isActive}
+                    key={item.name}
+                    onClick={() => selectWork(item.workIndex, true)}
+                    onFocus={() => selectWork(item.workIndex)}
+                    onMouseEnter={() => selectWork(item.workIndex)}
+                  >
+                    <span className="career-marker">
+                      <img src={item.logo} alt="" width="20" height="20" loading="lazy" />
+                    </span>
+                    <span className="career-label">{item.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
           <div className="section-head">
-            <h2 id="work-title">Career path</h2>
+            <h2 id="work-title">Work over time</h2>
             <p>Selected work, newest first</p>
           </div>
           <div className="timeline">
-            {work.map((item) => (
-              <article className={item.current ? "role current" : "role"} key={item.name}>
+            {work.map((item, index) => (
+              <article
+                className={[
+                  "role",
+                  item.current ? "current" : "",
+                  activeWork === index ? "selected" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                id={`work-role-${index}`}
+                key={item.name}
+                ref={(node) => {
+                  roleRefs.current[index] = node;
+                }}
+                onFocusCapture={() => selectWork(index)}
+                onMouseEnter={() => selectWork(index)}
+              >
                 <p className="period">{item.period}</p>
                 <h3 className="company-name">
                   <img
