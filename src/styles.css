@@ -381,10 +381,6 @@ a:focus-visible {
 }
 
 .site-footer {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 2rem;
   min-height: 94px;
   padding: 1.25rem 0 1.75rem;
   border-top: 1px solid var(--rule);
@@ -394,19 +390,6 @@ a:focus-visible {
 .site-footer p {
   margin: 0;
   font-size: 0.7rem;
-}
-
-.site-footer nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 0.6rem 1.2rem;
-}
-
-.site-footer a {
-  font-size: 0.7rem;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.24em;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -534,14 +517,6 @@ a:focus-visible {
 
   .lower article {
     min-height: auto;
-  }
-
-  .site-footer {
-    flex-direction: column;
-  }
-
-  .site-footer nav {
-    justify-content: flex-start;
   }
 }
 

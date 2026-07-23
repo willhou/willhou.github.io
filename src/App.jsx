@@ -59,13 +59,6 @@ const work = [
   },
 ];
 
-const utilityLinks = [
-  { label: "App ads", href: "/app-ads.txt" },
-  { label: "CardMagic privacy", href: "/privacy/card.html" },
-  { label: "Digital Clock privacy", href: "/privacy/dcw.html" },
-  { label: "Mastermind privacy", href: "/privacy/mastermind.html" },
-];
-
 function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
@@ -198,13 +191,6 @@ function App() {
 
       <footer className="shell site-footer">
         <p>© {new Date().getFullYear()} Will Hou</p>
-        <nav aria-label="Legal and utility links">
-          {utilityLinks.map((link) => (
-            <a href={link.href} key={link.href}>
-              {link.label}
-            </a>
-          ))}
-        </nav>
       </footer>
     </>
   );
