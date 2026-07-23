@@ -2,9 +2,15 @@ import { useEffect, useState } from "react";
 
 const work = [
   {
+    name: "Roam",
+    discipline: "!nventor / Android",
+    copy: "Building the Roam Android app and bringing its virtual office experience to mobile.",
+    links: [{ label: "Visit Roam", href: "https://ro.am/" }],
+  },
+  {
     name: "DoorDash",
     discipline: "Product engineering",
-    copy: "Building mobile product experiences used in the moments when speed and clarity matter most.",
+    copy: "Built mobile product experiences used in the moments when speed and clarity mattered most.",
     links: [{ label: "Visit DoorDash", href: "https://www.doordash.com/" }],
   },
   {
@@ -124,7 +130,7 @@ function App() {
       <main id="main">
         <section className="hero" id="top" aria-labelledby="hero-title">
           <div className="hero-copy" data-reveal>
-            <p className="eyebrow">Will Hou / Software engineer + founder</p>
+            <p className="eyebrow">Will Hou / !nventor at Roam + founder</p>
             <h1 id="hero-title">
               Software with
               <span>staying power.</span>
