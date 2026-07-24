@@ -15,7 +15,7 @@ const work = [
     name: "DoorDash",
     period: "Previously",
     discipline: "Product and infrastructure",
-    copy: "Built mobile product experiences used in moments when speed and clarity mattered most.",
+    copy: "Worked on DoorDash’s mobile design system and helped deploy Jetpack Compose across its product apps.",
     logo: "/images/logos/doordash.svg",
     links: [{ label: "DoorDash", href: "https://www.doordash.com/" }],
   },
@@ -768,33 +768,10 @@ function App() {
               <a href="https://ro.am/" target="_blank" rel="noreferrer">
                 !nventor at Roam
               </a>
-              , working on the Android app and focused on tools that are clear, useful, and
-              considerate.
+              {" "}building its Android app. I also run Ezi Studio for independent software and
+              early-stage product consulting. Away from the screen, I’m usually walking the dog,
+              skiing, or following Arsenal.
             </h1>
-            <p className="intro-details">
-              I also run Ezi Studio for{" "}
-              <a
-                href="https://play.google.com/store/apps/details?id=com.maize.digitalClock"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Android apps
-              </a>
-              , personal experiments, and early-stage product consulting. Away from the screen,
-              I’m usually walking the dog, skiing, or following Arsenal. Find me on{" "}
-              <a
-                href="https://www.linkedin.com/in/william-hou-07282130/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                LinkedIn
-              </a>{" "}
-              and{" "}
-              <a href="https://github.com/mhhou" target="_blank" rel="noreferrer">
-                GitHub
-              </a>
-              .
-            </p>
           </div>
         </section>
 
@@ -851,7 +828,6 @@ function App() {
           </div>
           <div className="section-head">
             <h2 id="work-title">My journey</h2>
-            <p>Work and education, newest first</p>
           </div>
           <div className="timeline" ref={timelineRef}>
             {work.map((item, index) => (
@@ -900,7 +876,20 @@ function App() {
       </main>
 
       <footer className="shell site-footer">
-        <p>© {new Date().getFullYear()} Will Hou</p>
+        <p className="footer-identity">
+          © {new Date().getFullYear()} Will Hou <span aria-hidden="true">·</span>{" "}
+          <a
+            href="https://www.linkedin.com/in/william-hou-07282130/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            LinkedIn
+          </a>{" "}
+          <span aria-hidden="true">·</span>{" "}
+          <a href="https://github.com/mhhou" target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+        </p>
         <p className="footer-note">
           All rights reserved. I know it is unlikely for you to steal this, but just in case.
         </p>
