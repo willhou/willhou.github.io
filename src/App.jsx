@@ -349,6 +349,29 @@ function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
 
+function IdeaBulb() {
+  return (
+    <span className="portrait-idea" aria-hidden="true">
+      <svg viewBox="0 0 40 44" role="presentation" focusable="false">
+        <g className="portrait-idea-rays">
+          <path d="M 19 2.3 C 18.7 3.7 19.3 5 19 6.3" />
+          <path d="M 5.2 8.3 C 6.3 9.5 7.4 10.4 8.8 11.2" />
+          <path d="M 32.7 8.4 C 31.5 9.4 30.5 10.5 29.2 11.4" />
+          <path d="M 3.7 19 C 5.1 19 6.4 19.1 7.5 19.4" />
+          <path d="M 34.4 18.8 C 33.1 18.9 31.9 19.1 30.8 19.5" />
+        </g>
+        <path
+          className="portrait-idea-glass"
+          d="M 9.5 18.2 C 9.5 12.4 13.4 8.2 18.9 8.2 C 24.6 8.2 28.6 12.2 28.4 18.1 C 28.3 21.8 26.2 24.5 23.5 26.5 C 22.1 27.5 21.4 28.8 21.4 30.2 L 16.4 30.2 C 16.4 28.8 15.6 27.5 14.3 26.5 C 11.5 24.5 9.5 21.9 9.5 18.2 Z"
+        />
+        <path d="M 15.4 33.4 C 17.7 34.1 20.7 34.1 23 33.4" />
+        <path d="M 17 37 C 18.5 37.5 20 37.5 21.5 37" />
+        <path d="M 14.8 18.5 C 15.9 17.1 17.4 17.4 18.6 19 C 19.8 17.4 21.4 17.1 22.5 18.5 M 16.2 19.5 L 17.2 30 M 21.2 19.5 L 20.3 30" />
+      </svg>
+    </span>
+  );
+}
+
 function PortraitArt() {
   return (
     <div className="portrait-art" aria-hidden="true">
@@ -456,6 +479,8 @@ function PointerPortrait() {
     let velocityY = 0;
     let blinkTimer = 0;
     let blinkResetTimer = 0;
+    let ideaTimer = 0;
+    let ideaResetTimer = 0;
 
     function morphPortrait(turn) {
       portraitParts.face.setAttribute(
@@ -525,6 +550,31 @@ function PointerPortrait() {
           }, 160);
         },
         3000 + Math.random() * 2000,
+      );
+    }
+
+    function clearIdeaTimers() {
+      window.clearTimeout(ideaTimer);
+      window.clearTimeout(ideaResetTimer);
+      ideaTimer = 0;
+      ideaResetTimer = 0;
+    }
+
+    function scheduleIdea() {
+      if (reducedMotion.matches) return;
+
+      window.clearTimeout(ideaTimer);
+      ideaTimer = window.setTimeout(
+        () => {
+          ideaTimer = 0;
+          portrait.classList.add("has-idea");
+          ideaResetTimer = window.setTimeout(() => {
+            ideaResetTimer = 0;
+            portrait.classList.remove("has-idea");
+          }, 1300);
+          scheduleIdea();
+        },
+        8000 + Math.random() * 2000,
       );
     }
 
@@ -621,13 +671,17 @@ function PointerPortrait() {
 
       if (reducedMotion.matches) {
         clearBlinkTimers();
+        clearIdeaTimers();
         portrait.classList.remove("is-blinking");
+        portrait.classList.remove("has-idea");
       } else if (!blinkTimer && !blinkResetTimer) {
         scheduleBlink();
+        scheduleIdea();
       }
     }
 
     scheduleBlink();
+    scheduleIdea();
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
     window.addEventListener("blur", resetPortrait);
     document.documentElement.addEventListener("mouseleave", resetPortrait);
@@ -642,7 +696,9 @@ function PointerPortrait() {
       finePointer.removeEventListener("change", handleMotionPreference);
       window.cancelAnimationFrame(animationFrame);
       clearBlinkTimers();
+      clearIdeaTimers();
       portrait.classList.remove("is-blinking");
+      portrait.classList.remove("has-idea");
     };
   }, []);
 
@@ -653,6 +709,7 @@ function PointerPortrait() {
       role="img"
       aria-label="Illustration of Will Hou looking toward the pointer"
     >
+      <IdeaBulb />
       <div className="portrait-rig">
         <PortraitArt />
       </div>

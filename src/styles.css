@@ -130,6 +130,12 @@ button:focus-visible {
   --eye-right-y: 52.143%;
   --mouth-scale: 1;
   --mouth-angle: 0deg;
+  --idea-start-y: 24px;
+  --idea-drift: 18px;
+  --idea-rise: -36px;
+  --idea-exit-drift: 24px;
+  --idea-exit-rise: -46px;
+  position: relative;
   display: grid;
   width: 124px;
   height: 136px;
@@ -139,6 +145,7 @@ button:focus-visible {
 
 .portrait-rig {
   position: relative;
+  z-index: 1;
   width: 124px;
   aspect-ratio: 32 / 35;
   transform: translate3d(var(--head-x), var(--head-y), 0)
@@ -194,6 +201,118 @@ button:focus-visible {
   transform-box: fill-box;
   transform-origin: center;
   will-change: transform;
+}
+
+.portrait-idea {
+  position: absolute;
+  z-index: 0;
+  top: -6px;
+  left: 56%;
+  width: 38px;
+  color: #101214;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(-50%, var(--idea-start-y), 0) scale(0.84) rotate(-12deg);
+  transform-origin: 50% 72%;
+  will-change: transform, opacity;
+}
+
+.portrait-idea svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.portrait-idea path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.portrait-idea .portrait-idea-glass {
+  fill: #fff;
+}
+
+.portrait-idea-rays {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.portrait-stage.has-idea .portrait-idea {
+  animation: portrait-idea-emerge 1300ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.portrait-stage.has-idea .portrait-idea-rays {
+  animation: portrait-idea-rays 1300ms ease-out both;
+}
+
+@keyframes portrait-idea-emerge {
+  0%,
+  5% {
+    opacity: 0;
+    transform: translate3d(-50%, var(--idea-start-y), 0) scale(0.84) rotate(-12deg);
+  }
+
+  16% {
+    opacity: 1;
+  }
+
+  44% {
+    opacity: 1;
+    transform: translate3d(calc(-50% + var(--idea-drift)), var(--idea-rise), 0)
+      scale(1.08) rotate(8deg);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(calc(-50% + var(--idea-drift) - 2px), calc(var(--idea-rise) + 3px), 0)
+      scale(0.98) rotate(3deg);
+  }
+
+  76%,
+  86% {
+    opacity: 1;
+    transform: translate3d(calc(-50% + var(--idea-drift)), var(--idea-rise), 0)
+      scale(1) rotate(5deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(
+        calc(-50% + var(--idea-exit-drift)),
+        var(--idea-exit-rise),
+        0
+      )
+      scale(0.96) rotate(8deg);
+  }
+}
+
+@keyframes portrait-idea-rays {
+  0%,
+  34% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  48% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+
+  60%,
+  86% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -886,12 +1005,22 @@ button:focus-visible {
   }
 
   .portrait-stage {
+    --idea-start-y: 17px;
+    --idea-drift: 13px;
+    --idea-rise: -26px;
+    --idea-exit-drift: 18px;
+    --idea-exit-rise: -33px;
     width: 84px;
     height: 96px;
   }
 
   .portrait-rig {
     width: 84px;
+  }
+
+  .portrait-idea {
+    top: -4px;
+    width: 28px;
   }
 
   .portrait-pupil {
@@ -988,6 +1117,10 @@ button:focus-visible {
 
   .portrait-rig {
     transform: none;
+  }
+
+  .portrait-idea {
+    display: none;
   }
 
   .portrait-pupil {
