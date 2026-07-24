@@ -123,7 +123,7 @@ button:focus-visible {
 .intro {
   display: grid;
   grid-template-columns: 124px minmax(0, 1fr);
-  gap: 2.4rem;
+  gap: 4rem;
   align-items: center;
   min-height: 340px;
   padding: 4rem 0 3.5rem;
@@ -1048,7 +1048,7 @@ button:focus-visible {
 
   .intro {
     grid-template-columns: 84px minmax(0, 1fr);
-    gap: 1.25rem;
+    gap: 2.375rem;
     min-height: auto;
     padding: 3rem 0;
   }
