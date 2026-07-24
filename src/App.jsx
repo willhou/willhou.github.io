@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const work = [
   {
@@ -78,6 +78,127 @@ function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
 
+function PointerPortrait() {
+  const portraitRef = useRef(null);
+
+  useEffect(() => {
+    const portrait = portraitRef.current;
+
+    if (!portrait) return undefined;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const finePointer = window.matchMedia("(pointer: fine)");
+    let motionEnabled = finePointer.matches && !reducedMotion.matches;
+    let animationFrame = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let velocityX = 0;
+    let velocityY = 0;
+
+    function paint() {
+      velocityX = (velocityX + (targetX - currentX) * 0.11) * 0.72;
+      velocityY = (velocityY + (targetY - currentY) * 0.11) * 0.72;
+      currentX += velocityX;
+      currentY += velocityY;
+
+      const scale = Math.min(portrait.getBoundingClientRect().width / 124, 1);
+
+      portrait.style.setProperty("--head-x", `${currentX * 4.5 * scale}px`);
+      portrait.style.setProperty("--head-y", `${currentY * 3.2 * scale}px`);
+      portrait.style.setProperty("--head-yaw", `${currentX * 5}deg`);
+      portrait.style.setProperty("--head-pitch", `${currentY * -3.5}deg`);
+      portrait.style.setProperty("--head-roll", `${currentX * 0.35}deg`);
+      portrait.style.setProperty("--pupil-x", `${currentX * 1.8 * scale}px`);
+      portrait.style.setProperty("--pupil-y", `${currentY * 3 * scale}px`);
+
+      const settled =
+        Math.abs(targetX - currentX) < 0.001 &&
+        Math.abs(targetY - currentY) < 0.001 &&
+        Math.abs(velocityX) < 0.001 &&
+        Math.abs(velocityY) < 0.001;
+
+      if (settled) {
+        animationFrame = 0;
+        return;
+      }
+
+      animationFrame = window.requestAnimationFrame(paint);
+    }
+
+    function requestPaint() {
+      if (!animationFrame) {
+        animationFrame = window.requestAnimationFrame(paint);
+      }
+    }
+
+    function resetPortrait() {
+      targetX = 0;
+      targetY = 0;
+      requestPaint();
+    }
+
+    function handlePointerMove(event) {
+      if (!motionEnabled) return;
+
+      const rect = portrait.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const horizontalRange = Math.max(window.innerWidth * 0.42, 1);
+      const verticalRange = Math.max(window.innerHeight * 0.42, 1);
+
+      targetX = Math.max(-1, Math.min(1, (event.clientX - centerX) / horizontalRange));
+      targetY = Math.max(-1, Math.min(1, (event.clientY - centerY) / verticalRange));
+      requestPaint();
+    }
+
+    function handleMotionPreference() {
+      motionEnabled = finePointer.matches && !reducedMotion.matches;
+
+      if (!motionEnabled) resetPortrait();
+    }
+
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("blur", resetPortrait);
+    document.documentElement.addEventListener("mouseleave", resetPortrait);
+    reducedMotion.addEventListener("change", handleMotionPreference);
+    finePointer.addEventListener("change", handleMotionPreference);
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("blur", resetPortrait);
+      document.documentElement.removeEventListener("mouseleave", resetPortrait);
+      reducedMotion.removeEventListener("change", handleMotionPreference);
+      finePointer.removeEventListener("change", handleMotionPreference);
+      window.cancelAnimationFrame(animationFrame);
+    };
+  }, []);
+
+  return (
+    <div
+      className="portrait-stage"
+      ref={portraitRef}
+      role="img"
+      aria-label="Illustration of Will Hou looking toward the pointer"
+    >
+      <div className="portrait-rig">
+        <img
+          className="portrait-character"
+          src="/images/will-hou-character.png"
+          alt=""
+          width="512"
+          height="560"
+          loading="eager"
+          fetchPriority="high"
+        />
+        <span className="portrait-pupil portrait-pupil-left" aria-hidden="true" />
+        <span className="portrait-pupil portrait-pupil-right" aria-hidden="true" />
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [activeWork, setActiveWork] = useState(0);
   const roleRefs = useRef([]);
@@ -124,15 +245,7 @@ function App() {
 
       <main className="shell" id="main">
         <section className="intro" id="top" aria-labelledby="intro-title">
-          <img
-            className="portrait"
-            src="/images/will-hou-editorial.webp"
-            alt="Portrait of Will Hou"
-            width="1023"
-            height="1537"
-            loading="eager"
-            fetchPriority="high"
-          />
+          <PointerPortrait />
           <div className="intro-copy">
             <p className="intro-greeting">Hello, I’m Will.</p>
             <h1 id="intro-title">

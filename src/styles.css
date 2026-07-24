@@ -106,20 +106,67 @@ button:focus-visible {
 
 .intro {
   display: grid;
-  grid-template-columns: 104px minmax(0, 1fr);
-  gap: 2.25rem;
+  grid-template-columns: 124px minmax(0, 1fr);
+  gap: 2.4rem;
   align-items: center;
   min-height: 340px;
   padding: 4rem 0 3.5rem;
 }
 
-.portrait {
-  width: 96px;
-  height: 124px;
-  border-radius: 3px;
-  object-fit: cover;
-  object-position: 50% 28%;
-  filter: saturate(0.72) contrast(0.96);
+.portrait-stage {
+  --head-x: 0px;
+  --head-y: 0px;
+  --head-yaw: 0deg;
+  --head-pitch: 0deg;
+  --head-roll: 0deg;
+  --pupil-x: 0px;
+  --pupil-y: 0px;
+  display: grid;
+  width: 124px;
+  height: 136px;
+  place-items: center;
+  perspective: 420px;
+}
+
+.portrait-rig {
+  position: relative;
+  width: 124px;
+  aspect-ratio: 32 / 35;
+  transform: translate3d(var(--head-x), var(--head-y), 0)
+    rotateX(var(--head-pitch)) rotateY(var(--head-yaw)) rotateZ(var(--head-roll));
+  transform-origin: 50% 58%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.portrait-character {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 91%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 91%, transparent 100%);
+}
+
+.portrait-pupil {
+  position: absolute;
+  width: 5.2px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #101214;
+  transform: translate(-50%, -50%) translate3d(var(--pupil-x), var(--pupil-y), 0);
+  will-change: transform;
+}
+
+.portrait-pupil-left {
+  top: 50.625%;
+  left: 42.969%;
+}
+
+.portrait-pupil-right {
+  top: 52.143%;
+  left: 69.922%;
 }
 
 .intro-greeting {
@@ -698,15 +745,23 @@ button:focus-visible {
   }
 
   .intro {
-    grid-template-columns: 80px minmax(0, 1fr);
+    grid-template-columns: 84px minmax(0, 1fr);
     gap: 1.25rem;
     min-height: auto;
     padding: 3rem 0;
   }
 
-  .portrait {
-    width: 76px;
-    height: 98px;
+  .portrait-stage {
+    width: 84px;
+    height: 96px;
+  }
+
+  .portrait-rig {
+    width: 84px;
+  }
+
+  .portrait-pupil {
+    width: 3.2px;
   }
 
   .intro h1 {
@@ -795,5 +850,13 @@ button:focus-visible {
 
   .role.selected {
     animation: none;
+  }
+
+  .portrait-rig {
+    transform: none;
+  }
+
+  .portrait-pupil {
+    transform: translate(-50%, -50%);
   }
 }
