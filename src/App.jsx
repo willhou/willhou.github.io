@@ -183,6 +183,7 @@ function PointerPortrait() {
       aria-label="Illustration of Will Hou looking toward the pointer"
     >
       <div className="portrait-rig">
+        <span className="portrait-body" aria-hidden="true" />
         <img
           className="portrait-character"
           src="/images/will-hou-character.png"
