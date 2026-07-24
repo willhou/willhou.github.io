@@ -35,6 +35,22 @@
     --selection-tint: rgb(255 255 255 / 4%);
     --marker-shadow: 0 4px 14px rgb(0 0 0 / 42%);
   }
+
+  .portrait-stage::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 0;
+    width: 132%;
+    aspect-ratio: 1;
+    border: 1px solid rgb(255 255 255 / 88%);
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 28%);
+    content: "";
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+  }
 }
 
 * {
@@ -363,7 +379,7 @@ button:focus-visible {
 
 @media (prefers-color-scheme: dark) {
   .portrait-body-line {
-    stroke: var(--ink);
+    stroke: #101214;
   }
 }
 
