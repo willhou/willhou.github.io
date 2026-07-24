@@ -9,6 +9,20 @@ const work = [
     logo: "/images/logos/roam.png",
     logoClass: "logo-roam",
     links: [{ label: "Roam", href: "https://ro.am/" }],
+    projects: [
+      {
+        title: "Room presence",
+        description:
+          "A mobile room view designed to make it easy to see who is available and join a conversation quickly.",
+        visual: "presence",
+      },
+      {
+        title: "Conversation controls",
+        description:
+          "A focused in-call experience that keeps audio, movement, and teammate context within thumb reach.",
+        visual: "controls",
+      },
+    ],
     current: true,
   },
   {
@@ -18,6 +32,20 @@ const work = [
     copy: "Worked on DoorDash’s mobile design system and helped deploy Jetpack Compose across its product apps.",
     logo: "/images/logos/doordash.svg",
     links: [{ label: "DoorDash", href: "https://www.doordash.com/" }],
+    projects: [
+      {
+        title: "Composable foundations",
+        description:
+          "A shared component set that helps product teams build consistent experiences across mobile surfaces.",
+        visual: "system",
+      },
+      {
+        title: "Migration pathways",
+        description:
+          "Patterns and examples that make Jetpack Compose adoption incremental and safer for established apps.",
+        visual: "code",
+      },
+    ],
   },
   {
     name: "Microsoft",
@@ -36,6 +64,20 @@ const work = [
         href: "https://fluent2.microsoft.design/",
       },
     ],
+    projects: [
+      {
+        title: "Focused inbox",
+        description:
+          "A clearer mobile information hierarchy for scanning, triaging, and acting on email.",
+        visual: "mail",
+      },
+      {
+        title: "Fluent on Android",
+        description:
+          "Reusable motion, color, and layout guidance adapted to native Android patterns.",
+        visual: "system",
+      },
+    ],
   },
   {
     name: "Sunrise Calendar",
@@ -50,6 +92,20 @@ const work = [
         href: "https://www.producthunt.com/products/sunrise-calendar",
       },
     ],
+    projects: [
+      {
+        title: "Day at a glance",
+        description:
+          "A calm schedule view that makes a dense day easier to understand while moving between meetings.",
+        visual: "calendar",
+      },
+      {
+        title: "Quick event creation",
+        description:
+          "A lightweight flow for turning plans into calendar events with fewer decisions.",
+        visual: "flow",
+      },
+    ],
   },
   {
     name: "Foursquare",
@@ -61,6 +117,20 @@ const work = [
       { label: "Swarm", href: "https://www.swarmapp.com/" },
       { label: "City Guide", href: "https://foursquare.com/city-guide" },
     ],
+    projects: [
+      {
+        title: "City discovery",
+        description:
+          "Place collections and nearby recommendations designed for fast, contextual browsing.",
+        visual: "map",
+      },
+      {
+        title: "Swarm moments",
+        description:
+          "A playful check-in flow that makes sharing where you are feel lightweight.",
+        visual: "social",
+      },
+    ],
   },
   {
     name: "University of Waterloo",
@@ -69,6 +139,20 @@ const work = [
     copy: "Earned a BMath in Computer Science and started Ezi Studio while studying at Waterloo.",
     logo: "/images/logos/waterloo.png",
     links: [{ label: "Waterloo", href: "https://uwaterloo.ca/" }],
+    projects: [
+      {
+        title: "Mobile foundations",
+        description:
+          "Coursework and side projects that turn computer science concepts into practical products.",
+        visual: "code",
+      },
+      {
+        title: "Ezi Studio beginnings",
+        description:
+          "Early Android experiments that grow into an independent product practice.",
+        visual: "mobile",
+      },
+    ],
   },
 ];
 
@@ -347,6 +431,38 @@ function roundedPolygonPath(values, rounding = 0.22) {
 
 function Arrow() {
   return <span aria-hidden="true">↗</span>;
+}
+
+function PrototypeVisual({ title, visual }) {
+  return (
+    <div
+      className={`project-visual visual-${visual}`}
+      role="img"
+      aria-label={`Prototype interface placeholder for ${title}`}
+    >
+      <div className="prototype-primary" aria-hidden="true">
+        <div className="prototype-window">
+          <span className="prototype-toolbar">
+            <i />
+            <i />
+            <i />
+          </span>
+          <span className="prototype-shape prototype-shape-one" />
+          <span className="prototype-shape prototype-shape-two" />
+          <span className="prototype-shape prototype-shape-three" />
+          <span className="prototype-shape prototype-shape-four" />
+          <span className="prototype-shape prototype-shape-five" />
+        </div>
+      </div>
+      <div className="prototype-companion" aria-hidden="true">
+        <span className="prototype-companion-bar" />
+        <span className="prototype-companion-hero" />
+        <span className="prototype-companion-line prototype-companion-line-one" />
+        <span className="prototype-companion-line prototype-companion-line-two" />
+        <span className="prototype-companion-action" />
+      </div>
+    </div>
+  );
 }
 
 function IdeaBulb() {
@@ -716,40 +832,18 @@ function PointerPortrait() {
 
 function App() {
   const [activeWork, setActiveWork] = useState(0);
-  const roleRefs = useRef([]);
-  const timelineRef = useRef(null);
+  const [activeProject, setActiveProject] = useState(0);
   const activeTimelineStop = activeWork;
+  const selectedWork = work[activeWork];
+  const selectedProject = selectedWork.projects[activeProject];
   const timelineProgress =
     activeTimelineStop === work.length - 1
       ? 1
       : (activeTimelineStop + 0.5) / work.length;
 
-  function selectWork(index, reveal = false) {
+  function selectWork(index) {
     setActiveWork(index);
-
-    if (!reveal) return;
-
-    const timeline = timelineRef.current;
-    const role = roleRefs.current[index];
-
-    if (!timeline || !role || timeline.scrollWidth <= timeline.clientWidth) return;
-
-    const timelineRect = timeline.getBoundingClientRect();
-    const roleRect = role.getBoundingClientRect();
-    const isOutside =
-      roleRect.left < timelineRect.left || roleRect.right > timelineRect.right;
-
-    if (!isOutside) return;
-
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    timeline.scrollTo({
-      left:
-        timeline.scrollLeft +
-        roleRect.left -
-        timelineRect.left -
-        (timeline.clientWidth - roleRect.width) / 2,
-      behavior: reduceMotion ? "auto" : "smooth",
-    });
+    setActiveProject(0);
   }
 
   return (
@@ -796,12 +890,12 @@ function App() {
                     <button
                       className={isActive ? "career-stop active" : "career-stop"}
                       type="button"
-                      aria-controls={`work-role-${item.workIndex}`}
+                      aria-controls="work-showcase"
                       aria-pressed={isActive}
                       key={item.name}
-                      onClick={() => selectWork(item.workIndex, true)}
-                      onFocus={() => selectWork(item.workIndex, true)}
-                      onMouseEnter={() => selectWork(item.workIndex, true)}
+                      onClick={() => selectWork(item.workIndex)}
+                      onFocus={() => selectWork(item.workIndex)}
+                      onMouseEnter={() => selectWork(item.workIndex)}
                     >
                       <span className="career-marker">
                         <img
@@ -829,47 +923,79 @@ function App() {
           <div className="section-head">
             <h2 id="work-title">My journey</h2>
           </div>
-          <div className="timeline" ref={timelineRef}>
-            {work.map((item, index) => (
-              <article
-                className={[
-                  "role",
-                  item.current ? "current" : "",
-                  activeWork === index ? "selected" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                id={`work-role-${index}`}
-                key={item.name}
-                ref={(node) => {
-                  roleRefs.current[index] = node;
-                }}
-                onFocusCapture={() => selectWork(index)}
-                onMouseEnter={() => selectWork(index)}
-              >
-                <p className="period">{item.period}</p>
+          <div
+            className="journey-showcase"
+            id="work-showcase"
+            key={selectedWork.name}
+            aria-label={`${selectedWork.name} work showcase`}
+          >
+            <article className="journey-summary">
+              <div className="journey-identity">
+                <p className="period">{selectedWork.period}</p>
                 <h3 className="company-name">
                   <img
-                    className={["company-logo", item.logoClass].filter(Boolean).join(" ")}
-                    src={item.logo}
+                    className={["company-logo", selectedWork.logoClass]
+                      .filter(Boolean)
+                      .join(" ")}
+                    src={selectedWork.logo}
                     alt=""
                     width="24"
                     height="24"
-                    loading="lazy"
                   />
-                  <span>{item.name}</span>
+                  <span>{selectedWork.name}</span>
                 </h3>
-                <p className="role-title">{item.discipline}</p>
-                <p className="role-detail">{item.copy}</p>
-                <div className="role-links" aria-label={`${item.name} links`}>
-                  {item.links.map((link) => (
-                    <a href={link.href} key={link.href} target="_blank" rel="noreferrer">
-                      {link.label} <Arrow />
-                    </a>
-                  ))}
+                <p className="role-title">{selectedWork.discipline}</p>
+              </div>
+              <p className="role-detail">{selectedWork.copy}</p>
+              <div className="role-links" aria-label={`${selectedWork.name} links`}>
+                {selectedWork.links.map((link) => (
+                  <a href={link.href} key={link.href} target="_blank" rel="noreferrer">
+                    {link.label} <Arrow />
+                  </a>
+                ))}
+              </div>
+            </article>
+
+            <div className="journey-projects">
+              <div className="project-stage" aria-live="polite">
+                <div className="project-stage-meta">
+                  <p>
+                    Prototype story {String(activeProject + 1).padStart(2, "0")} /{" "}
+                    {String(selectedWork.projects.length).padStart(2, "0")}
+                  </p>
+                  <p>Use the story index to explore</p>
                 </div>
-              </article>
-            ))}
+                <article
+                  className="project-feature"
+                  key={`${selectedWork.name}-${selectedProject.title}`}
+                >
+                  <PrototypeVisual
+                    title={selectedProject.title}
+                    visual={selectedProject.visual}
+                  />
+                  <div className="project-feature-copy">
+                    <p>Selected work</p>
+                    <h3>{selectedProject.title}</h3>
+                    <p>{selectedProject.description}</p>
+                  </div>
+                </article>
+              </div>
+              <div className="project-index" aria-label={`${selectedWork.name} project stories`}>
+                {selectedWork.projects.map((project, index) => (
+                  <button
+                    type="button"
+                    className={activeProject === index ? "active" : ""}
+                    aria-pressed={activeProject === index}
+                    key={project.title}
+                    onClick={() => setActiveProject(index)}
+                  >
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <strong>{project.title}</strong>
+                    <span aria-hidden="true">↗</span>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
