@@ -121,6 +121,8 @@ button:focus-visible {
   --head-roll: 0deg;
   --pupil-x: 0px;
   --pupil-y: 0px;
+  --mouth-scale: 1;
+  --mouth-angle: 0deg;
   display: grid;
   width: 124px;
   height: 136px;
@@ -205,15 +207,93 @@ button:focus-visible {
   }
 }
 
-.portrait-pupil {
+.portrait-mouth {
   position: absolute;
   z-index: 2;
+  top: 71.2%;
+  left: 52%;
+  width: 21px;
+  height: 13px;
+  border-radius: 50%;
+  background: #fff;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.portrait-mouth::before {
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  width: 15px;
+  height: 5px;
+  border-bottom: 2px solid #101214;
+  border-radius: 0 0 50% 50%;
+  content: "";
+  transform: translateX(-50%) rotate(var(--mouth-angle)) scaleX(var(--mouth-scale));
+  transform-origin: center;
+  will-change: transform;
+}
+
+.portrait-eye {
+  position: absolute;
+  z-index: 2;
+  width: 16px;
+  height: 21px;
+  border-radius: 48%;
+  background: #fff;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.portrait-eye::before {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 11px;
+  height: 5px;
+  border-top: 2px solid #101214;
+  border-radius: 50%;
+  content: "";
+  transform: translateX(-50%) rotate(var(--eye-tilt));
+  transform-origin: center;
+  transition:
+    top 55ms ease-in-out,
+    width 55ms ease-in-out,
+    height 55ms ease-in-out;
+}
+
+.portrait-eye-left {
+  --eye-tilt: -3deg;
+  top: 50.625%;
+  left: 42.969%;
+}
+
+.portrait-eye-right {
+  --eye-tilt: 3deg;
+  top: 52.143%;
+  left: 69.922%;
+}
+
+.portrait-pupil {
+  position: absolute;
+  z-index: 3;
   width: 5.2px;
   aspect-ratio: 1;
   border-radius: 50%;
   background: #101214;
   transform: translate(-50%, -50%) translate3d(var(--pupil-x), var(--pupil-y), 0);
+  transition: opacity 45ms ease-in-out;
   will-change: transform;
+}
+
+.portrait-stage.is-blinking .portrait-eye::before {
+  top: 9px;
+  width: 12px;
+  height: 1px;
+}
+
+.portrait-stage.is-blinking .portrait-pupil {
+  opacity: 0;
 }
 
 .portrait-pupil-left {

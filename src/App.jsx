@@ -96,6 +96,33 @@ function PointerPortrait() {
     let currentY = 0;
     let velocityX = 0;
     let velocityY = 0;
+    let blinkTimer = 0;
+    let blinkResetTimer = 0;
+
+    function clearBlinkTimers() {
+      window.clearTimeout(blinkTimer);
+      window.clearTimeout(blinkResetTimer);
+      blinkTimer = 0;
+      blinkResetTimer = 0;
+    }
+
+    function scheduleBlink() {
+      if (reducedMotion.matches) return;
+
+      window.clearTimeout(blinkTimer);
+      blinkTimer = window.setTimeout(
+        () => {
+          blinkTimer = 0;
+          portrait.classList.add("is-blinking");
+          blinkResetTimer = window.setTimeout(() => {
+            blinkResetTimer = 0;
+            portrait.classList.remove("is-blinking");
+            scheduleBlink();
+          }, 160);
+        },
+        3000 + Math.random() * 2000,
+      );
+    }
 
     function paint() {
       velocityX = (velocityX + (targetX - currentX) * 0.11) * 0.72;
@@ -112,6 +139,14 @@ function PointerPortrait() {
       portrait.style.setProperty("--head-roll", `${currentX * 0.35}deg`);
       portrait.style.setProperty("--pupil-x", `${currentX * 1.8 * scale}px`);
       portrait.style.setProperty("--pupil-y", `${currentY * 3 * scale}px`);
+      portrait.style.setProperty(
+        "--mouth-scale",
+        `${1 - Math.abs(currentX) * 0.09 + currentY * 0.025}`,
+      );
+      portrait.style.setProperty(
+        "--mouth-angle",
+        `${currentX * -3.5 + currentY * 0.9}deg`,
+      );
 
       const settled =
         Math.abs(targetX - currentX) < 0.001 &&
@@ -157,8 +192,16 @@ function PointerPortrait() {
       motionEnabled = finePointer.matches && !reducedMotion.matches;
 
       if (!motionEnabled) resetPortrait();
+
+      if (reducedMotion.matches) {
+        clearBlinkTimers();
+        portrait.classList.remove("is-blinking");
+      } else if (!blinkTimer && !blinkResetTimer) {
+        scheduleBlink();
+      }
     }
 
+    scheduleBlink();
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
     window.addEventListener("blur", resetPortrait);
     document.documentElement.addEventListener("mouseleave", resetPortrait);
@@ -172,6 +215,8 @@ function PointerPortrait() {
       reducedMotion.removeEventListener("change", handleMotionPreference);
       finePointer.removeEventListener("change", handleMotionPreference);
       window.cancelAnimationFrame(animationFrame);
+      clearBlinkTimers();
+      portrait.classList.remove("is-blinking");
     };
   }, []);
 
@@ -193,6 +238,9 @@ function PointerPortrait() {
           loading="eager"
           fetchPriority="high"
         />
+        <span className="portrait-mouth" aria-hidden="true" />
+        <span className="portrait-eye portrait-eye-left" aria-hidden="true" />
+        <span className="portrait-eye portrait-eye-right" aria-hidden="true" />
         <span className="portrait-pupil portrait-pupil-left" aria-hidden="true" />
         <span className="portrait-pupil portrait-pupil-right" aria-hidden="true" />
       </div>
