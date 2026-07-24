@@ -370,18 +370,18 @@ function PortraitArt() {
         <ellipse
           className="portrait-ear"
           data-portrait-ear-left
-          cx="30"
-          cy="75"
-          rx="6.5"
-          ry="8.5"
+          cx={portraitPoses.earLeft.center[0]}
+          cy={portraitPoses.earLeft.center[1]}
+          rx={portraitPoses.earLeft.center[2]}
+          ry={portraitPoses.earLeft.center[3]}
         />
         <ellipse
           className="portrait-ear"
           data-portrait-ear-right
-          cx="94"
-          cy="75"
-          rx="6.5"
-          ry="8.5"
+          cx={portraitPoses.earRight.center[0]}
+          cy={portraitPoses.earRight.center[1]}
+          rx={portraitPoses.earRight.center[2]}
+          ry={portraitPoses.earRight.center[3]}
         />
         <path
           className="portrait-face"
