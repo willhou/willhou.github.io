@@ -74,8 +74,353 @@ const work = [
 
 const careerTimeline = work.map((item, workIndex) => ({ ...item, workIndex }));
 
+const portraitCenterX = 62;
+const portraitHairPoints = [
+  64, 4, 77, 5, 79, 7, 85, 8, 93, 12, 97, 16, 100, 15, 104, 24, 107, 24, 106,
+  27, 111, 31, 110, 34, 116, 47, 116, 58, 114, 64, 112, 68, 109, 72, 106, 75, 103,
+  77, 103, 80, 100, 80, 101, 59, 100, 49, 98, 45, 90, 37, 71, 36, 70, 34, 73, 33,
+  58, 35, 53, 39, 49, 49, 47, 49, 47, 45, 44, 47, 37, 60, 34, 78, 31, 75, 30,
+  67, 21, 66, 22, 62, 20, 57, 19, 45, 24, 36, 24, 31, 31, 25, 31, 23, 34, 20,
+  37, 19, 35, 17, 38, 14, 40, 14, 48, 8, 61, 6,
+];
+
+const portraitPoses = {
+  face: {
+    left: [
+      60, 36, 80, 32, 94, 41, 98, 60, 101, 83, 93, 103, 78, 114, 68, 121, 55, 122,
+      45, 116, 34, 109, 29, 96, 29, 80, 29, 64, 38, 46, 60, 36,
+    ],
+    center: [
+      63, 35, 84, 33, 97, 42, 101, 61, 104, 84, 96, 104, 82, 115, 72, 122, 59, 123,
+      49, 117, 37, 110, 32, 98, 31, 83, 30, 66, 39, 47, 63, 35,
+    ],
+    right: [
+      66, 35, 87, 33, 100, 43, 102, 62, 104, 85, 96, 105, 82, 115, 72, 122, 60, 122,
+      50, 116, 39, 109, 34, 96, 33, 81, 32, 64, 42, 46, 66, 35,
+    ],
+  },
+  jaw: {
+    left: [29, 78, 29, 95, 34, 109, 45, 116, 55, 122, 68, 121, 78, 114, 91, 104, 98, 89, 99, 75],
+    center: [
+      31, 79, 31, 97, 37, 110, 49, 117, 59, 123, 72, 122, 82, 115, 96, 104, 102,
+      87, 102, 76,
+    ],
+    right: [
+      33, 78, 34, 96, 39, 109, 50, 116, 60, 122, 72, 122, 82, 115, 96, 105, 103,
+      88, 103, 76,
+    ],
+  },
+  browLeft: {
+    left: [43, 57.5, 48, 53, 54, 53.5, 59, 56],
+    center: [45, 57, 50, 52.5, 56, 53, 61, 56],
+    right: [47, 57, 52, 53, 58, 53.5, 63, 56],
+  },
+  browRight: {
+    left: [80, 56.5, 85, 53.5, 90, 54, 93, 58],
+    center: [82, 56.5, 87, 53.5, 92, 54, 95, 58.5],
+    right: [84, 57, 89, 54, 94, 54.5, 97, 59],
+  },
+  nose: {
+    left: [65, 74, 64, 78, 64, 83, 64, 85, 65, 88, 68, 89, 70, 88.5],
+    center: [72, 74, 72, 78, 73, 82, 73, 84, 72, 87, 70, 88, 68, 88.5],
+    right: [76, 74, 77, 78, 78, 82, 78, 84, 77, 87, 75, 88, 72, 88.5],
+  },
+  bodyLeft: {
+    left: [37, 118, 36, 124, 35, 130, 34, 136],
+    center: [37, 106, 35, 116, 33, 126, 32, 136],
+    right: [37, 106, 35, 116, 33, 126, 32, 136],
+  },
+  bodyRight: {
+    left: [87, 106, 89, 116, 91, 126, 92, 136],
+    center: [87, 118, 88, 124, 89, 130, 90, 136],
+    right: [87, 118, 88, 124, 89, 130, 90, 136],
+  },
+  earLeft: {
+    left: [26.5, 75, 4.5, 7],
+    center: [26.5, 75, 7, 9.8],
+    right: [27, 75, 7.5, 10],
+  },
+  earRight: {
+    left: [103, 80, 7.5, 10],
+    center: [105, 81, 6, 9],
+    right: [105, 81, 4, 6.5],
+  },
+};
+
+function mirrorXCoordinates(values) {
+  return values.map((value, index) =>
+    index % 2 === 0 ? portraitCenterX * 2 - value : value,
+  );
+}
+
+function mirrorClosedCurve(values) {
+  const start = [values[0], values[1]];
+  const segments = [];
+  let segmentStart = start;
+
+  for (let index = 2; index < values.length; index += 6) {
+    const segment = {
+      start: segmentStart,
+      control1: [values[index], values[index + 1]],
+      control2: [values[index + 2], values[index + 3]],
+      end: [values[index + 4], values[index + 5]],
+    };
+    segments.push(segment);
+    segmentStart = segment.end;
+  }
+
+  const mirrorPoint = ([x, y]) => [portraitCenterX * 2 - x, y];
+  const mirroredStart = mirrorPoint(start);
+
+  return [
+    ...mirroredStart,
+    ...segments
+      .reverse()
+      .flatMap((segment) => [
+        ...mirrorPoint(segment.control2),
+        ...mirrorPoint(segment.control1),
+        ...mirrorPoint(segment.start),
+      ]),
+  ];
+}
+
+function mirrorOpenCurve(values) {
+  const start = [values[0], values[1]];
+  const segments = [];
+  let segmentStart = start;
+
+  for (let index = 2; index < values.length; index += 6) {
+    const segment = {
+      start: segmentStart,
+      control1: [values[index], values[index + 1]],
+      control2: [values[index + 2], values[index + 3]],
+      end: [values[index + 4], values[index + 5]],
+    };
+    segments.push(segment);
+    segmentStart = segment.end;
+  }
+
+  const mirrorPoint = ([x, y]) => [portraitCenterX * 2 - x, y];
+
+  return [
+    ...mirrorPoint(segments.at(-1).end),
+    ...segments
+      .reverse()
+      .flatMap((segment) => [
+        ...mirrorPoint(segment.control2),
+        ...mirrorPoint(segment.control1),
+        ...mirrorPoint(segment.start),
+      ]),
+  ];
+}
+
+function mirrorPolygon(values) {
+  const points = [];
+
+  for (let index = 0; index < values.length; index += 2) {
+    points.push([values[index], values[index + 1]]);
+  }
+
+  const mirrored = points
+    .map(([x, y]) => [portraitCenterX * 2 - x, y])
+    .reverse();
+  let bestShift = 0;
+  let bestDistance = Number.POSITIVE_INFINITY;
+
+  for (let shift = 0; shift < points.length; shift += 1) {
+    let distance = 0;
+
+    points.forEach(([x, y], index) => {
+      const [mirroredX, mirroredY] = mirrored[(index + shift) % mirrored.length];
+      distance += (x - mirroredX) ** 2 + (y - mirroredY) ** 2;
+    });
+
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      bestShift = shift;
+    }
+  }
+
+  return points.flatMap((_, index) => mirrored[(index + bestShift) % mirrored.length]);
+}
+
+const rightPortraitPose = {
+  face: portraitPoses.face.right,
+  jaw: portraitPoses.jaw.right,
+  browLeft: portraitPoses.browLeft.right,
+  browRight: portraitPoses.browRight.right,
+  nose: portraitPoses.nose.right,
+  bodyLeft: portraitPoses.bodyLeft.right,
+  bodyRight: portraitPoses.bodyRight.right,
+  earLeft: portraitPoses.earLeft.right,
+  earRight: portraitPoses.earRight.right,
+  hair: portraitHairPoints,
+};
+
+portraitPoses.face = {
+  left: mirrorClosedCurve(rightPortraitPose.face),
+  center: rightPortraitPose.face,
+  right: rightPortraitPose.face,
+};
+portraitPoses.jaw = {
+  left: mirrorOpenCurve(rightPortraitPose.jaw),
+  center: rightPortraitPose.jaw,
+  right: rightPortraitPose.jaw,
+};
+portraitPoses.browLeft = {
+  left: mirrorOpenCurve(rightPortraitPose.browRight),
+  center: rightPortraitPose.browLeft,
+  right: rightPortraitPose.browLeft,
+};
+portraitPoses.browRight = {
+  left: mirrorOpenCurve(rightPortraitPose.browLeft),
+  center: rightPortraitPose.browRight,
+  right: rightPortraitPose.browRight,
+};
+portraitPoses.nose = {
+  left: mirrorXCoordinates(rightPortraitPose.nose),
+  center: rightPortraitPose.nose,
+  right: rightPortraitPose.nose,
+};
+portraitPoses.earLeft = {
+  left: [
+    portraitCenterX * 2 - rightPortraitPose.earRight[0],
+    ...rightPortraitPose.earRight.slice(1),
+  ],
+  center: rightPortraitPose.earLeft,
+  right: rightPortraitPose.earLeft,
+};
+portraitPoses.earRight = {
+  left: [
+    portraitCenterX * 2 - rightPortraitPose.earLeft[0],
+    ...rightPortraitPose.earLeft.slice(1),
+  ],
+  center: rightPortraitPose.earRight,
+  right: rightPortraitPose.earRight,
+};
+portraitPoses.hair = {
+  left: mirrorPolygon(rightPortraitPose.hair),
+  center: rightPortraitPose.hair,
+  right: rightPortraitPose.hair,
+};
+
+function interpolatePortraitPose(pose, turn) {
+  const from = turn < 0.5 ? pose.left : pose.center;
+  const to = turn < 0.5 ? pose.center : pose.right;
+  const progress = turn < 0.5 ? turn * 2 : (turn - 0.5) * 2;
+
+  return from.map((value, index) => value + (to[index] - value) * progress);
+}
+
+function facePath(values) {
+  return `${curvePath(values)} Z`;
+}
+
+function curvePath(values) {
+  return `M ${values[0]} ${values[1]} C ${values.slice(2).join(" ")}`;
+}
+
+function roundedPolygonPath(values, rounding = 0.22) {
+  const points = [];
+
+  for (let index = 0; index < values.length; index += 2) {
+    points.push([values[index], values[index + 1]]);
+  }
+
+  const between = (from, to, progress) => [
+    from[0] + (to[0] - from[0]) * progress,
+    from[1] + (to[1] - from[1]) * progress,
+  ];
+  const commands = points.flatMap((point, index) => {
+    const next = points[(index + 1) % points.length];
+    const exit = between(point, next, rounding);
+    const approach = between(point, next, 1 - rounding);
+
+    return [`Q ${point[0]} ${point[1]} ${exit[0]} ${exit[1]}`, `L ${approach[0]} ${approach[1]}`];
+  });
+  const previous = points.at(-1);
+  const start = between(previous, points[0], 1 - rounding);
+
+  return `M ${start[0]} ${start[1]} ${commands.join(" ")} Z`;
+}
+
 function Arrow() {
   return <span aria-hidden="true">↗</span>;
+}
+
+function PortraitArt() {
+  return (
+    <div className="portrait-art" aria-hidden="true">
+      <svg
+        className="portrait-character"
+        viewBox="0 0 124 136"
+        role="presentation"
+        focusable="false"
+      >
+        <path
+          className="portrait-body-line"
+          data-portrait-body-left
+          d="M 37 106 C 35 116 33 126 32 136"
+        />
+        <path
+          className="portrait-body-line"
+          data-portrait-body-right
+          d="M 87 118 C 88 124 89 130 90 136"
+        />
+        <ellipse
+          className="portrait-ear"
+          data-portrait-ear-left
+          cx="30"
+          cy="75"
+          rx="6.5"
+          ry="8.5"
+        />
+        <ellipse
+          className="portrait-ear"
+          data-portrait-ear-right
+          cx="94"
+          cy="75"
+          rx="6.5"
+          ry="8.5"
+        />
+        <path
+          className="portrait-face"
+          data-portrait-face
+          d={facePath(portraitPoses.face.center)}
+        />
+        <path
+          className="portrait-jaw"
+          data-portrait-jaw
+          d={curvePath(portraitPoses.jaw.center)}
+        />
+        <path
+          className="portrait-feature"
+          data-portrait-brow-left
+          d={curvePath(portraitPoses.browLeft.center)}
+        />
+        <path
+          className="portrait-feature"
+          data-portrait-brow-right
+          d={curvePath(portraitPoses.browRight.center)}
+        />
+        <path
+          className="portrait-feature"
+          data-portrait-nose
+          d={curvePath(portraitPoses.nose.center)}
+        />
+        <path
+          className="portrait-hair"
+          data-portrait-hair
+          d={roundedPolygonPath(portraitPoses.hair.center)}
+        />
+      </svg>
+      <span className="portrait-mouth" />
+      <span className="portrait-eye portrait-eye-left" />
+      <span className="portrait-eye portrait-eye-right" />
+      <span className="portrait-pupil portrait-pupil-left" />
+      <span className="portrait-pupil portrait-pupil-right" />
+    </div>
+  );
 }
 
 function PointerPortrait() {
@@ -88,6 +433,18 @@ function PointerPortrait() {
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const finePointer = window.matchMedia("(pointer: fine)");
+    const portraitParts = {
+      face: portrait.querySelector("[data-portrait-face]"),
+      jaw: portrait.querySelector("[data-portrait-jaw]"),
+      browLeft: portrait.querySelector("[data-portrait-brow-left]"),
+      browRight: portrait.querySelector("[data-portrait-brow-right]"),
+      nose: portrait.querySelector("[data-portrait-nose]"),
+      bodyLeft: portrait.querySelector("[data-portrait-body-left]"),
+      bodyRight: portrait.querySelector("[data-portrait-body-right]"),
+      earLeft: portrait.querySelector("[data-portrait-ear-left]"),
+      earRight: portrait.querySelector("[data-portrait-ear-right]"),
+      hair: portrait.querySelector("[data-portrait-hair]"),
+    };
     let motionEnabled = finePointer.matches && !reducedMotion.matches;
     let animationFrame = 0;
     let targetX = 0;
@@ -98,6 +455,52 @@ function PointerPortrait() {
     let velocityY = 0;
     let blinkTimer = 0;
     let blinkResetTimer = 0;
+
+    function morphPortrait(turn) {
+      portraitParts.face.setAttribute(
+        "d",
+        facePath(interpolatePortraitPose(portraitPoses.face, turn)),
+      );
+      portraitParts.jaw.setAttribute(
+        "d",
+        curvePath(interpolatePortraitPose(portraitPoses.jaw, turn)),
+      );
+      portraitParts.browLeft.setAttribute(
+        "d",
+        curvePath(interpolatePortraitPose(portraitPoses.browLeft, turn)),
+      );
+      portraitParts.browRight.setAttribute(
+        "d",
+        curvePath(interpolatePortraitPose(portraitPoses.browRight, turn)),
+      );
+      portraitParts.nose.setAttribute(
+        "d",
+        curvePath(interpolatePortraitPose(portraitPoses.nose, turn)),
+      );
+      portraitParts.bodyLeft.setAttribute(
+        "d",
+        curvePath(interpolatePortraitPose(portraitPoses.bodyLeft, turn)),
+      );
+      portraitParts.bodyRight.setAttribute(
+        "d",
+        curvePath(interpolatePortraitPose(portraitPoses.bodyRight, turn)),
+      );
+      portraitParts.hair.setAttribute(
+        "d",
+        roundedPolygonPath(interpolatePortraitPose(portraitPoses.hair, turn)),
+      );
+
+      [
+        [portraitParts.earLeft, portraitPoses.earLeft],
+        [portraitParts.earRight, portraitPoses.earRight],
+      ].forEach(([ear, pose]) => {
+        const [cx, cy, rx, ry] = interpolatePortraitPose(pose, turn);
+        ear.setAttribute("cx", cx);
+        ear.setAttribute("cy", cy);
+        ear.setAttribute("rx", rx);
+        ear.setAttribute("ry", ry);
+      });
+    }
 
     function clearBlinkTimers() {
       window.clearTimeout(blinkTimer);
@@ -131,22 +534,41 @@ function PointerPortrait() {
       currentY += velocityY;
 
       const scale = Math.min(portrait.getBoundingClientRect().width / 124, 1);
+      const faceX = currentX * 2.2 * scale;
+      const mouthX = currentX * 1.15 * scale;
+      const pupilX = currentX * 1.8 * scale;
+      const mouthAngle = currentX * -3.5 + currentY * 0.9;
+      const clampedX = Math.max(-1, Math.min(1, currentX));
+      const turn = (clampedX + 1) / 2;
+      const mirrorProgress = Math.max(0, -clampedX);
+      const eyeLeftX = 42.969 + (30.078 - 42.969) * mirrorProgress;
+      const eyeLeftY = 50.625 + (52.143 - 50.625) * mirrorProgress;
+      const eyeRightX = 69.922 + (57.031 - 69.922) * mirrorProgress;
+      const eyeRightY = 52.143 + (50.625 - 52.143) * mirrorProgress;
 
       portrait.style.setProperty("--head-x", `${currentX * 4.5 * scale}px`);
       portrait.style.setProperty("--head-y", `${currentY * 3.2 * scale}px`);
-      portrait.style.setProperty("--head-yaw", `${currentX * 5}deg`);
+      portrait.style.setProperty("--head-yaw", `${currentX * 3}deg`);
       portrait.style.setProperty("--head-pitch", `${currentY * -3.5}deg`);
       portrait.style.setProperty("--head-roll", `${currentX * 0.35}deg`);
-      portrait.style.setProperty("--pupil-x", `${currentX * 1.8 * scale}px`);
+      portrait.style.setProperty("--face-x", `${faceX}px`);
+      portrait.style.setProperty("--mouth-x", `${mouthX}px`);
+      portrait.style.setProperty("--mouth-left", `${52 - 4 * mirrorProgress}%`);
+      portrait.style.setProperty("--pupil-x", `${pupilX}px`);
       portrait.style.setProperty("--pupil-y", `${currentY * 3 * scale}px`);
+      portrait.style.setProperty("--eye-left-x", `${eyeLeftX}%`);
+      portrait.style.setProperty("--eye-left-y", `${eyeLeftY}%`);
+      portrait.style.setProperty("--eye-right-x", `${eyeRightX}%`);
+      portrait.style.setProperty("--eye-right-y", `${eyeRightY}%`);
       portrait.style.setProperty(
         "--mouth-scale",
         `${1 - Math.abs(currentX) * 0.09 + currentY * 0.025}`,
       );
-      portrait.style.setProperty(
-        "--mouth-angle",
-        `${currentX * -3.5 + currentY * 0.9}deg`,
-      );
+      portrait.style.setProperty("--mouth-angle", `${mouthAngle}deg`);
+      portraitParts.hair.style.transform = `translateX(${currentX * 1.2}px) skewX(${
+        currentX * -2
+      }deg)`;
+      morphPortrait(turn);
 
       const settled =
         Math.abs(targetX - currentX) < 0.001 &&
@@ -180,7 +602,10 @@ function PointerPortrait() {
       const rect = portrait.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-      const horizontalRange = Math.max(window.innerWidth * 0.42, 1);
+      const horizontalRange =
+        event.clientX < centerX
+          ? Math.max(centerX, 1)
+          : Math.max(window.innerWidth - centerX, 1);
       const verticalRange = Math.max(window.innerHeight * 0.42, 1);
 
       targetX = Math.max(-1, Math.min(1, (event.clientX - centerX) / horizontalRange));
@@ -228,21 +653,7 @@ function PointerPortrait() {
       aria-label="Illustration of Will Hou looking toward the pointer"
     >
       <div className="portrait-rig">
-        <span className="portrait-body" aria-hidden="true" />
-        <img
-          className="portrait-character"
-          src="/images/will-hou-character.png"
-          alt=""
-          width="512"
-          height="560"
-          loading="eager"
-          fetchPriority="high"
-        />
-        <span className="portrait-mouth" aria-hidden="true" />
-        <span className="portrait-eye portrait-eye-left" aria-hidden="true" />
-        <span className="portrait-eye portrait-eye-right" aria-hidden="true" />
-        <span className="portrait-pupil portrait-pupil-left" aria-hidden="true" />
-        <span className="portrait-pupil portrait-pupil-right" aria-hidden="true" />
+        <PortraitArt />
       </div>
     </div>
   );

@@ -119,8 +119,15 @@ button:focus-visible {
   --head-yaw: 0deg;
   --head-pitch: 0deg;
   --head-roll: 0deg;
+  --face-x: 0px;
+  --mouth-x: 0px;
+  --mouth-left: 52%;
   --pupil-x: 0px;
   --pupil-y: 0px;
+  --eye-left-x: 42.969%;
+  --eye-left-y: 50.625%;
+  --eye-right-x: 69.922%;
+  --eye-right-y: 52.143%;
   --mouth-scale: 1;
   --mouth-angle: 0deg;
   display: grid;
@@ -141,69 +148,57 @@ button:focus-visible {
   will-change: transform;
 }
 
+.portrait-art {
+  position: absolute;
+  inset: 0;
+}
+
 .portrait-character {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 1;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  overflow: visible;
   pointer-events: none;
   user-select: none;
 }
 
-.portrait-body {
-  position: absolute;
-  z-index: 0;
-  top: 75%;
-  left: 50%;
-  width: 48%;
-  height: 27%;
-  background: radial-gradient(
-    ellipse at 50% 14%,
-    rgb(31 39 43 / 12%) 0%,
-    rgb(31 39 43 / 5%) 30%,
-    transparent 62%
-  );
-  transform: translateX(-50%);
+.portrait-ear {
+  fill: #fff;
+  stroke: #101214;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
 }
 
-.portrait-body::before,
-.portrait-body::after {
-  position: absolute;
-  top: 12%;
-  width: 2px;
-  height: 82%;
-  border-radius: 999px;
-  background: #101214;
-  content: "";
-  transform-origin: top;
+.portrait-face {
+  fill: #fff;
+  stroke: none;
 }
 
-.portrait-body::before {
-  left: 8%;
-  transform: rotate(9deg);
+.portrait-jaw,
+.portrait-feature,
+.portrait-body-line {
+  fill: none;
+  stroke: #101214;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
 }
 
-.portrait-body::after {
-  top: 44%;
-  right: 6%;
-  height: 50%;
-  transform: rotate(-10deg);
+.portrait-hair {
+  fill: #101214;
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform;
 }
 
 @media (prefers-color-scheme: dark) {
-  .portrait-body {
-    background: radial-gradient(
-      ellipse at 50% 14%,
-      rgb(237 240 238 / 13%) 0%,
-      rgb(237 240 238 / 5%) 30%,
-      transparent 62%
-    );
-  }
-
-  .portrait-body::before,
-  .portrait-body::after {
-    background: var(--ink);
+  .portrait-body-line {
+    stroke: var(--ink);
   }
 }
 
@@ -211,7 +206,7 @@ button:focus-visible {
   position: absolute;
   z-index: 2;
   top: 71.2%;
-  left: 52%;
+  left: var(--mouth-left);
   width: 21px;
   height: 13px;
   border-radius: 50%;
@@ -229,7 +224,8 @@ button:focus-visible {
   border-bottom: 2px solid #101214;
   border-radius: 0 0 50% 50%;
   content: "";
-  transform: translateX(-50%) rotate(var(--mouth-angle)) scaleX(var(--mouth-scale));
+  transform: translateX(calc(-50% + var(--mouth-x))) rotate(var(--mouth-angle))
+    scaleX(var(--mouth-scale));
   transform-origin: center;
   will-change: transform;
 }
@@ -254,7 +250,7 @@ button:focus-visible {
   border-top: 2px solid #101214;
   border-radius: 50%;
   content: "";
-  transform: translateX(-50%) rotate(var(--eye-tilt));
+  transform: translateX(calc(-50% + var(--face-x))) rotate(var(--eye-tilt));
   transform-origin: center;
   transition:
     top 55ms ease-in-out,
@@ -264,14 +260,14 @@ button:focus-visible {
 
 .portrait-eye-left {
   --eye-tilt: -3deg;
-  top: 50.625%;
-  left: 42.969%;
+  top: var(--eye-left-y);
+  left: var(--eye-left-x);
 }
 
 .portrait-eye-right {
   --eye-tilt: 3deg;
-  top: 52.143%;
-  left: 69.922%;
+  top: var(--eye-right-y);
+  left: var(--eye-right-x);
 }
 
 .portrait-pupil {
@@ -281,7 +277,8 @@ button:focus-visible {
   aspect-ratio: 1;
   border-radius: 50%;
   background: #101214;
-  transform: translate(-50%, -50%) translate3d(var(--pupil-x), var(--pupil-y), 0);
+  transform: translate(-50%, -50%)
+    translate3d(calc(var(--face-x) + var(--pupil-x)), var(--pupil-y), 0);
   transition: opacity 45ms ease-in-out;
   will-change: transform;
 }
@@ -297,13 +294,13 @@ button:focus-visible {
 }
 
 .portrait-pupil-left {
-  top: 50.625%;
-  left: 42.969%;
+  top: var(--eye-left-y);
+  left: var(--eye-left-x);
 }
 
 .portrait-pupil-right {
-  top: 52.143%;
-  left: 69.922%;
+  top: var(--eye-right-y);
+  left: var(--eye-right-x);
 }
 
 .intro-greeting {
