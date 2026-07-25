@@ -1189,57 +1189,9 @@ button:focus-visible {
 
 .outlook-phone {
   position: absolute;
-  overflow: hidden;
   width: 29%;
-  box-sizing: border-box;
-  padding: 20px 8px 8px;
-  border: 1px solid rgb(115 130 140 / 22%);
-  border-radius: 24px;
-  background: #f8fbfd;
-  box-shadow:
-    0 0 0 5px #fff,
-    0 26px 42px rgb(20 30 34 / 24%);
-  transform-origin: 50% 100%;
-}
-
-.outlook-phone img {
-  display: block;
-  width: 100%;
   height: auto;
-  border-radius: 8px;
-  background: #fff;
-}
-
-.outlook-phone-center img,
-.outlook-phone-calendar img {
-  position: relative;
-  z-index: 1;
-  box-sizing: border-box;
-  border-top: 5px solid #0f6cbd;
-}
-
-.outlook-phone-center::after,
-.outlook-phone-calendar::after {
-  position: absolute;
-  z-index: 0;
-  top: 20px;
-  right: 8px;
-  left: 8px;
-  height: 16px;
-  background: #0f6cbd;
-  content: "";
-}
-
-.outlook-phone-speaker {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  z-index: 2;
-  width: 22%;
-  height: 3px;
-  border-radius: 999px;
-  background: #bdc7cc;
-  transform: translateX(-50%);
+  transform-origin: 50% 100%;
 }
 
 .outlook-phone-left {
@@ -2089,10 +2041,6 @@ button:focus-visible {
 
   .outlook-phone {
     width: 31%;
-    border-radius: 19px;
-    box-shadow:
-      0 0 0 4px #fff,
-      0 20px 32px rgb(20 30 34 / 24%);
   }
 
   .outlook-phone-center {

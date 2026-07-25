@@ -450,33 +450,27 @@ function PrototypeVisual({ title, visual }) {
         aria-label="Outlook Mobile dark and light inbox, and calendar screens"
       >
         <div className="outlook-phone-stack" aria-hidden="true">
-          <div className="outlook-phone outlook-phone-left">
-            <span className="outlook-phone-speaker" />
-            <img
-              src="/images/projects/outlook-dark-inbox.png"
-              alt=""
-              width="306"
-              height="544"
-            />
-          </div>
-          <div className="outlook-phone outlook-phone-center">
-            <span className="outlook-phone-speaker" />
-            <img
-              src="/images/projects/outlook-inbox.png"
-              alt=""
-              width="610"
-              height="1345"
-            />
-          </div>
-          <div className="outlook-phone outlook-phone-calendar">
-            <span className="outlook-phone-speaker" />
-            <img
-              src="/images/projects/outlook-calendar.png"
-              alt=""
-              width="670"
-              height="1430"
-            />
-          </div>
+          <img
+            className="outlook-phone outlook-phone-left"
+            src="/images/projects/outlook-device-dark-inbox.png"
+            alt=""
+            width="840"
+            height="1382"
+          />
+          <img
+            className="outlook-phone outlook-phone-center"
+            src="/images/projects/outlook-device-inbox.png"
+            alt=""
+            width="840"
+            height="1655"
+          />
+          <img
+            className="outlook-phone outlook-phone-calendar"
+            src="/images/projects/outlook-device-calendar.png"
+            alt=""
+            width="840"
+            height="1572"
+          />
         </div>
       </div>
     );
