@@ -1146,44 +1146,6 @@ button:focus-visible {
     var(--mock-canvas);
 }
 
-.project-stage::before {
-  position: absolute;
-  inset: 9% 7% auto auto;
-  color: var(--mock-ink);
-  content: "Selected work";
-  font-size: clamp(3.6rem, 8vw, 8rem);
-  font-weight: 700;
-  letter-spacing: -0.08em;
-  line-height: 0.8;
-  opacity: 0.055;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.project-stage-meta {
-  position: absolute;
-  z-index: 4;
-  top: 1.15rem;
-  right: 1.2rem;
-  left: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  color: var(--faint);
-}
-
-.project-stage-meta p {
-  margin: 0;
-  font-size: 0.65rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.project-stage-meta p:last-child {
-  text-align: right;
-}
-
 .project-feature {
   position: relative;
   min-height: 480px;
@@ -1196,15 +1158,6 @@ button:focus-visible {
   bottom: 1.45rem;
   left: 1.4rem;
   width: min(19rem, 36%);
-}
-
-.project-feature-copy > p:first-child {
-  margin: 0 0 0.35rem;
-  color: var(--selection-accent);
-  font-size: 0.65rem;
-  font-weight: 650;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .project-feature-copy h3 {
@@ -1224,6 +1177,89 @@ button:focus-visible {
 .project-visual {
   position: absolute;
   inset: 0;
+}
+
+.outlook-phone-stack {
+  position: absolute;
+  top: 8%;
+  right: 5%;
+  bottom: 7%;
+  left: 31%;
+}
+
+.outlook-phone {
+  position: absolute;
+  overflow: hidden;
+  width: 29%;
+  box-sizing: border-box;
+  padding: 20px 8px 8px;
+  border: 1px solid rgb(115 130 140 / 22%);
+  border-radius: 24px;
+  background: #f8fbfd;
+  box-shadow:
+    0 0 0 5px #fff,
+    0 26px 42px rgb(20 30 34 / 24%);
+  transform-origin: 50% 100%;
+}
+
+.outlook-phone img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.outlook-phone-center img,
+.outlook-phone-calendar img {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  border-top: 5px solid #0f6cbd;
+}
+
+.outlook-phone-center::after,
+.outlook-phone-calendar::after {
+  position: absolute;
+  z-index: 0;
+  top: 20px;
+  right: 8px;
+  left: 8px;
+  height: 16px;
+  background: #0f6cbd;
+  content: "";
+}
+
+.outlook-phone-speaker {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  z-index: 2;
+  width: 22%;
+  height: 3px;
+  border-radius: 999px;
+  background: #bdc7cc;
+  transform: translateX(-50%);
+}
+
+.outlook-phone-left {
+  top: 13%;
+  left: 2%;
+  z-index: 1;
+  transform: rotate(-5deg);
+}
+
+.outlook-phone-center {
+  top: 0;
+  left: 35.5%;
+  z-index: 3;
+}
+
+.outlook-phone-calendar {
+  top: 13%;
+  right: 1%;
+  z-index: 2;
+  transform: rotate(5deg);
 }
 
 .prototype-primary {
@@ -1924,6 +1960,11 @@ button:focus-visible {
   .prototype-companion {
     right: 8%;
   }
+
+  .outlook-phone-stack {
+    right: 2%;
+    left: 35%;
+  }
 }
 
 @media (max-width: 760px) {
@@ -2037,6 +2078,25 @@ button:focus-visible {
     top: 24%;
     right: 8%;
     width: 19%;
+  }
+
+  .outlook-phone-stack {
+    top: 12%;
+    right: 3%;
+    bottom: 14%;
+    left: 3%;
+  }
+
+  .outlook-phone {
+    width: 31%;
+    border-radius: 19px;
+    box-shadow:
+      0 0 0 4px #fff,
+      0 20px 32px rgb(20 30 34 / 24%);
+  }
+
+  .outlook-phone-center {
+    left: 34.5%;
   }
 
   .visual-presence .prototype-primary,

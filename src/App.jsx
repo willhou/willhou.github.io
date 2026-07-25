@@ -74,9 +74,9 @@ const work = [
     ],
     projects: [
       {
-        title: "Focused inbox",
+        title: "Outlook Mobile",
         description:
-          "A clearer mobile information hierarchy for scanning, triaging, and acting on email.",
+          "As a founding member of the team, I helped build Outlook for Android from the ground up, shaping its product foundation and core inbox and calendar experiences.",
         visual: "mail",
       },
       {
@@ -442,6 +442,46 @@ function Arrow() {
 }
 
 function PrototypeVisual({ title, visual }) {
+  if (visual === "mail") {
+    return (
+      <div
+        className="project-visual visual-mail"
+        role="img"
+        aria-label="Outlook Mobile dark and light inbox, and calendar screens"
+      >
+        <div className="outlook-phone-stack" aria-hidden="true">
+          <div className="outlook-phone outlook-phone-left">
+            <span className="outlook-phone-speaker" />
+            <img
+              src="/images/projects/outlook-dark-inbox.png"
+              alt=""
+              width="306"
+              height="544"
+            />
+          </div>
+          <div className="outlook-phone outlook-phone-center">
+            <span className="outlook-phone-speaker" />
+            <img
+              src="/images/projects/outlook-inbox.png"
+              alt=""
+              width="610"
+              height="1345"
+            />
+          </div>
+          <div className="outlook-phone outlook-phone-calendar">
+            <span className="outlook-phone-speaker" />
+            <img
+              src="/images/projects/outlook-calendar.png"
+              alt=""
+              width="670"
+              height="1430"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`project-visual visual-${visual}`}
@@ -995,13 +1035,6 @@ function App() {
 
             <div className="journey-projects">
               <div className="project-stage" aria-live="polite">
-                <div className="project-stage-meta">
-                  <p>
-                    Prototype story {String(activeProject + 1).padStart(2, "0")} /{" "}
-                    {String(selectedWork.projects.length).padStart(2, "0")}
-                  </p>
-                  <p>Use the story index to explore</p>
-                </div>
                 <article
                   className="project-feature"
                   key={`${selectedWork.name}-${selectedProject.title}`}
@@ -1011,7 +1044,6 @@ function App() {
                     visual={selectedProject.visual}
                   />
                   <div className="project-feature-copy">
-                    <p>Selected work</p>
                     <h3>{selectedProject.title}</h3>
                     <p>{selectedProject.description}</p>
                   </div>
