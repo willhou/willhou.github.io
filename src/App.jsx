@@ -1,5 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
+const portraitMoments = ["idea", "dog", "ski", "arsenal"];
+const portraitMomentDurations = {
+  idea: 1300,
+  dog: 2200,
+  ski: 2200,
+  arsenal: 2200,
+};
+
 const work = [
   {
     name: "Roam",
@@ -485,6 +493,22 @@ function IdeaBulb() {
   );
 }
 
+function PortraitThought() {
+  return (
+    <span className="portrait-thought" aria-hidden="true">
+      <span className="portrait-thought-content portrait-thought-dog">
+        <img src="/images/my-dog.png" alt="" />
+      </span>
+      <span className="portrait-thought-content portrait-thought-ski" role="presentation">
+        ⛷️
+      </span>
+      <span className="portrait-thought-content portrait-thought-arsenal">
+        <img src="/images/arsenal.png" alt="" />
+      </span>
+    </span>
+  );
+}
+
 function PortraitArt() {
   return (
     <div className="portrait-art" aria-hidden="true">
@@ -592,8 +616,9 @@ function PointerPortrait() {
     let velocityY = 0;
     let blinkTimer = 0;
     let blinkResetTimer = 0;
-    let ideaTimer = 0;
-    let ideaResetTimer = 0;
+    let momentTimer = 0;
+    let momentResetTimer = 0;
+    let momentIndex = 0;
 
     function morphPortrait(turn) {
       portraitParts.face.setAttribute(
@@ -666,28 +691,37 @@ function PointerPortrait() {
       );
     }
 
-    function clearIdeaTimers() {
-      window.clearTimeout(ideaTimer);
-      window.clearTimeout(ideaResetTimer);
-      ideaTimer = 0;
-      ideaResetTimer = 0;
+    function clearMomentTimers() {
+      window.clearTimeout(momentTimer);
+      window.clearTimeout(momentResetTimer);
+      momentTimer = 0;
+      momentResetTimer = 0;
     }
 
-    function scheduleIdea() {
+    function clearMoment() {
+      portrait.classList.remove("has-idea", "has-thought");
+      delete portrait.dataset.moment;
+    }
+
+    function scheduleMoment() {
       if (reducedMotion.matches) return;
 
-      window.clearTimeout(ideaTimer);
-      ideaTimer = window.setTimeout(
+      window.clearTimeout(momentTimer);
+      momentTimer = window.setTimeout(
         () => {
-          ideaTimer = 0;
-          portrait.classList.add("has-idea");
-          ideaResetTimer = window.setTimeout(() => {
-            ideaResetTimer = 0;
-            portrait.classList.remove("has-idea");
-          }, 1300);
-          scheduleIdea();
+          momentTimer = 0;
+          const moment = portraitMoments[momentIndex % portraitMoments.length];
+          const momentClass = moment === "idea" ? "has-idea" : "has-thought";
+          momentIndex += 1;
+          portrait.dataset.moment = moment;
+          portrait.classList.add(momentClass);
+          momentResetTimer = window.setTimeout(() => {
+            momentResetTimer = 0;
+            clearMoment();
+          }, portraitMomentDurations[moment]);
+          scheduleMoment();
         },
-        8000 + Math.random() * 2000,
+        6000 + Math.random() * 3000,
       );
     }
 
@@ -784,17 +818,17 @@ function PointerPortrait() {
 
       if (reducedMotion.matches) {
         clearBlinkTimers();
-        clearIdeaTimers();
+        clearMomentTimers();
         portrait.classList.remove("is-blinking");
-        portrait.classList.remove("has-idea");
+        clearMoment();
       } else if (!blinkTimer && !blinkResetTimer) {
         scheduleBlink();
-        scheduleIdea();
+        scheduleMoment();
       }
     }
 
     scheduleBlink();
-    scheduleIdea();
+    scheduleMoment();
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
     window.addEventListener("blur", resetPortrait);
     document.documentElement.addEventListener("mouseleave", resetPortrait);
@@ -809,9 +843,9 @@ function PointerPortrait() {
       finePointer.removeEventListener("change", handleMotionPreference);
       window.cancelAnimationFrame(animationFrame);
       clearBlinkTimers();
-      clearIdeaTimers();
+      clearMomentTimers();
       portrait.classList.remove("is-blinking");
-      portrait.classList.remove("has-idea");
+      clearMoment();
     };
   }, []);
 
@@ -820,9 +854,10 @@ function PointerPortrait() {
       className="portrait-stage"
       ref={portraitRef}
       role="img"
-      aria-label="Illustration of Will Hou looking toward the pointer"
+      aria-label="Illustration of Will Hou looking toward the pointer and occasionally thinking about his dog, skiing, and Arsenal"
     >
       <IdeaBulb />
+      <PortraitThought />
       <div className="portrait-rig">
         <PortraitArt />
       </div>
@@ -862,9 +897,11 @@ function App() {
               <a href="https://ro.am/" target="_blank" rel="noreferrer">
                 !nventor at Roam
               </a>
-              {" "}building its Android app. I also run Ezi Studio for independent software and
-              early-stage product consulting. Away from the screen, I’m usually walking the dog,
-              skiing, or following Arsenal.
+              {" "}building its Android app. I also make independent software through{" "}
+              <span className="ezi-studio-wordmark" data-text="Ezi Studio">
+                Ezi Studio
+              </span>
+              .
             </h1>
           </div>
         </section>
@@ -1012,7 +1049,7 @@ function App() {
             LinkedIn
           </a>{" "}
           <span aria-hidden="true">·</span>{" "}
-          <a href="https://github.com/mhhou" target="_blank" rel="noreferrer">
+          <a href="https://github.com/willhou" target="_blank" rel="noreferrer">
             GitHub
           </a>
         </p>
