@@ -102,9 +102,9 @@ const work = [
     ],
     projects: [
       {
-        title: "Day at a glance",
+        title: "Calendar experience",
         description:
-          "A calm schedule view that makes a dense day easier to understand while moving between meetings.",
+          "I worked with the team to shape Sunrise’s calendar experience, including its adoption of Material Design and a refreshed event details view.",
         visual: "calendar",
       },
       {
