@@ -1214,6 +1214,36 @@ button:focus-visible {
   transform: rotate(5deg);
 }
 
+.sunrise-phone-stack {
+  position: absolute;
+  top: 7%;
+  right: 5%;
+  bottom: 5%;
+  left: 31%;
+}
+
+.sunrise-phone {
+  position: absolute;
+  height: auto;
+  transform-origin: 50% 100%;
+}
+
+.sunrise-phone-agenda {
+  top: 3%;
+  left: 3%;
+  z-index: 2;
+  width: 45%;
+  transform: rotate(-2deg);
+}
+
+.sunrise-phone-detail {
+  top: 18%;
+  right: 16%;
+  z-index: 1;
+  width: 31%;
+  transform: rotate(3deg);
+}
+
 .prototype-primary {
   position: absolute;
   top: 19%;
@@ -2045,6 +2075,25 @@ button:focus-visible {
 
   .outlook-phone-center {
     left: 34.5%;
+  }
+
+  .sunrise-phone-stack {
+    top: 12%;
+    right: 3%;
+    bottom: 14%;
+    left: 3%;
+  }
+
+  .sunrise-phone-agenda {
+    top: 0;
+    left: 17%;
+    width: 43%;
+  }
+
+  .sunrise-phone-detail {
+    top: 18%;
+    right: 6%;
+    width: 30%;
   }
 
   .visual-presence .prototype-primary,

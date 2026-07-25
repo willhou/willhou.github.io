@@ -476,6 +476,33 @@ function PrototypeVisual({ title, visual }) {
     );
   }
 
+  if (visual === "calendar") {
+    return (
+      <div
+        className="project-visual visual-calendar"
+        role="img"
+        aria-label="Sunrise Calendar agenda and event detail screens"
+      >
+        <div className="sunrise-phone-stack" aria-hidden="true">
+          <img
+            className="sunrise-phone sunrise-phone-agenda"
+            src="/images/projects/sunrise-device-agenda.png"
+            alt=""
+            width="840"
+            height="1346"
+          />
+          <img
+            className="sunrise-phone sunrise-phone-detail"
+            src="/images/projects/sunrise-device-event-detail.png"
+            alt=""
+            width="840"
+            height="1342"
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`project-visual visual-${visual}`}
