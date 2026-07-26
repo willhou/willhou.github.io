@@ -42,16 +42,21 @@ const work = [
     links: [{ label: "DoorDash", href: "https://www.doordash.com/" }],
     projects: [
       {
-        title: "Composable foundations",
+        title: "Prism design system",
         description:
-          "A shared component set that helps product teams build consistent experiences across mobile surfaces.",
-        visual: "system",
+          "I worked on Prism for Android, helping product teams adopt its themes and components across the DoorDash consumer, Dasher, Merchant, and Caviar apps. I also helped teams understand why using the system matters and how consistent adoption maintains product coherence. I spoke about the work at ",
+        descriptionLink: {
+          label: "Figma Schema 2022",
+          href: "https://www.designsystems.com/schema-new-york-2022/",
+        },
+        descriptionSuffix: ".",
+        visual: "prism",
       },
       {
-        title: "Migration pathways",
+        title: "Mobile infrastructure",
         description:
-          "Patterns and examples that make Jetpack Compose adoption incremental and safer for established apps.",
-        visual: "code",
+          "I helped initiate the team’s Jetpack Compose adoption, deployed lint rules to reinforce design system use, hosted weekly office hours to support teams through the transition, and partnered with HR on a pilot Android infrastructure bootcamp.",
+        visual: "infrastructure",
       },
     ],
   },
@@ -152,20 +157,7 @@ const work = [
     copy: "Earned a BMath in Computer Science and started Ezi Studio while studying at Waterloo.",
     logo: "/images/logos/waterloo.png",
     links: [{ label: "Waterloo", href: "https://uwaterloo.ca/" }],
-    projects: [
-      {
-        title: "Mobile foundations",
-        description:
-          "Coursework and side projects that turn computer science concepts into practical products.",
-        visual: "code",
-      },
-      {
-        title: "Ezi Studio beginnings",
-        description:
-          "Early Android experiments that grow into an independent product practice.",
-        visual: "mobile",
-      },
-    ],
+    projects: [],
   },
 ];
 
@@ -563,6 +555,121 @@ function PrototypeVisual({ title, visual }) {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (visual === "prism") {
+    return (
+    <div
+      className="project-visual visual-prism"
+      role="img"
+      aria-label="DoorDash desktop and mobile, and Caviar mobile product experiences using the Prism design system"
+    >
+      <div className="prism-device-stack" aria-hidden="true">
+        <div className="prism-desktop-frame">
+            <span className="prism-desktop-toolbar">
+              <i />
+              <i />
+              <i />
+            </span>
+            <div className="prism-desktop-screen">
+              <img
+                src="/images/projects/doordash-prism-desktop.png"
+                alt=""
+                width="3600"
+                height="2042"
+            />
+          </div>
+        </div>
+        <div className="prism-phone-frame prism-phone-caviar">
+          <span className="prism-phone-speaker" />
+          <div className="prism-phone-screen">
+            <img
+              src="/images/projects/caviar-prism-mobile.png"
+              alt=""
+              width="1080"
+              height="2364"
+            />
+          </div>
+        </div>
+        <div className="prism-phone-frame prism-phone-doordash">
+          <span className="prism-phone-speaker" />
+          <div className="prism-phone-screen">
+            <img
+                src="/images/projects/doordash-prism-mobile.png"
+                alt=""
+                width="1080"
+                height="2364"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (visual === "infrastructure") {
+    return (
+      <div
+        className="project-visual visual-infrastructure"
+        role="img"
+        aria-label="Low-fidelity diagram showing Jetpack Compose adoption supported by lint guardrails, design system coherence, and an Android infrastructure bootcamp"
+      >
+        <div className="infrastructure-diagram" aria-hidden="true">
+          <span className="infrastructure-connector connector-compose" />
+          <span className="infrastructure-connector connector-branch" />
+          <span className="infrastructure-connector connector-system" />
+          <span className="infrastructure-connector connector-bootcamp" />
+
+          <div className="infrastructure-card infrastructure-compose">
+            <span className="infrastructure-kicker">01 · adoption</span>
+            <strong>Jetpack Compose</strong>
+            <div className="infrastructure-code">
+              <i />
+              <i />
+              <i />
+              <i />
+            </div>
+            <span className="infrastructure-status">
+              <i />
+              team rollout
+            </span>
+          </div>
+
+          <div className="infrastructure-lint">
+            <span>✓</span>
+            <strong>lint</strong>
+          </div>
+
+          <div className="infrastructure-card infrastructure-system">
+            <span className="infrastructure-kicker">02 · coherence</span>
+            <strong>Design system</strong>
+            <div className="infrastructure-rule-list">
+              <span>
+                <i />
+                components
+              </span>
+              <span>
+                <i />
+                tokens
+              </span>
+            </div>
+          </div>
+
+          <div className="infrastructure-card infrastructure-bootcamp">
+            <span className="infrastructure-kicker">03 · practice</span>
+            <strong>Android bootcamp</strong>
+            <div className="infrastructure-cohort">
+              <span>
+                <i />
+                <i />
+                <i />
+              </span>
+              <small>HR + Android infra</small>
+            </div>
           </div>
         </div>
       </div>
@@ -997,6 +1104,7 @@ function App() {
   const [activeProject, setActiveProject] = useState(0);
   const activeTimelineStop = activeWork;
   const selectedWork = work[activeWork];
+  const hasSelectedProjects = selectedWork.projects.length > 0;
   const selectedProject = selectedWork.projects[activeProject];
   const timelineProgress =
     activeTimelineStop === work.length - 1
@@ -1088,7 +1196,9 @@ function App() {
             <h2 id="work-title">My journey</h2>
           </div>
           <div
-            className="journey-showcase"
+            className={`journey-showcase${
+              hasSelectedProjects ? "" : " journey-showcase-summary-only"
+            }`}
             id="work-showcase"
             key={selectedWork.name}
             aria-label={`${selectedWork.name} work showcase`}
@@ -1120,52 +1230,57 @@ function App() {
               </div>
             </article>
 
-            <div className="journey-projects">
-              <div className="project-stage" aria-live="polite">
-                <article
-                  className="project-feature"
-                  key={`${selectedWork.name}-${selectedProject.title}`}
-                >
-                  <PrototypeVisual
-                    title={selectedProject.title}
-                    visual={selectedProject.visual}
-                  />
-                  <div className="project-feature-copy">
-                    <h3>{selectedProject.title}</h3>
-                    <p>
-                      {selectedProject.description}
-                      {selectedProject.descriptionLink ? (
-                        <>
-                          <a
-                            href={selectedProject.descriptionLink.href}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {selectedProject.descriptionLink.label}
-                          </a>
-                          {selectedProject.descriptionSuffix}
-                        </>
-                      ) : null}
-                    </p>
-                  </div>
-                </article>
-              </div>
-              <div className="project-index" aria-label={`${selectedWork.name} project stories`}>
-                {selectedWork.projects.map((project, index) => (
-                  <button
-                    type="button"
-                    className={activeProject === index ? "active" : ""}
-                    aria-pressed={activeProject === index}
-                    key={project.title}
-                    onClick={() => setActiveProject(index)}
+            {hasSelectedProjects ? (
+              <div className="journey-projects">
+                <div className="project-stage" aria-live="polite">
+                  <article
+                    className="project-feature"
+                    key={`${selectedWork.name}-${selectedProject.title}`}
                   >
-                    <span>{String(index + 1).padStart(2, "0")}</span>
-                    <strong>{project.title}</strong>
-                    <span aria-hidden="true">↗</span>
-                  </button>
-                ))}
+                    <PrototypeVisual
+                      title={selectedProject.title}
+                      visual={selectedProject.visual}
+                    />
+                    <div className="project-feature-copy">
+                      <h3>{selectedProject.title}</h3>
+                      <p>
+                        {selectedProject.description}
+                        {selectedProject.descriptionLink ? (
+                          <>
+                            <a
+                              href={selectedProject.descriptionLink.href}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {selectedProject.descriptionLink.label}
+                            </a>
+                            {selectedProject.descriptionSuffix}
+                          </>
+                        ) : null}
+                      </p>
+                    </div>
+                  </article>
+                </div>
+                <div
+                  className="project-index"
+                  aria-label={`${selectedWork.name} project stories`}
+                >
+                  {selectedWork.projects.map((project, index) => (
+                    <button
+                      type="button"
+                      className={activeProject === index ? "active" : ""}
+                      aria-pressed={activeProject === index}
+                      key={project.title}
+                      onClick={() => setActiveProject(index)}
+                    >
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                      <strong>{project.title}</strong>
+                      <span aria-hidden="true">↗</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
         </section>
 
