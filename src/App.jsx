@@ -107,7 +107,7 @@ const work = [
     links: [
       {
         label: "Archive",
-        href: "https://www.producthunt.com/products/sunrise-calendar",
+        href: "https://www.businessinsider.com/sunrise-calendar-meet-keyboard-makes-scheduling-meetings-on-your-phone-easy-2015-5",
       },
     ],
     projects: [
@@ -128,25 +128,25 @@ const work = [
   {
     name: "Foursquare",
     period: "First chapter",
-    discipline: "Mobile engineering",
-    copy: "Helped build the mobile experiences behind Swarm and City Guide.",
+    discipline: "Android engineering",
+    copy: "Built Foursquare for Android and helped launch Swarm as its own app.",
     logo: "/images/logos/foursquare.svg",
     links: [
       { label: "Swarm", href: "https://www.swarmapp.com/" },
-      { label: "City Guide", href: "https://foursquare.com/city-guide" },
+      { label: "Foursquare", href: "https://foursquare.com/" },
     ],
     projects: [
       {
-        title: "City discovery",
+        title: "Foursquare",
         description:
-          "Place collections and nearby recommendations designed for fast, contextual browsing.",
-        visual: "map",
+          "I worked on multiple redesigns of Foursquare for Android between 2011 and 2014, helping evolve the app from check-ins and friend activity toward richer place discovery and personalized recommendations.",
+        visual: "foursquare",
       },
       {
-        title: "Swarm moments",
+        title: "Swarm",
         description:
-          "A playful check-in flow that makes sharing where you are feel lightweight.",
-        visual: "social",
+          "I became part of the founding Swarm team when Foursquare split its original app in two. Swarm is a mobile app that allows users to share their locations with friends and create a record of their experiences in their personal lifelog.",
+        visual: "swarm",
       },
     ],
   },
@@ -438,6 +438,56 @@ function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
 
+const fluentVideoId = "miM6mBAfA8g";
+
+function FluentVideoVisual() {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  return (
+    <div
+      className="project-visual visual-fluent"
+      aria-label="Microsoft Surface Studio displaying a Fluent Design System demo"
+    >
+      <div className="surface-studio-real">
+        <img
+          className="surface-studio-frame"
+          src="/images/projects/surface-studio-2-dark-frame.png"
+          alt=""
+          width="1800"
+          height="1627"
+        />
+        <div className="surface-studio-screen">
+          {isPlaying ? (
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${fluentVideoId}?autoplay=1&loop=1&playlist=${fluentVideoId}&rel=0&cc_load_policy=0&controls=0&playsinline=1`}
+              title="Fluent Design System demo"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <button
+              className="surface-studio-poster"
+              type="button"
+              aria-label="Play Fluent Design System video"
+              onClick={() => setIsPlaying(true)}
+            >
+              <img
+                src={`https://i.ytimg.com/vi/${fluentVideoId}/maxresdefault.jpg`}
+                alt=""
+                width="1280"
+                height="720"
+              />
+              <span className="surface-studio-play" aria-hidden="true">
+                <span />
+              </span>
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function PrototypeVisual({ title, visual }) {
   if (visual === "mail") {
     return (
@@ -535,30 +585,7 @@ function PrototypeVisual({ title, visual }) {
   }
 
   if (visual === "fluent") {
-    return (
-      <div
-        className="project-visual visual-fluent"
-        aria-label="Microsoft Surface Studio displaying a Fluent Design System demo"
-      >
-        <div className="surface-studio-real">
-          <img
-            className="surface-studio-frame"
-            src="/images/projects/surface-studio-2-front-mockup.png"
-            alt=""
-            width="1120"
-            height="940"
-          />
-          <div className="surface-studio-screen">
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/miM6mBAfA8g?rel=0"
-              title="Fluent Design System demo"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-            />
-          </div>
-        </div>
-      </div>
-    );
+    return <FluentVideoVisual />;
   }
 
   if (visual === "prism") {
@@ -671,6 +698,68 @@ function PrototypeVisual({ title, visual }) {
               <small>HR + Android infra</small>
             </div>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (visual === "foursquare" || visual === "swarm") {
+    const isFoursquare = visual === "foursquare";
+    const archiveDevices = isFoursquare
+      ? [
+          {
+            position: "left",
+            src: "/images/projects/foursquare/foursquare-device-2012.png",
+          },
+          {
+            position: "center",
+            src: "/images/projects/foursquare/foursquare-device-adventures.png",
+          },
+          {
+            position: "right",
+            src: "/images/projects/foursquare/foursquare-device-city-guide.png",
+          },
+        ]
+      : [
+          {
+            position: "left",
+            src: "/images/projects/foursquare/swarm-device-checkin.png",
+          },
+          {
+            position: "center",
+            src: "/images/projects/foursquare/swarm-device-nearby.png",
+          },
+          {
+            position: "right",
+            src: "/images/projects/foursquare/swarm-device-activity.png",
+          },
+        ];
+
+    return (
+      <div
+        className={`project-visual visual-archive visual-${visual}`}
+        role="img"
+        aria-label={
+          isFoursquare
+            ? "Three historic Foursquare for Android screens showing the app’s evolution from social activity to personalized place discovery"
+            : "Three Swarm app screens showing check-in, nearby friends, and activity"
+        }
+      >
+        <div className="archive-phone-stack" aria-hidden="true">
+          {archiveDevices.map((device) => (
+            <div
+              className={`archive-phone-card archive-phone-${device.position}`}
+              key={device.src}
+            >
+              <img
+                className="archive-device-image"
+                src={device.src}
+                alt=""
+                width="420"
+                height="780"
+              />
+            </div>
+          ))}
         </div>
       </div>
     );

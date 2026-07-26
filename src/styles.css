@@ -1044,6 +1044,7 @@ button:focus-visible {
 
 .journey-showcase-summary-only {
   min-height: 0;
+  border-bottom: 0;
 }
 
 .journey-showcase-summary-only .journey-summary {
@@ -1197,6 +1198,66 @@ button:focus-visible {
   inset: 0;
 }
 
+.visual-archive {
+  background:
+    radial-gradient(circle at 67% 40%, rgb(255 255 255 / 7%), transparent 34%),
+    linear-gradient(135deg, transparent 42%, rgb(255 255 255 / 2%));
+}
+
+.visual-swarm {
+  background:
+    radial-gradient(circle at 68% 40%, rgb(255 121 49 / 11%), transparent 34%),
+    linear-gradient(135deg, transparent 42%, rgb(255 255 255 / 2%));
+}
+
+.archive-phone-stack {
+  position: absolute;
+  top: 7%;
+  right: 4%;
+  bottom: 10%;
+  left: 32%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.65rem, 2vw, 1.6rem);
+}
+
+.archive-phone-card {
+  position: relative;
+  width: min(28%, 11.25rem);
+}
+
+.visual-swarm .archive-phone-stack {
+  gap: clamp(0.65rem, 2vw, 1.6rem);
+}
+
+.visual-swarm .archive-phone-card {
+  width: min(29%, 12rem);
+}
+
+.archive-device-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 50% 100%;
+}
+
+.archive-phone-left .archive-device-image {
+  transform: translateY(4%) rotate(-5deg);
+}
+
+.archive-phone-center {
+  z-index: 2;
+}
+
+.archive-phone-center .archive-device-image {
+  transform: translateY(-3%);
+}
+
+.archive-phone-right .archive-device-image {
+  transform: translateY(4%) rotate(5deg);
+}
+
 .outlook-phone-stack {
   position: absolute;
   top: 8%;
@@ -1305,8 +1366,8 @@ button:focus-visible {
   position: absolute;
   top: 50%;
   right: 4%;
-  left: 56%;
-  aspect-ratio: 1120 / 940;
+  width: min(40%, 29rem);
+  aspect-ratio: 1800 / 1627;
   transform: translateY(-50%);
 }
 
@@ -1324,12 +1385,12 @@ button:focus-visible {
 .surface-studio-screen {
   position: absolute;
   z-index: 2;
-  top: 5.85%;
-  left: 5.54%;
-  width: 77.95%;
-  height: 61.81%;
+  top: 2.8%;
+  left: 1.55%;
+  width: 96.9%;
+  height: 70.75%;
   overflow: hidden;
-  border-radius: 3px;
+  border-radius: 0;
   background: #000;
 }
 
@@ -1338,6 +1399,58 @@ button:focus-visible {
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+.surface-studio-poster {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: #000;
+  cursor: pointer;
+}
+
+.surface-studio-poster > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.surface-studio-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: clamp(2.8rem, 8vw, 4.5rem);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 50%);
+  border-radius: 50%;
+  background: rgb(10 15 18 / 78%);
+  box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 28%);
+  transform: translate(-50%, -50%);
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.surface-studio-play > span {
+  width: 0;
+  height: 0;
+  margin-left: 0.2rem;
+  border-top: 0.55rem solid transparent;
+  border-bottom: 0.55rem solid transparent;
+  border-left: 0.9rem solid #fff;
+}
+
+.surface-studio-poster:hover .surface-studio-play {
+  background: rgb(10 15 18 / 90%);
+  transform: translate(-50%, -50%) scale(1.04);
 }
 
 .prism-device-stack {
@@ -2449,6 +2562,7 @@ button:focus-visible {
     top: 50%;
     right: 4%;
     left: 47%;
+    width: auto;
     transform: translateY(-50%);
   }
 }
@@ -2755,6 +2869,26 @@ button:focus-visible {
     right: 2%;
     left: 37%;
     transform: none;
+  }
+
+  .archive-phone-stack {
+    top: 5%;
+    right: 3%;
+    bottom: 28%;
+    left: 3%;
+    gap: clamp(0.4rem, 2.4vw, 0.8rem);
+  }
+
+  .archive-phone-card {
+    width: min(29%, 8.5rem);
+  }
+
+  .visual-swarm .archive-phone-stack {
+    gap: clamp(0.4rem, 2.4vw, 0.8rem);
+  }
+
+  .visual-swarm .archive-phone-card {
+    width: min(30%, 9rem);
   }
 
   .visual-presence .prototype-primary,
