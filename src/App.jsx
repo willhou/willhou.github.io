@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from "react";
 const portraitMoments = ["idea", "dog", "ski", "arsenal"];
 const portraitMomentDurations = {
   idea: 1300,
-  dog: 2200,
-  ski: 2200,
-  arsenal: 2200,
+  dog: 3300,
+  ski: 3300,
+  arsenal: 3300,
 };
 
 const work = [
@@ -818,14 +818,27 @@ function IdeaBulb() {
 
 function PortraitThought() {
   return (
-    <span className="portrait-thought" aria-hidden="true">
-      <span className="portrait-thought-content portrait-thought-dog">
-        <img src="/images/my-dog.png" alt="" />
-      </span>
-      <span className="portrait-thought-content portrait-thought-ski" role="presentation">
+    <span className="portrait-thought">
+      <a
+        className="portrait-thought-content portrait-thought-dog"
+        href="https://www.instagram.com/solmi.sesame/"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="View Solmi the dog on Instagram"
+      >
+        <img src="/images/my-dog.png" alt="Solmi the dog" />
+      </a>
+      <span
+        className="portrait-thought-content portrait-thought-ski"
+        aria-hidden="true"
+        role="presentation"
+      >
         ⛷️
       </span>
-      <span className="portrait-thought-content portrait-thought-arsenal">
+      <span
+        className="portrait-thought-content portrait-thought-arsenal"
+        aria-hidden="true"
+      >
         <img src="/images/arsenal.png" alt="" />
       </span>
     </span>
@@ -1173,15 +1186,14 @@ function PointerPortrait() {
   }, []);
 
   return (
-    <div
-      className="portrait-stage"
-      ref={portraitRef}
-      role="img"
-      aria-label="Illustration of Will Hou looking toward the pointer and occasionally thinking about his dog, skiing, and Arsenal"
-    >
+    <div className="portrait-stage" ref={portraitRef}>
       <IdeaBulb />
       <PortraitThought />
-      <div className="portrait-rig">
+      <div
+        className="portrait-rig"
+        role="img"
+        aria-label="Illustration of Will Hou looking toward the pointer and occasionally thinking about his dog, skiing, and Arsenal"
+      >
         <PortraitArt />
       </div>
     </div>
