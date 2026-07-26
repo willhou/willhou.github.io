@@ -680,6 +680,11 @@ button:focus-visible {
   }
 }
 
+.ezi-studio-wordmark.is-touch-active::after {
+  background-position: 0 50%;
+  opacity: 1;
+}
+
 .career-divider {
   position: relative;
   overflow-x: auto;
@@ -1371,10 +1376,11 @@ button:focus-visible {
 .surface-studio-real {
   position: absolute;
   top: 50%;
-  right: 4%;
+  right: auto;
+  left: calc(50% + 0.7rem + min(9.5rem, 18%));
   width: min(40%, 29rem);
   aspect-ratio: 1800 / 1627;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
 }
 
 .surface-studio-frame {
@@ -2566,10 +2572,10 @@ button:focus-visible {
 
   .surface-studio-real {
     top: 50%;
-    right: 4%;
-    left: 47%;
-    width: auto;
-    transform: translateY(-50%);
+    right: auto;
+    left: 50%;
+    width: min(49%, 29rem);
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -2872,9 +2878,10 @@ button:focus-visible {
 
   .surface-studio-real {
     top: 3%;
-    right: 2%;
-    left: 37%;
-    transform: none;
+    right: auto;
+    left: 50%;
+    width: 61%;
+    transform: translateX(-50%);
   }
 
   .archive-phone-stack {

@@ -438,6 +438,39 @@ function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
 
+function EziStudioWordmark() {
+  const [isTouchActive, setIsTouchActive] = useState(false);
+  const touchTimerRef = useRef(0);
+
+  useEffect(
+    () => () => {
+      window.clearTimeout(touchTimerRef.current);
+    },
+    [],
+  );
+
+  function handlePointerDown(event) {
+    if (event.pointerType !== "touch") return;
+
+    window.clearTimeout(touchTimerRef.current);
+    setIsTouchActive(true);
+    touchTimerRef.current = window.setTimeout(() => {
+      touchTimerRef.current = 0;
+      setIsTouchActive(false);
+    }, 1100);
+  }
+
+  return (
+    <span
+      className={`ezi-studio-wordmark${isTouchActive ? " is-touch-active" : ""}`}
+      data-text="Ezi Studio"
+      onPointerDown={handlePointerDown}
+    >
+      Ezi Studio
+    </span>
+  );
+}
+
 const fluentVideoId = "miM6mBAfA8g";
 
 function FluentVideoVisual() {
@@ -1268,9 +1301,7 @@ function App() {
                 !nventor at Roam
               </a>
               {" "}building its Android app. I also make independent software through{" "}
-              <span className="ezi-studio-wordmark" data-text="Ezi Studio">
-                Ezi Studio
-              </span>
+              <EziStudioWordmark />
               .
             </h1>
           </div>
