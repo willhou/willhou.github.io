@@ -929,7 +929,6 @@ function PointerPortrait() {
     if (!portrait) return undefined;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const finePointer = window.matchMedia("(pointer: fine)");
     const portraitParts = {
       face: portrait.querySelector("[data-portrait-face]"),
       jaw: portrait.querySelector("[data-portrait-jaw]"),
@@ -942,7 +941,8 @@ function PointerPortrait() {
       earRight: portrait.querySelector("[data-portrait-ear-right]"),
       hair: portrait.querySelector("[data-portrait-hair]"),
     };
-    let motionEnabled = finePointer.matches && !reducedMotion.matches;
+    let motionEnabled = !reducedMotion.matches;
+    let activeTouchPointerId = null;
     let animationFrame = 0;
     let targetX = 0;
     let targetY = 0;
@@ -1130,7 +1130,7 @@ function PointerPortrait() {
       requestPaint();
     }
 
-    function handlePointerMove(event) {
+    function updatePortraitTarget(event) {
       if (!motionEnabled) return;
 
       const rect = portrait.getBoundingClientRect();
@@ -1147,8 +1147,38 @@ function PointerPortrait() {
       requestPaint();
     }
 
+    function handlePointerDown(event) {
+      if (event.pointerType !== "touch") return;
+
+      activeTouchPointerId = event.pointerId;
+      updatePortraitTarget(event);
+    }
+
+    function handlePointerMove(event) {
+      if (
+        event.pointerType === "touch" &&
+        event.pointerId !== activeTouchPointerId
+      ) {
+        return;
+      }
+
+      updatePortraitTarget(event);
+    }
+
+    function handlePointerEnd(event) {
+      if (
+        event.pointerType !== "touch" ||
+        event.pointerId !== activeTouchPointerId
+      ) {
+        return;
+      }
+
+      activeTouchPointerId = null;
+      resetPortrait();
+    }
+
     function handleMotionPreference() {
-      motionEnabled = finePointer.matches && !reducedMotion.matches;
+      motionEnabled = !reducedMotion.matches;
 
       if (!motionEnabled) resetPortrait();
 
@@ -1165,18 +1195,22 @@ function PointerPortrait() {
 
     scheduleBlink();
     scheduleMoment();
+    window.addEventListener("pointerdown", handlePointerDown, { passive: true });
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointerup", handlePointerEnd, { passive: true });
+    window.addEventListener("pointercancel", handlePointerEnd, { passive: true });
     window.addEventListener("blur", resetPortrait);
     document.documentElement.addEventListener("mouseleave", resetPortrait);
     reducedMotion.addEventListener("change", handleMotionPreference);
-    finePointer.addEventListener("change", handleMotionPreference);
 
     return () => {
+      window.removeEventListener("pointerdown", handlePointerDown);
       window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerEnd);
+      window.removeEventListener("pointercancel", handlePointerEnd);
       window.removeEventListener("blur", resetPortrait);
       document.documentElement.removeEventListener("mouseleave", resetPortrait);
       reducedMotion.removeEventListener("change", handleMotionPreference);
-      finePointer.removeEventListener("change", handleMotionPreference);
       window.cancelAnimationFrame(animationFrame);
       clearBlinkTimers();
       clearMomentTimers();
@@ -1192,7 +1226,7 @@ function PointerPortrait() {
       <div
         className="portrait-rig"
         role="img"
-        aria-label="Illustration of Will Hou looking toward the pointer and occasionally thinking about his dog, skiing, and Arsenal"
+        aria-label="Illustration of Will Hou looking toward the pointer or touch and occasionally thinking about his dog, skiing, and Arsenal"
       >
         <PortraitArt />
       </div>
