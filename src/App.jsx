@@ -80,10 +80,15 @@ const work = [
         visual: "mail",
       },
       {
-        title: "Fluent on Android",
+        title: "Fluent Design System",
         description:
-          "Reusable motion, color, and layout guidance adapted to native Android patterns.",
-        visual: "system",
+          "Much of the theming and UI work I contributed to Outlook Mobile helped bootstrap Fluent for mobile, which was later adopted company-wide across other Microsoft products, including Windows. Related work includes the ",
+        descriptionLink: {
+          label: "Fluent System Icons library",
+          href: "https://github.com/microsoft/fluentui-system-icons",
+        },
+        descriptionSuffix: ".",
+        visual: "fluent",
       },
     ],
   },
@@ -108,10 +113,10 @@ const work = [
         visual: "calendar",
       },
       {
-        title: "Quick event creation",
+        title: "Sunrise Meet keyboard",
         description:
-          "A lightweight flow for turning plans into calendar events with fewer decisions.",
-        visual: "flow",
+          "I shipped Sunrise Meet, a calendar keyboard that let people share available times from any conversation without switching apps, turning meeting coordination into a single link.",
+        visual: "meet",
       },
     ],
   },
@@ -498,6 +503,67 @@ function PrototypeVisual({ title, visual }) {
             width="840"
             height="1342"
           />
+        </div>
+      </div>
+    );
+  }
+
+  if (visual === "meet") {
+    return (
+      <div
+        className="project-visual visual-meet"
+        role="img"
+        aria-label="Sunrise Meet keyboard, invitation, and availability picker screens"
+      >
+        <div className="meet-device-stack" aria-hidden="true">
+          <img
+            className="meet-device meet-device-compose"
+            src="/images/projects/sunrise-device-meet-compose.png"
+            alt=""
+            width="840"
+            height="1335"
+          />
+          <img
+            className="meet-device meet-device-invite"
+            src="/images/projects/sunrise-device-meet-invite.png"
+            alt=""
+            width="840"
+            height="1444"
+          />
+          <img
+            className="meet-device meet-device-picker"
+            src="/images/projects/sunrise-device-meet-picker.png"
+            alt=""
+            width="840"
+            height="1444"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (visual === "fluent") {
+    return (
+      <div
+        className="project-visual visual-fluent"
+        aria-label="Microsoft Surface Studio displaying a Fluent Design System demo"
+      >
+        <div className="surface-studio-real">
+          <img
+            className="surface-studio-frame"
+            src="/images/projects/surface-studio-2-front-mockup.png"
+            alt=""
+            width="1120"
+            height="940"
+          />
+          <div className="surface-studio-screen">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/miM6mBAfA8g?rel=0"
+              title="Fluent Design System demo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
         </div>
       </div>
     );
@@ -1066,7 +1132,21 @@ function App() {
                   />
                   <div className="project-feature-copy">
                     <h3>{selectedProject.title}</h3>
-                    <p>{selectedProject.description}</p>
+                    <p>
+                      {selectedProject.description}
+                      {selectedProject.descriptionLink ? (
+                        <>
+                          <a
+                            href={selectedProject.descriptionLink.href}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {selectedProject.descriptionLink.label}
+                          </a>
+                          {selectedProject.descriptionSuffix}
+                        </>
+                      ) : null}
+                    </p>
                   </div>
                 </article>
               </div>

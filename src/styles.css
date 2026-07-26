@@ -1174,6 +1174,16 @@ button:focus-visible {
   line-height: 1.55;
 }
 
+.project-feature-copy a {
+  color: var(--selection-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.project-feature-copy a:hover {
+  color: var(--text);
+}
+
 .project-visual {
   position: absolute;
   inset: 0;
@@ -1242,6 +1252,84 @@ button:focus-visible {
   z-index: 1;
   width: 31%;
   transform: rotate(3deg);
+}
+
+.meet-device-stack {
+  position: absolute;
+  top: 8%;
+  right: 5%;
+  bottom: 7%;
+  left: 31%;
+}
+
+.meet-device {
+  position: absolute;
+  height: auto;
+  transform-origin: 50% 100%;
+}
+
+.meet-device-compose {
+  top: -41%;
+  bottom: auto;
+  left: -3%;
+  z-index: 4;
+  width: 42%;
+  filter: drop-shadow(0 20px 18px rgb(20 30 34 / 18%));
+  transform: rotate(-3deg);
+}
+
+.meet-device-invite {
+  top: 5%;
+  left: 49%;
+  z-index: 3;
+  width: 22%;
+}
+
+.meet-device-picker {
+  top: 17%;
+  right: 0;
+  z-index: 2;
+  width: 22%;
+  transform: rotate(5deg);
+}
+
+.surface-studio-real {
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  left: 56%;
+  aspect-ratio: 1120 / 940;
+  transform: translateY(-50%);
+}
+
+.surface-studio-frame {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.surface-studio-screen {
+  position: absolute;
+  z-index: 2;
+  top: 5.85%;
+  left: 5.54%;
+  width: 77.95%;
+  height: 61.81%;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #000;
+}
+
+.surface-studio-screen iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 .prototype-primary {
@@ -1947,6 +2035,17 @@ button:focus-visible {
     right: 2%;
     left: 35%;
   }
+
+  .meet-device-compose {
+    top: -22%;
+  }
+
+  .surface-studio-real {
+    top: 50%;
+    right: 4%;
+    left: 47%;
+    transform: translateY(-50%);
+  }
 }
 
 @media (max-width: 760px) {
@@ -2094,6 +2193,41 @@ button:focus-visible {
     top: 18%;
     right: 6%;
     width: 30%;
+  }
+
+  .meet-device-stack {
+    top: 12%;
+    right: 3%;
+    bottom: 14%;
+    left: 3%;
+  }
+
+  .meet-device {
+    width: 23%;
+  }
+
+  .meet-device-compose {
+    top: -10%;
+    bottom: auto;
+    left: -3%;
+    width: 40%;
+  }
+
+  .meet-device-invite {
+    top: 4%;
+    left: 50%;
+  }
+
+  .meet-device-picker {
+    top: 18%;
+    right: 0;
+  }
+
+  .surface-studio-real {
+    top: 3%;
+    right: 2%;
+    left: 37%;
+    transform: none;
   }
 
   .visual-presence .prototype-primary,
