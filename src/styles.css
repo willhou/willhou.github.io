@@ -2515,7 +2515,7 @@ button:focus-visible {
   .surface-studio-real {
     top: 50%;
     right: auto;
-    left: 50%;
+    left: calc(50% + 0.7rem + min(9rem, 17%));
     width: min(49%, 29rem);
     transform: translate(-50%, -50%);
   }
@@ -2821,7 +2821,7 @@ button:focus-visible {
   }
 
   .surface-studio-real {
-    top: 3%;
+    top: 15%;
     right: auto;
     left: 50%;
     width: 61%;
