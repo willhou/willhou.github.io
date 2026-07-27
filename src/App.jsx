@@ -19,15 +19,15 @@ const work = [
     links: [{ label: "Roam", href: "https://ro.am/" }],
     projects: [
       {
-        title: "Map",
+        title: "Virtual office",
         description:
-          "A mobile room view designed to make it easy to see who is available and join a conversation quickly.",
+          "See your whole company at a glance, including who is available, where conversations are happening, and when to drop in.",
         visual: "presence",
       },
       {
         title: "Inbox",
         description:
-          "A focused in-call experience that keeps audio, movement, and teammate context within thumb reach.",
+          "AI-powered messaging that brings direct messages, group chats, threads, and meeting context together in one organized inbox.",
         visual: "controls",
       },
     ],
