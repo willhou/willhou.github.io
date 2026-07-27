@@ -535,14 +535,14 @@ function PrototypeVisual({ title, visual }) {
             src="/images/projects/outlook-device-dark-inbox.png"
             alt=""
             width="840"
-            height="1382"
+            height="1545"
           />
           <img
             className="outlook-phone outlook-phone-center"
             src="/images/projects/outlook-device-inbox.png"
             alt=""
             width="840"
-            height="1655"
+            height="1617"
           />
           <img
             className="outlook-phone outlook-phone-calendar"
@@ -629,45 +629,29 @@ function PrototypeVisual({ title, visual }) {
       aria-label="DoorDash desktop and mobile, and Caviar mobile product experiences using the Prism design system"
     >
       <div className="prism-device-stack" aria-hidden="true">
-        <div className="prism-desktop-frame">
-            <span className="prism-desktop-toolbar">
-              <i />
-              <i />
-              <i />
-            </span>
-            <div className="prism-desktop-screen">
-              <img
-                src="/images/projects/doordash-prism-desktop.png"
-                alt=""
-                width="3600"
-                height="2042"
-            />
-          </div>
-        </div>
-        <div className="prism-phone-frame prism-phone-caviar">
-          <span className="prism-phone-speaker" />
-          <div className="prism-phone-screen">
-            <img
-              src="/images/projects/caviar-prism-mobile.png"
-              alt=""
-              width="1080"
-              height="2364"
-            />
-          </div>
-        </div>
-        <div className="prism-phone-frame prism-phone-doordash">
-          <span className="prism-phone-speaker" />
-          <div className="prism-phone-screen">
-            <img
-                src="/images/projects/doordash-prism-mobile.png"
-                alt=""
-                width="1080"
-                height="2364"
-              />
-            </div>
-          </div>
-        </div>
+        <img
+          className="prism-device prism-device-desktop"
+          src="/images/projects/doordash-prism-device-desktop.png"
+          alt=""
+          width="1680"
+          height="1065"
+        />
+        <img
+          className="prism-device prism-device-caviar"
+          src="/images/projects/caviar-prism-device-mobile.png"
+          alt=""
+          width="760"
+          height="1493"
+        />
+        <img
+          className="prism-device prism-device-doordash"
+          src="/images/projects/doordash-prism-device-mobile.png"
+          alt=""
+          width="760"
+          height="1493"
+        />
       </div>
+    </div>
     );
   }
 

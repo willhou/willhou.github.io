@@ -6,6 +6,10 @@ struct DeviceSpec {
     let screenColor: NSColor
     let topBacking: CGFloat
     let bottomMask: CGFloat
+    let systemNavigationHeight: CGFloat
+    let drawsSyntheticStatusBar: Bool
+    let usesDarkSystemNavigation: Bool
+    let sourceCropBottomPixels: Int
 }
 
 func compose(_ spec: DeviceSpec) throws {
@@ -24,10 +28,37 @@ func compose(_ spec: DeviceSpec) throws {
         )
     }
 
+    let croppedHeight = source.height - spec.sourceCropBottomPixels
+    guard
+        croppedHeight > 0,
+        let renderSource = source.cropping(
+            to: CGRect(
+                x: 0,
+                y: 0,
+                width: source.width,
+                height: croppedHeight
+            )
+        )
+    else {
+        throw NSError(
+            domain: "ComposeOutlookDevices",
+            code: 4,
+            userInfo: [NSLocalizedDescriptionKey: "Invalid crop for \(spec.source)"]
+        )
+    }
+    let renderImage = NSImage(
+        cgImage: renderSource,
+        size: NSSize(
+            width: renderSource.width,
+            height: renderSource.height
+        )
+    )
+
     let screenWidth: CGFloat = 668
     let imageHeight =
-        screenWidth * CGFloat(source.height) / CGFloat(source.width)
-    let screenHeight = imageHeight + spec.topBacking
+        screenWidth * CGFloat(renderSource.height) / CGFloat(renderSource.width)
+    let screenHeight =
+        imageHeight + spec.topBacking + spec.systemNavigationHeight
     let shellWidth: CGFloat = 724
     let shellHeight = screenHeight + 78
     let canvasWidth: CGFloat = 840
@@ -46,12 +77,15 @@ func compose(_ spec: DeviceSpec) throws {
     )
     let imageRect = NSRect(
         x: screenRect.minX - 4,
-        y: screenRect.minY,
+        y: screenRect.minY + spec.systemNavigationHeight,
         width: screenRect.width + 8,
         height: imageHeight
     )
     let screenRadius: CGFloat = spec.topBacking > 0 ? 16 : 38
-    let sourceRadius: CGFloat = spec.topBacking > 0 ? 64 : screenRadius
+    let sourceRadius: CGFloat =
+        spec.systemNavigationHeight > 0
+            ? 16
+            : (spec.topBacking > 0 ? 64 : screenRadius)
 
     guard let bitmap = NSBitmapImageRep(
         bitmapDataPlanes: nil,
@@ -131,13 +165,13 @@ func compose(_ spec: DeviceSpec) throws {
         xRadius: sourceRadius,
         yRadius: sourceRadius
     ).addClip()
-    sourceImage.draw(
+    renderImage.draw(
         in: imageRect,
         from: NSRect(
             x: 0,
             y: 0,
-            width: CGFloat(source.width),
-            height: CGFloat(source.height)
+            width: CGFloat(renderSource.width),
+            height: CGFloat(renderSource.height)
         ),
         operation: .sourceOver,
         fraction: 1,
@@ -158,9 +192,107 @@ func compose(_ spec: DeviceSpec) throws {
         NSColor.white.setFill()
         NSRect(
             x: screenRect.minX,
-            y: screenRect.minY,
+            y: imageRect.minY,
             width: screenRect.width,
             height: spec.bottomMask
+        ).fill()
+    }
+    if spec.drawsSyntheticStatusBar {
+        let statusBar = NSRect(
+            x: screenRect.minX,
+            y: screenRect.maxY - 52,
+            width: screenRect.width,
+            height: 52
+        )
+        spec.screenColor.setFill()
+        statusBar.fill()
+
+        let statusAttributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 20, weight: .medium),
+            .foregroundColor: NSColor.white,
+        ]
+        NSAttributedString(
+            string: "8:28 AM",
+            attributes: statusAttributes
+        ).draw(
+            at: NSPoint(
+                x: statusBar.minX + 26,
+                y: statusBar.minY + 15
+            )
+        )
+
+        NSColor.white.setFill()
+        for index in 0..<4 {
+            let bar = NSRect(
+                x: statusBar.maxX - 174 + CGFloat(index * 8),
+                y: statusBar.minY + 16,
+                width: 5,
+                height: CGFloat(5 + index * 4)
+            )
+            NSBezierPath(
+                roundedRect: bar,
+                xRadius: 2,
+                yRadius: 2
+            ).fill()
+        }
+
+        NSAttributedString(
+            string: "100%",
+            attributes: statusAttributes
+        ).draw(
+            at: NSPoint(
+                x: statusBar.maxX - 132,
+                y: statusBar.minY + 15
+            )
+        )
+
+        let batteryBody = NSRect(
+            x: statusBar.maxX - 43,
+            y: statusBar.minY + 18,
+            width: 22,
+            height: 13
+        )
+        let batteryPath = NSBezierPath(
+            roundedRect: batteryBody,
+            xRadius: 3,
+            yRadius: 3
+        )
+        batteryPath.lineWidth = 2
+        NSColor.white.setStroke()
+        batteryPath.stroke()
+        NSRect(
+            x: batteryBody.maxX + 2,
+            y: batteryBody.minY + 4,
+            width: 3,
+            height: 5
+        ).fill()
+    }
+    if spec.systemNavigationHeight > 0 {
+        let navigationBackground =
+            spec.usesDarkSystemNavigation ? NSColor.black : NSColor.white
+        let gestureColor =
+            spec.usesDarkSystemNavigation
+                ? NSColor.white.withAlphaComponent(0.82)
+                : NSColor(calibratedWhite: 0.16, alpha: 0.82)
+        navigationBackground.setFill()
+        NSRect(
+            x: screenRect.minX,
+            y: screenRect.minY,
+            width: screenRect.width,
+            height: spec.systemNavigationHeight
+        ).fill()
+
+        let gestureBar = NSRect(
+            x: screenRect.midX - 94,
+            y: screenRect.minY + 17,
+            width: 188,
+            height: 7
+        )
+        gestureColor.setFill()
+        NSBezierPath(
+            roundedRect: gestureBar,
+            xRadius: 4,
+            yRadius: 4
         ).fill()
     }
     NSGraphicsContext.restoreGraphicsState()
@@ -199,25 +331,42 @@ let root = FileManager.default.currentDirectoryPath
 let projectImages = "\(root)/public/images/projects"
 let specs = [
     DeviceSpec(
-        source: "\(projectImages)/outlook-dark-inbox.png",
+        source: "\(projectImages)/outlook-dark-inbox-complete.png",
         output: "\(projectImages)/outlook-device-dark-inbox.png",
-        screenColor: .black,
-        topBacking: 0,
-        bottomMask: 0
+        screenColor: NSColor(
+            srgbRed: 32 / 255,
+            green: 32 / 255,
+            blue: 32 / 255,
+            alpha: 1
+        ),
+        topBacking: 10,
+        bottomMask: 0,
+        systemNavigationHeight: 28,
+        drawsSyntheticStatusBar: true,
+        usesDarkSystemNavigation: true,
+        sourceCropBottomPixels: 96
     ),
     DeviceSpec(
         source: "\(projectImages)/outlook-inbox.png",
         output: "\(projectImages)/outlook-device-inbox.png",
         screenColor: NSColor(srgbRed: 15 / 255, green: 108 / 255, blue: 189 / 255, alpha: 1),
-        topBacking: 14,
-        bottomMask: 18
+        topBacking: 10,
+        bottomMask: 0,
+        systemNavigationHeight: 28,
+        drawsSyntheticStatusBar: true,
+        usesDarkSystemNavigation: false,
+        sourceCropBottomPixels: 60
     ),
     DeviceSpec(
         source: "\(projectImages)/outlook-calendar.png",
         output: "\(projectImages)/outlook-device-calendar.png",
         screenColor: NSColor(srgbRed: 15 / 255, green: 108 / 255, blue: 189 / 255, alpha: 1),
         topBacking: 14,
-        bottomMask: 0
+        bottomMask: 0,
+        systemNavigationHeight: 0,
+        drawsSyntheticStatusBar: false,
+        usesDarkSystemNavigation: false,
+        sourceCropBottomPixels: 0
     ),
 ]
 
