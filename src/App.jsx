@@ -471,10 +471,45 @@ function EziStudioWordmark() {
   );
 }
 
-const fluentVideoId = "miM6mBAfA8g";
-
 function FluentVideoVisual() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showControls, setShowControls] = useState(false);
+  const videoRef = useRef(null);
+  const controlsTimerRef = useRef(0);
+
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(controlsTimerRef.current);
+    };
+  }, []);
+
+  function hideControlsAfter(delay = 2400) {
+    window.clearTimeout(controlsTimerRef.current);
+    controlsTimerRef.current = window.setTimeout(() => {
+      setShowControls(false);
+    }, delay);
+  }
+
+  function revealControls() {
+    if (!isPlaying) return;
+
+    setShowControls(true);
+    hideControlsAfter();
+  }
+
+  function handleVideoPlay() {
+    setIsPlaying(true);
+    setShowControls(true);
+    hideControlsAfter();
+  }
+
+  function handlePlay() {
+    const playback = videoRef.current?.play();
+
+    if (playback) {
+      playback.catch(() => setIsPlaying(false));
+    }
+  }
 
   return (
     <div
@@ -489,23 +524,36 @@ function FluentVideoVisual() {
           width="1800"
           height="1627"
         />
-        <div className="surface-studio-screen">
-          {isPlaying ? (
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${fluentVideoId}?autoplay=1&loop=1&playlist=${fluentVideoId}&rel=0&cc_load_policy=0&controls=0&playsinline=1`}
-              title="Fluent Design System demo"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              allowFullScreen
-            />
-          ) : (
+        <div
+          className="surface-studio-screen"
+          onPointerEnter={revealControls}
+          onPointerMove={revealControls}
+          onPointerDown={revealControls}
+          onPointerLeave={() => hideControlsAfter(700)}
+          onFocusCapture={revealControls}
+        >
+          <video
+            ref={videoRef}
+            src="/videos/fluent-mobile-experiences.mp4"
+            poster="/images/projects/fluent-video-poster.jpg"
+            aria-label="Fluent Design System demo"
+            preload="metadata"
+            playsInline
+            loop
+            controls={showControls}
+            controlsList="nodownload"
+            onPlay={handleVideoPlay}
+            onPause={revealControls}
+          />
+          {!isPlaying && (
             <button
               className="surface-studio-poster"
               type="button"
               aria-label="Play Fluent Design System video"
-              onClick={() => setIsPlaying(true)}
+              onClick={handlePlay}
             >
               <img
-                src={`https://i.ytimg.com/vi/${fluentVideoId}/maxresdefault.jpg`}
+                src="/images/projects/fluent-video-poster.jpg"
                 alt=""
                 width="1280"
                 height="720"
