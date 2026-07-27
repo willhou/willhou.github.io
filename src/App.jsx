@@ -1299,21 +1299,178 @@ function PointerPortrait() {
   );
 }
 
+function getProjectScrollLeft(viewport, card, index, count) {
+  const shouldShowPrevious = count > 1 && index === count - 1;
+  const leadingPeek = shouldShowPrevious
+    ? viewport.clientWidth - card.offsetWidth
+    : 0;
+
+  return Math.max(0, card.offsetLeft - leadingPeek);
+}
+
 function App() {
   const [activeWork, setActiveWork] = useState(0);
   const [activeProject, setActiveProject] = useState(0);
+  const [isProjectReelPlaying, setIsProjectReelPlaying] = useState(false);
+  const reelViewportRef = useRef(null);
+  const reelPointerStartRef = useRef(null);
+  const reelScrollEndTimerRef = useRef(null);
   const activeTimelineStop = activeWork;
   const selectedWork = work[activeWork];
   const hasSelectedProjects = selectedWork.projects.length > 0;
-  const selectedProject = selectedWork.projects[activeProject];
+  const projectCount = selectedWork.projects.length;
   const timelineProgress =
     activeTimelineStop === work.length - 1
       ? 1
       : (activeTimelineStop + 0.5) / work.length;
 
+  useEffect(() => {
+    const viewport = reelViewportRef.current;
+    const activeCard = viewport?.querySelector(
+      `[data-project-index="${activeProject}"]`,
+    );
+
+    if (!viewport || !activeCard) {
+      return undefined;
+    }
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const frame = window.requestAnimationFrame(() => {
+      viewport.scrollTo({
+        behavior: reducedMotion ? "auto" : "smooth",
+        left: getProjectScrollLeft(
+          viewport,
+          activeCard,
+          activeProject,
+          projectCount,
+        ),
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeProject, activeWork, projectCount]);
+
+  useEffect(
+    () => () => window.clearTimeout(reelScrollEndTimerRef.current),
+    [],
+  );
+
+  useEffect(() => {
+    const viewport = reelViewportRef.current;
+
+    if (!viewport) {
+      return undefined;
+    }
+
+    let frame;
+    const alignActiveCard = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const activeCard = viewport.querySelector(
+          `[data-project-index="${activeProject}"]`,
+        );
+
+        if (activeCard) {
+          viewport.scrollTo({
+            behavior: "auto",
+            left: getProjectScrollLeft(
+              viewport,
+              activeCard,
+              activeProject,
+              projectCount,
+            ),
+          });
+        }
+      });
+    };
+
+    window.addEventListener("resize", alignActiveCard);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", alignActiveCard);
+    };
+  }, [activeProject, activeWork, projectCount]);
+
+  useEffect(() => {
+    if (!isProjectReelPlaying || projectCount < 2) {
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => {
+      setActiveProject((current) => (current + 1) % projectCount);
+    }, 6500);
+
+    return () => window.clearTimeout(timer);
+  }, [activeProject, activeWork, isProjectReelPlaying, projectCount]);
+
   function selectWork(index) {
     setActiveWork(index);
     setActiveProject(0);
+    setIsProjectReelPlaying(false);
+  }
+
+  function moveProject(direction) {
+    if (projectCount < 2) {
+      return;
+    }
+
+    setActiveProject(
+      (current) => (current + direction + projectCount) % projectCount,
+    );
+  }
+
+  function handleReelPointerDown(event) {
+    if (event.pointerType === "mouse") {
+      return;
+    }
+
+    reelPointerStartRef.current = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+  }
+
+  function handleReelPointerUp(event) {
+    const start = reelPointerStartRef.current;
+    reelPointerStartRef.current = null;
+
+    if (!start) {
+      return;
+    }
+
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+
+    if (Math.abs(deltaX) > 44 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+      moveProject(deltaX < 0 ? 1 : -1);
+    }
+  }
+
+  function handleReelScroll() {
+    window.clearTimeout(reelScrollEndTimerRef.current);
+    reelScrollEndTimerRef.current = window.setTimeout(() => {
+      const viewport = reelViewportRef.current;
+      const cards = viewport?.querySelectorAll("[data-project-index]");
+
+      if (!viewport || !cards?.length) {
+        return;
+      }
+
+      const closestCard = [...cards].reduce((closest, card) =>
+        Math.abs(card.offsetLeft - viewport.scrollLeft) <
+        Math.abs(closest.offsetLeft - viewport.scrollLeft)
+          ? card
+          : closest,
+      );
+      const closestIndex = Number(closestCard.dataset.projectIndex);
+
+      if (closestIndex !== activeProject) {
+        setActiveProject(closestIndex);
+      }
+    }, 120);
   }
 
   return (
@@ -1429,54 +1586,147 @@ function App() {
             </article>
 
             {hasSelectedProjects ? (
-              <div className="journey-projects">
-                <div className="project-stage" aria-live="polite">
-                  <article
-                    className="project-feature"
-                    key={`${selectedWork.name}-${selectedProject.title}`}
-                  >
-                    <PrototypeVisual
-                      title={selectedProject.title}
-                      visual={selectedProject.visual}
-                    />
-                    <div className="project-feature-copy">
-                      <h3>{selectedProject.title}</h3>
-                      <p>
-                        {selectedProject.description}
-                        {selectedProject.descriptionLink ? (
-                          <>
-                            <a
-                              href={selectedProject.descriptionLink.href}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              {selectedProject.descriptionLink.label}
-                            </a>
-                            {selectedProject.descriptionSuffix}
-                          </>
-                        ) : null}
-                      </p>
-                    </div>
-                  </article>
-                </div>
+              <div
+                className={`journey-projects project-reel${
+                  projectCount === 1 ? " is-single" : ""
+                }${isProjectReelPlaying ? " is-playing" : ""}`}
+                aria-label={`${selectedWork.name} project highlights`}
+                aria-roledescription="carousel"
+              >
                 <div
-                  className="project-index"
-                  aria-label={`${selectedWork.name} project stories`}
+                  className="project-reel-viewport"
+                  ref={reelViewportRef}
+                  tabIndex="0"
+                  onKeyDown={(event) => {
+                    if (event.key === "ArrowRight") {
+                      event.preventDefault();
+                      moveProject(1);
+                    } else if (event.key === "ArrowLeft") {
+                      event.preventDefault();
+                      moveProject(-1);
+                    }
+                  }}
+                  onPointerDown={handleReelPointerDown}
+                  onPointerUp={handleReelPointerUp}
+                  onScroll={handleReelScroll}
+                  onPointerCancel={() => {
+                    reelPointerStartRef.current = null;
+                  }}
                 >
-                  {selectedWork.projects.map((project, index) => (
+                  <div className="project-reel-track">
+                    {selectedWork.projects.map((project, index) => (
+                      <article
+                        className={`project-feature project-reel-card ${
+                          activeProject === index ? "is-active" : "is-preview"
+                        }${
+                          projectCount > 1 && index === projectCount - 1
+                            ? " is-last"
+                            : ""
+                        }`}
+                        aria-roledescription="slide"
+                        aria-label={`${index + 1} of ${projectCount}: ${project.title}`}
+                        data-project-index={index}
+                        key={project.title}
+                      >
+                        <div
+                          className="project-reel-card-content"
+                          inert={activeProject !== index}
+                        >
+                          <PrototypeVisual
+                            title={project.title}
+                            visual={project.visual}
+                          />
+                          <div className="project-feature-copy">
+                            <h3>{project.title}</h3>
+                            <p>
+                              {project.description}
+                              {project.descriptionLink ? (
+                                <>
+                                  <a
+                                    href={project.descriptionLink.href}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    {project.descriptionLink.label}
+                                  </a>
+                                  {project.descriptionSuffix}
+                                </>
+                              ) : null}
+                            </p>
+                          </div>
+                        </div>
+                        {activeProject !== index ? (
+                          <button
+                            type="button"
+                            className="project-reel-preview-button"
+                            aria-label={`Show ${project.title}`}
+                            onClick={() => setActiveProject(index)}
+                          />
+                        ) : null}
+                      </article>
+                    ))}
+                  </div>
+                </div>
+                {projectCount > 1 ? (
+                  <div className="project-reel-controls">
+                    <div
+                      className="project-reel-pagination"
+                      aria-label={`${selectedWork.name} project highlights`}
+                      role="group"
+                    >
+                      <button
+                        type="button"
+                        className="project-reel-step project-reel-previous"
+                        aria-label="Show previous project"
+                        onClick={() => moveProject(-1)}
+                      >
+                        <span aria-hidden="true" />
+                      </button>
+                      {selectedWork.projects.map((project, index) => (
+                        <button
+                          type="button"
+                          className={`project-reel-dot ${
+                            activeProject === index ? "active" : ""
+                          }`}
+                          aria-label={`Show ${project.title}`}
+                          aria-pressed={activeProject === index}
+                          key={project.title}
+                          onClick={() => setActiveProject(index)}
+                        />
+                      ))}
+                      <button
+                        type="button"
+                        className="project-reel-step project-reel-next"
+                        aria-label="Show next project"
+                        onClick={() => moveProject(1)}
+                      >
+                        <span aria-hidden="true" />
+                      </button>
+                    </div>
                     <button
                       type="button"
-                      className={activeProject === index ? "active" : ""}
-                      aria-pressed={activeProject === index}
-                      key={project.title}
-                      onClick={() => setActiveProject(index)}
+                      className="project-reel-toggle"
+                      aria-label={
+                        isProjectReelPlaying
+                          ? "Pause project highlights"
+                          : "Play project highlights"
+                      }
+                      aria-pressed={isProjectReelPlaying}
+                      onClick={() =>
+                        setIsProjectReelPlaying((isPlaying) => !isPlaying)
+                      }
                     >
-                      <span>{String(index + 1).padStart(2, "0")}</span>
-                      <strong>{project.title}</strong>
-                      <span aria-hidden="true">↗</span>
+                      <span
+                        className={
+                          isProjectReelPlaying
+                            ? "project-reel-pause-icon"
+                            : "project-reel-play-icon"
+                        }
+                        aria-hidden="true"
+                      />
                     </button>
-                  ))}
-                </div>
+                  </div>
+                ) : null}
               </div>
             ) : null}
           </div>
