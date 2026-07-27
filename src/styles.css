@@ -1576,27 +1576,27 @@ button:focus-visible {
 }
 
 .prism-device-desktop {
-  top: 18%;
-  left: 28%;
-  width: 47%;
+  top: 12%;
+  left: 29%;
+  width: 49%;
   transform: rotate(-1deg);
 }
 
 .prism-device-caviar {
   z-index: 2;
   top: auto;
-  right: 19%;
-  bottom: -5%;
-  width: 16.67%;
+  right: 17.5%;
+  bottom: -1.25%;
+  width: 18.5%;
   transform: rotate(-2deg);
 }
 
 .prism-device-doordash {
   z-index: 3;
   top: auto;
-  right: 8%;
-  bottom: -2%;
-  width: 16.67%;
+  right: 3.5%;
+  bottom: -1%;
+  width: 18.5%;
   transform: rotate(3deg);
 }
 
@@ -1969,27 +1969,28 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.65rem;
   padding-top: 1rem;
 }
 
 .project-reel-pagination {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
-  min-height: 2.85rem;
-  padding: 0.55rem 0.85rem;
+  gap: 0.2rem;
+  min-height: 3rem;
+  padding: 0.4rem 0.45rem;
   border: 1px solid var(--rule);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
-  backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  box-shadow:
+    0 10px 30px rgb(0 0 0 / 12%),
+    inset 0 1px rgb(255 255 255 / 5%);
+  backdrop-filter: blur(18px);
 }
 
 .project-reel-step {
   display: grid;
-  width: 1.7rem;
-  height: 1.7rem;
+  width: 2.05rem;
+  height: 2.05rem;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -2005,7 +2006,7 @@ button:focus-visible {
 .project-reel-step:hover,
 .project-reel-step:focus-visible {
   background: var(--selection-tint);
-  transform: scale(1.08);
+  transform: scale(1.04);
 }
 
 .project-reel-step span {
@@ -2023,85 +2024,103 @@ button:focus-visible {
   transform: translateX(-0.1rem) rotate(45deg);
 }
 
+.project-reel-scrubber {
+  position: relative;
+  display: flex;
+  width: calc(3.25rem + var(--reel-node-count) * 1.15rem);
+  min-height: 2.05rem;
+  align-items: center;
+  padding: 0 0.55rem;
+  border-right: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+  border-left: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+}
+
+.project-reel-progress {
+  position: absolute;
+  top: 50%;
+  right: 1.25rem;
+  left: 1.25rem;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 20%, transparent);
+  transform: translateY(-50%);
+}
+
+.project-reel-progress > span {
+  display: block;
+  width: var(--reel-progress);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--selection-accent);
+  box-shadow: 0 0 0.5rem color-mix(in srgb, var(--selection-accent) 55%, transparent);
+  transition: width 480ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-reel-markers {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .project-reel-dot {
   position: relative;
-  width: 0.55rem;
-  height: 0.55rem;
-  overflow: hidden;
+  width: 1.4rem;
+  height: 2.05rem;
   padding: 0;
   border: 0;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--text) 40%, transparent);
+  background: transparent;
   cursor: pointer;
-  transition:
-    width 260ms cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 180ms ease,
-    transform 180ms ease;
+  transition: transform 180ms ease;
 }
 
-.project-reel-dot:hover,
-.project-reel-dot:focus-visible {
-  background: color-mix(in srgb, var(--text) 70%, transparent);
-  transform: scale(1.12);
-}
-
-.project-reel-dot.active {
-  width: 2.7rem;
-  background: color-mix(in srgb, var(--text) 22%, transparent);
-}
-
-.project-reel-dot.active::after {
+.project-reel-dot::before {
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: var(--text);
+  top: 50%;
+  left: 50%;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 38%, transparent);
   content: "";
-  transform: scaleX(1);
-  transform-origin: left center;
-}
-
-.project-reel.is-playing .project-reel-dot.active::after {
-  animation: project-reel-progress 6500ms linear both;
-}
-
-.project-reel-toggle {
-  display: grid;
-  width: 2.85rem;
-  height: 2.85rem;
-  padding: 0;
-  border: 1px solid var(--rule);
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
-  color: var(--text);
-  cursor: pointer;
-  place-items: center;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
-  backdrop-filter: blur(14px);
+  transform: translate(-50%, -50%);
   transition:
+    width 220ms ease,
+    height 220ms ease,
     background-color 180ms ease,
+    box-shadow 180ms ease,
     transform 180ms ease;
 }
 
-.project-reel-toggle:hover,
-.project-reel-toggle:focus-visible {
-  background: var(--selection-tint);
-  transform: scale(1.06);
+.project-reel-dot.complete::before {
+  background: var(--selection-accent);
 }
 
-.project-reel-play-icon {
-  width: 0;
-  height: 0;
-  margin-left: 0.15rem;
-  border-top: 0.38rem solid transparent;
-  border-bottom: 0.38rem solid transparent;
-  border-left: 0.62rem solid currentColor;
+.project-reel-dot.active::before {
+  width: 0.68rem;
+  height: 0.68rem;
+  background: var(--surface);
+  box-shadow:
+    0 0 0 2px var(--selection-accent),
+    0 0 0 5px color-mix(in srgb, var(--selection-accent) 18%, transparent);
 }
 
-.project-reel-pause-icon {
-  width: 0.62rem;
-  height: 0.75rem;
-  border-right: 0.2rem solid currentColor;
-  border-left: 0.2rem solid currentColor;
+.project-reel-dot:hover::before {
+  background: var(--selection-accent);
+  transform: translate(-50%, -50%) scale(1.14);
+}
+
+.project-reel-dot.active:hover::before {
+  background: var(--surface);
+}
+
+.project-reel-dot:focus-visible {
+  outline: 2px solid var(--selection-accent);
+  outline-offset: -2px;
+  border-radius: 999px;
 }
 
 .visual-presence .prototype-primary,
@@ -2597,16 +2616,6 @@ button:focus-visible {
   }
 }
 
-@keyframes project-reel-progress {
-  from {
-    transform: scaleX(0);
-  }
-
-  to {
-    transform: scaleX(1);
-  }
-}
-
 .site-footer {
   display: flex;
   align-items: flex-start;
@@ -2661,20 +2670,21 @@ button:focus-visible {
   }
 
   .prism-device-desktop {
-    left: 28%;
-    width: 47%;
+    top: 11%;
+    left: 25%;
+    width: 51%;
   }
 
   .prism-device-caviar {
-    bottom: 8%;
-    right: 19%;
-    width: 17.96%;
+    right: 18%;
+    bottom: -1.5%;
+    width: 21%;
   }
 
   .prism-device-doordash {
-    bottom: 8%;
-    right: 5%;
-    width: 17.96%;
+    right: 1.5%;
+    bottom: -1%;
+    width: 21%;
   }
 
   .outlook-phone-stack {
@@ -2814,23 +2824,23 @@ button:focus-visible {
   }
 
   .prism-device-desktop {
-    top: 13%;
-    left: 4%;
-    width: 61%;
+    top: 9%;
+    left: 5%;
+    width: 68%;
   }
 
   .prism-device-caviar {
-    top: 21%;
-    right: 20%;
-    bottom: auto;
-    width: 24.37%;
+    top: auto;
+    right: 25%;
+    bottom: 29%;
+    width: 28%;
   }
 
   .prism-device-doordash {
-    top: 18%;
+    top: auto;
     right: 2%;
-    bottom: auto;
-    width: 24.37%;
+    bottom: 29.5%;
+    width: 28%;
   }
 
   .infrastructure-diagram {
@@ -3062,6 +3072,40 @@ button:focus-visible {
   }
 }
 
+@media (max-width: 480px) {
+  .prism-device-desktop {
+    top: 8%;
+    left: 4%;
+    width: 70%;
+  }
+
+  .prism-device-caviar {
+    right: 25%;
+    bottom: 39%;
+    width: 30%;
+  }
+
+  .prism-device-doordash {
+    right: 0;
+    bottom: 39.5%;
+    width: 30%;
+  }
+}
+
+@media (max-width: 360px) {
+  .prism-device-caviar {
+    right: 26%;
+    bottom: 58%;
+    width: 32%;
+  }
+
+  .prism-device-doordash {
+    right: -1%;
+    bottom: 58.5%;
+    width: 32%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -3093,10 +3137,6 @@ button:focus-visible {
   }
 
   .project-feature {
-    animation: none;
-  }
-
-  .project-reel-dot.active::after {
     animation: none;
   }
 

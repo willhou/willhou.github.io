@@ -471,6 +471,23 @@ function EziStudioWordmark() {
   );
 }
 
+function RoleDetail({ copy }) {
+  const wordmark = "Ezi Studio";
+  const wordmarkIndex = copy.indexOf(wordmark);
+
+  if (wordmarkIndex === -1) {
+    return <p className="role-detail">{copy}</p>;
+  }
+
+  return (
+    <p className="role-detail">
+      {copy.slice(0, wordmarkIndex)}
+      <EziStudioWordmark />
+      {copy.slice(wordmarkIndex + wordmark.length)}
+    </p>
+  );
+}
+
 function FluentVideoVisual() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showControls, setShowControls] = useState(false);
@@ -1311,7 +1328,6 @@ function getProjectScrollLeft(viewport, card, index, count) {
 function App() {
   const [activeWork, setActiveWork] = useState(0);
   const [activeProject, setActiveProject] = useState(0);
-  const [isProjectReelPlaying, setIsProjectReelPlaying] = useState(false);
   const reelViewportRef = useRef(null);
   const reelPointerStartRef = useRef(null);
   const reelScrollEndTimerRef = useRef(null);
@@ -1394,22 +1410,9 @@ function App() {
     };
   }, [activeProject, activeWork, projectCount]);
 
-  useEffect(() => {
-    if (!isProjectReelPlaying || projectCount < 2) {
-      return undefined;
-    }
-
-    const timer = window.setTimeout(() => {
-      setActiveProject((current) => (current + 1) % projectCount);
-    }, 6500);
-
-    return () => window.clearTimeout(timer);
-  }, [activeProject, activeWork, isProjectReelPlaying, projectCount]);
-
   function selectWork(index) {
     setActiveWork(index);
     setActiveProject(0);
-    setIsProjectReelPlaying(false);
   }
 
   function moveProject(direction) {
@@ -1575,7 +1578,7 @@ function App() {
                 </h3>
                 <p className="role-title">{selectedWork.discipline}</p>
               </div>
-              <p className="role-detail">{selectedWork.copy}</p>
+              <RoleDetail copy={selectedWork.copy} />
               <div className="role-links" aria-label={`${selectedWork.name} links`}>
                 {selectedWork.links.map((link) => (
                   <a href={link.href} key={link.href} target="_blank" rel="noreferrer">
@@ -1589,7 +1592,7 @@ function App() {
               <div
                 className={`journey-projects project-reel${
                   projectCount === 1 ? " is-single" : ""
-                }${isProjectReelPlaying ? " is-playing" : ""}`}
+                }`}
                 aria-label={`${selectedWork.name} project highlights`}
                 aria-roledescription="carousel"
               >
@@ -1682,18 +1685,38 @@ function App() {
                       >
                         <span aria-hidden="true" />
                       </button>
-                      {selectedWork.projects.map((project, index) => (
-                        <button
-                          type="button"
-                          className={`project-reel-dot ${
-                            activeProject === index ? "active" : ""
-                          }`}
-                          aria-label={`Show ${project.title}`}
-                          aria-pressed={activeProject === index}
-                          key={project.title}
-                          onClick={() => setActiveProject(index)}
-                        />
-                      ))}
+                      <div
+                        className="project-reel-scrubber"
+                        style={{
+                          "--reel-progress": `${
+                            projectCount > 1
+                              ? (activeProject / (projectCount - 1)) * 100
+                              : 0
+                          }%`,
+                          "--reel-node-count": projectCount,
+                        }}
+                      >
+                        <span
+                          className="project-reel-progress"
+                          aria-hidden="true"
+                        >
+                          <span />
+                        </span>
+                        <span className="project-reel-markers">
+                          {selectedWork.projects.map((project, index) => (
+                            <button
+                              type="button"
+                              className={`project-reel-dot ${
+                                activeProject === index ? "active" : ""
+                              } ${index < activeProject ? "complete" : ""}`}
+                              aria-label={`Show ${project.title}`}
+                              aria-pressed={activeProject === index}
+                              key={project.title}
+                              onClick={() => setActiveProject(index)}
+                            />
+                          ))}
+                        </span>
+                      </div>
                       <button
                         type="button"
                         className="project-reel-step project-reel-next"
@@ -1703,28 +1726,6 @@ function App() {
                         <span aria-hidden="true" />
                       </button>
                     </div>
-                    <button
-                      type="button"
-                      className="project-reel-toggle"
-                      aria-label={
-                        isProjectReelPlaying
-                          ? "Pause project highlights"
-                          : "Play project highlights"
-                      }
-                      aria-pressed={isProjectReelPlaying}
-                      onClick={() =>
-                        setIsProjectReelPlaying((isPlaying) => !isPlaying)
-                      }
-                    >
-                      <span
-                        className={
-                          isProjectReelPlaying
-                            ? "project-reel-pause-icon"
-                            : "project-reel-play-icon"
-                        }
-                        aria-hidden="true"
-                      />
-                    </button>
                   </div>
                 ) : null}
               </div>
