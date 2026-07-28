@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bake Device Mockups"
+  short_description: "Bake screenshots into responsive device frames"
+  default_prompt: "Use $bake-device-mockups to turn these app screenshots into baked device-frame PNGs and place them responsively in the portfolio showcase."
