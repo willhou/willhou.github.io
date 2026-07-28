@@ -551,7 +551,6 @@ function FluentVideoVisual() {
         >
           <video
             ref={videoRef}
-            src="/videos/fluent-mobile-experiences.mp4"
             poster="/images/projects/fluent-video-poster.jpg"
             aria-label="Fluent Design System demo"
             preload="metadata"
@@ -561,7 +560,10 @@ function FluentVideoVisual() {
             controlsList="nodownload"
             onPlay={handleVideoPlay}
             onPause={revealControls}
-          />
+          >
+            <source src="/videos/fluent-mobile-experiences.webm" type="video/webm" />
+            <source src="/videos/fluent-mobile-experiences.mp4" type="video/mp4" />
+          </video>
           {!isPlaying && (
             <button
               className="surface-studio-poster"
