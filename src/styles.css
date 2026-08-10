@@ -4539,9 +4539,21 @@ button:focus-visible {
     margin-top: 0.45rem;
   }
 
-  .device-preview-desktop img,
-  .device-preview-studio .surface-studio-real {
+  .device-preview-desktop img {
     width: min(84%, 34rem);
+  }
+
+  .device-preview-studio .project-visual {
+    display: grid;
+    place-items: center;
+  }
+
+  .device-preview-studio .surface-studio-real {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: min(84%, 34rem, 42svh);
+    transform: none;
   }
 
   .device-preview-education img {
@@ -4609,6 +4621,10 @@ button:focus-visible {
 
   .device-preview-phone img {
     max-height: 31svh;
+  }
+
+  .device-preview-studio .surface-studio-real {
+    width: min(92%, 37svh);
   }
 
   .preview-caption span {
