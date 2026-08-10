@@ -11,7 +11,9 @@ const portraitMomentDurations = {
 const work = [
   {
     name: "Roam",
-    period: "Now",
+    period: "Jul 2023 to present",
+    startYear: "2023",
+    endYear: String(new Date().getFullYear()),
     discipline: "!nventor, Android",
     copy: "Building the Roam Android app and bringing its virtual office experience to mobile.",
     logo: "/images/logos/roam.png",
@@ -35,7 +37,9 @@ const work = [
   },
   {
     name: "DoorDash",
-    period: "Previously",
+    period: "Oct 2021 to Jun 2023",
+    startYear: "2021",
+    endYear: "2023",
     discipline: "Product and infrastructure",
     copy: "Worked on DoorDash’s mobile design system and helped deploy Jetpack Compose across its product apps.",
     logo: "/images/logos/doordash.svg",
@@ -62,7 +66,9 @@ const work = [
   },
   {
     name: "Microsoft",
-    period: "Earlier",
+    period: "Mar 2015 to Oct 2021",
+    startYear: "2015",
+    endYear: "2021",
     discipline: "Mobile and design systems",
     copy: "Contributed to Outlook for Android and helped shape the Fluent Design System.",
     logo: "/images/logos/microsoft.svg",
@@ -99,7 +105,9 @@ const work = [
   },
   {
     name: "Sunrise Calendar",
-    period: "Earlier",
+    period: "Oct 2014 to Aug 2016",
+    startYear: "2014",
+    endYear: "2016",
     discipline: "Android",
     copy: "Worked on a calendar people loved enough to miss. Sunrise was acquired by Microsoft.",
     logo: "/images/logos/sunrise.png",
@@ -127,7 +135,9 @@ const work = [
   },
   {
     name: "Foursquare",
-    period: "First chapter",
+    period: "Dec 2011 to Sep 2014",
+    startYear: "2011",
+    endYear: "2014",
     discipline: "Android engineering",
     copy: "Built Foursquare for Android and helped launch Swarm as its own app.",
     logo: "/images/logos/foursquare.svg",
@@ -152,7 +162,9 @@ const work = [
   },
   {
     name: "University of Waterloo",
-    period: "Education",
+    period: "2006 to 2011",
+    startYear: "2006",
+    endYear: "2011",
     discipline: "BMath, Computer Science",
     copy: "Earned a BMath in Computer Science and started Ezi Studio while studying at Waterloo.",
     logo: "/images/logos/waterloo.png",
@@ -161,7 +173,234 @@ const work = [
   },
 ];
 
-const careerTimeline = work.map((item, workIndex) => ({ ...item, workIndex }));
+function getCompanyTimelineYears(company) {
+  const newestYear = Number(company.endYear);
+  const oldestYear = Number(company.startYear);
+
+  return Array.from(
+    { length: newestYear - oldestYear + 1 },
+    (_, index) => String(newestYear - index),
+  );
+}
+
+const careerTimeline = work.map((item, workIndex) => ({
+  ...item,
+  workIndex,
+  timelineYears: getCompanyTimelineYears(item),
+}));
+
+const projectPreviews = {
+  presence: {
+    kind: "phone",
+    src: "/images/projects/roam-workspace-overview-device.png",
+    alt: "Roam Android virtual office showing teams and available coworkers",
+  },
+  controls: {
+    kind: "phone",
+    src: "/images/projects/roam-hq-device.png",
+    alt: "Roam Android inbox showing conversations and teammates",
+  },
+  prism: {
+    kind: "phone",
+    src: "/images/projects/doordash-prism-device-mobile.png",
+    alt: "DoorDash Android product page built with the Prism design system",
+  },
+  infrastructure: {
+    kind: "desktop",
+    src: "/images/projects/doordash-prism-device-desktop.png",
+    alt: "DoorDash desktop experience supported by shared product infrastructure",
+  },
+  mail: {
+    kind: "phone",
+    src: "/images/projects/outlook-device-inbox.png",
+    alt: "Outlook Mobile inbox on Android",
+  },
+  fluent: {
+    kind: "studio",
+    alt: "Microsoft Surface Studio displaying a Fluent Design System demo",
+  },
+  calendar: {
+    kind: "phone",
+    src: "/images/projects/sunrise-device-agenda.png",
+    alt: "Sunrise Calendar agenda on Android",
+  },
+  meet: {
+    kind: "phone",
+    src: "/images/projects/sunrise-device-meet-compose.png",
+    alt: "Sunrise Meet keyboard composing an invitation on Android",
+  },
+  foursquare: {
+    kind: "phone",
+    src: "/images/projects/foursquare/foursquare-device-city-guide.png",
+    alt: "Foursquare City Guide on Android",
+  },
+  swarm: {
+    kind: "phone",
+    src: "/images/projects/foursquare/swarm-device-checkin.png",
+    alt: "Swarm check-in experience on Android",
+  },
+};
+
+const portfolioStories = work.flatMap((company, workIndex) => {
+  if (company.projects.length === 0) {
+    return [
+      {
+        key: `${workIndex}-education`,
+        workIndex,
+        projectIndex: -1,
+        company,
+        title: company.discipline,
+        description: company.copy,
+        preview: { kind: "education" },
+      },
+    ];
+  }
+
+  return company.projects.map((project, projectIndex) => ({
+    key: `${workIndex}-${projectIndex}`,
+    workIndex,
+    projectIndex,
+    company,
+    ...project,
+    preview: projectPreviews[project.visual],
+  }));
+});
+
+const launcherApps = [
+  { label: "Roam", workIndex: 0, storyKey: "0-0" },
+  { label: "DoorDash", workIndex: 1, storyKey: "1-0" },
+  {
+    label: "Outlook",
+    workIndex: 2,
+    storyKey: "2-0",
+    logo: "/images/logos/outlook-transparent.png",
+    logoClass: "logo-outlook",
+  },
+  { label: "Sunrise", workIndex: 3, storyKey: "3-0" },
+  { label: "Foursquare", workIndex: 4, storyKey: "4-0" },
+  {
+    label: "Swarm",
+    workIndex: 4,
+    storyKey: "4-1",
+    logo: "/images/logos/swarm.png",
+  },
+].map((app) => ({
+  ...app,
+  logo: app.logo ?? work[app.workIndex].logo,
+  logoClass: app.logoClass ?? work[app.workIndex].logoClass,
+}));
+
+const launcherTimeFormatter = new Intl.DateTimeFormat("en-US", {
+  hour: "numeric",
+  minute: "2-digit",
+});
+const launcherDateFormatter = new Intl.DateTimeFormat("en-US", {
+  weekday: "short",
+  month: "short",
+  day: "numeric",
+});
+
+let launcherWeatherCache;
+let launcherWeatherRequest;
+
+function getWeatherCondition(weatherCode) {
+  if (weatherCode === 0) return { kind: "clear", label: "Clear" };
+  if (weatherCode <= 2) return { kind: "partly-cloudy", label: "Partly cloudy" };
+  if (weatherCode === 3) return { kind: "cloudy", label: "Cloudy" };
+  if (weatherCode === 45 || weatherCode === 48) {
+    return { kind: "fog", label: "Foggy" };
+  }
+  if (weatherCode >= 71 && weatherCode <= 77) {
+    return { kind: "snow", label: "Snow" };
+  }
+  if (weatherCode >= 85 && weatherCode <= 86) {
+    return { kind: "snow", label: "Snow showers" };
+  }
+  if (weatherCode >= 95) return { kind: "storm", label: "Storms" };
+  return { kind: "rain", label: "Rain" };
+}
+
+function requestJson(url) {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+
+    request.open("GET", url, true);
+    request.responseType = "json";
+    request.timeout = 7000;
+
+    request.onload = () => {
+      if (request.status < 200 || request.status >= 300) {
+        reject(new Error(`Request failed with status ${request.status}`));
+        return;
+      }
+
+      try {
+        resolve(
+          request.response ?? JSON.parse(request.responseText || "null"),
+        );
+      } catch {
+        reject(new Error("The service returned invalid data"));
+      }
+    };
+    request.onerror = () => reject(new Error("The service is unavailable"));
+    request.ontimeout = () => reject(new Error("The service timed out"));
+    request.send();
+  });
+}
+
+async function loadLauncherWeather() {
+  if (launcherWeatherCache) return launcherWeatherCache;
+
+  if (!launcherWeatherRequest) {
+    launcherWeatherRequest = (async () => {
+      const location = await requestJson(
+        "https://free.freeipapi.com/api/json",
+      );
+      const latitude = Number(location.latitude);
+      const longitude = Number(location.longitude);
+
+      if (
+        !Number.isFinite(latitude) ||
+        !Number.isFinite(longitude)
+      ) {
+        throw new Error("Approximate location unavailable");
+      }
+
+      const weatherUrl = new URL("https://api.open-meteo.com/v1/forecast");
+      weatherUrl.search = new URLSearchParams({
+        latitude: String(latitude),
+        longitude: String(longitude),
+        current: "temperature_2m,weather_code,is_day",
+        temperature_unit:
+          location.countryCode === "US" ? "fahrenheit" : "celsius",
+        forecast_days: "1",
+      }).toString();
+
+      const weather = await requestJson(weatherUrl.toString());
+      const temperature = Number(weather.current?.temperature_2m);
+      const weatherCode = Number(weather.current?.weather_code);
+
+      if (!Number.isFinite(temperature) || !Number.isFinite(weatherCode)) {
+        throw new Error("Weather data unavailable");
+      }
+
+      const condition = getWeatherCondition(weatherCode);
+
+      launcherWeatherCache = {
+        ...condition,
+        temperature: Math.round(temperature),
+        unit: weather.current_units?.temperature_2m ?? "°",
+      };
+
+      return launcherWeatherCache;
+    })().catch((error) => {
+      launcherWeatherRequest = undefined;
+      throw error;
+    });
+  }
+
+  return launcherWeatherRequest;
+}
 
 const portraitCenterX = 62;
 const portraitHairPoints = [
@@ -1318,164 +1557,628 @@ function PointerPortrait() {
   );
 }
 
-function getProjectScrollLeft(viewport, card, index, count) {
-  const shouldShowPrevious = count > 1 && index === count - 1;
-  const leadingPeek = shouldShowPrevious
-    ? viewport.clientWidth - card.offsetWidth
-    : 0;
+function DevicePreview({ story }) {
+  const preview = story.preview;
 
-  return Math.max(0, card.offsetLeft - leadingPeek);
+  if (preview.kind === "studio") {
+    return (
+      <div className="device-preview device-preview-studio">
+        <FluentVideoVisual />
+      </div>
+    );
+  }
+
+  if (preview.kind === "education") {
+    return (
+      <div
+        className="device-preview device-preview-education"
+        role="img"
+        aria-label="University of Waterloo crest with Bachelor of Mathematics in Computer Science"
+      >
+        <img src={story.company.logo} alt="" width="96" height="96" />
+        <p>University of Waterloo</p>
+        <strong>BMath, Computer Science</strong>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`device-preview device-preview-${preview.kind}`}>
+      <img
+        src={preview.src}
+        alt={preview.alt}
+        loading={story.key === portfolioStories[0].key ? "eager" : "lazy"}
+      />
+    </div>
+  );
+}
+
+function PortfolioLauncher({
+  animatePowerOn,
+  onPowerOnAnimationStart,
+  onSelectStory,
+  poweredOn,
+}) {
+  const [launcherNow, setLauncherNow] = useState(() => new Date());
+  const [weather, setWeather] = useState(null);
+  const [weatherLoading, setWeatherLoading] = useState(true);
+
+  useEffect(() => {
+    let clockTimer;
+
+    const syncClock = () => {
+      window.clearTimeout(clockTimer);
+
+      const now = new Date();
+      setLauncherNow(now);
+
+      const millisecondsUntilNextMinute =
+        60_000 - (now.getSeconds() * 1_000 + now.getMilliseconds());
+
+      clockTimer = window.setTimeout(
+        syncClock,
+        millisecondsUntilNextMinute + 25,
+      );
+    };
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden) syncClock();
+    };
+
+    syncClock();
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.clearTimeout(clockTimer);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  const launcherTime = launcherTimeFormatter.format(launcherNow);
+  const launcherDate = launcherDateFormatter.format(launcherNow);
+
+  useEffect(() => {
+    if (poweredOn && animatePowerOn) onPowerOnAnimationStart();
+  }, [animatePowerOn, onPowerOnAnimationStart, poweredOn]);
+
+  useEffect(() => {
+    let ignoreResult = false;
+
+    loadLauncherWeather()
+      .then((nextWeather) => {
+        if (!ignoreResult) setWeather(nextWeather);
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        if (!ignoreResult) setWeatherLoading(false);
+      });
+
+    return () => {
+      ignoreResult = true;
+    };
+  }, []);
+
+  return (
+    <div className="device-preview device-preview-launcher">
+      <div className="launcher-phone">
+        <div className="launcher-speaker" aria-hidden="true" />
+        <div className="launcher-camera" aria-hidden="true" />
+        <div
+          className={`launcher-screen${poweredOn ? " is-powered-on" : ""}${
+            poweredOn && animatePowerOn ? " is-powering-on" : ""
+          }`}
+          aria-busy={!poweredOn}
+        >
+          <div className="launcher-desktop">
+            <div className="launcher-status" aria-hidden="true">
+              <span>{launcherTime}</span>
+              <span className="launcher-system-status">
+                <span>5G</span>
+                <span className="launcher-signal">
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                <span className="launcher-battery">
+                  <i />
+                </span>
+              </span>
+            </div>
+            <div className="launcher-at-a-glance">
+              <strong>{launcherDate}</strong>
+              {weather ? (
+                <span
+                  className="launcher-weather"
+                  aria-label={`${weather.temperature}${weather.unit}, ${weather.label}`}
+                >
+                  <i
+                    className={`launcher-weather-icon is-${weather.kind}`}
+                    aria-hidden="true"
+                  />
+                  <span aria-hidden="true">
+                    {weather.temperature}
+                    {weather.unit}
+                  </span>
+                </span>
+              ) : null}
+              {weatherLoading ? (
+                <span className="launcher-weather-loading" aria-hidden="true">
+                  <i />
+                  <i />
+                </span>
+              ) : null}
+            </div>
+            <div className="launcher-grid" aria-label="Career apps">
+              {launcherApps.map((app, index) => (
+                <button
+                  type="button"
+                  className="launcher-app"
+                  key={app.label}
+                  onClick={() => onSelectStory(app.storyKey)}
+                  style={{ "--launcher-index": index }}
+                  aria-label={`Open the ${app.label} chapter`}
+                  disabled={!poweredOn}
+                >
+                  <span className="launcher-app-icon" aria-hidden="true">
+                    <img
+                      className={app.logoClass}
+                      src={app.logo}
+                      alt=""
+                      width="64"
+                      height="64"
+                    />
+                  </span>
+                  <span className="launcher-app-label">{app.label}</span>
+                </button>
+              ))}
+            </div>
+            <div className="launcher-skeleton" aria-hidden="true">
+              <div className="launcher-skeleton-apps">
+                <i />
+                <i />
+                <i />
+                <i />
+              </div>
+              <div className="launcher-skeleton-search">
+                <i />
+                <span />
+                <b />
+              </div>
+            </div>
+            <div className="launcher-gesture" aria-hidden="true" />
+          </div>
+          <div className="launcher-crt-static" aria-hidden="true" />
+          <div className="launcher-crt-beam" aria-hidden="true" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CareerYearStops({ company, registerYearNode, withinProjects }) {
+  const yearCount = company.timelineYears.length;
+  const projectCount = company.projects.length;
+  const edgeInset = withinProjects && projectCount > 0 ? 50 / projectCount : 0;
+  const stopRange = withinProjects ? 100 - edgeInset * 2 : 50;
+
+  return (
+    <div className="career-year-stops" aria-hidden="true">
+      {company.timelineYears.map((year, yearIndex) => {
+        const progress = yearCount === 1 ? 0 : yearIndex / (yearCount - 1);
+        const stopPosition = edgeInset + progress * Math.max(0, stopRange);
+        const stopKey = `${company.workIndex}-${year}`;
+
+        return (
+          <span
+            className="career-year-stop"
+            data-timeline-year={year}
+            data-work-index={company.workIndex}
+            key={stopKey}
+            ref={(node) => registerYearNode(stopKey, node)}
+            style={{ "--year-stop-position": `${stopPosition}%` }}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+function YearTicker({ company, value }) {
+  const previousValueRef = useRef(value);
+  const transitionIdRef = useRef(0);
+  const [transition, setTransition] = useState({
+    from: value,
+    to: value,
+    direction: "older",
+    id: 0,
+  });
+
+  useEffect(() => {
+    if (previousValueRef.current === value) return;
+
+    transitionIdRef.current += 1;
+    setTransition({
+      from: previousValueRef.current,
+      to: value,
+      direction:
+        Number(value) < Number(previousValueRef.current) ? "older" : "newer",
+      id: transitionIdRef.current,
+    });
+    previousValueRef.current = value;
+  }, [value]);
+
+  const previousDigits = transition.from.padStart(4, "0").split("");
+  const currentDigits = transition.to.padStart(4, "0").split("");
+  const lastChangedDigit = currentDigits.reduce(
+    (lastIndex, digit, index) =>
+      previousDigits[index] === digit ? lastIndex : index,
+    -1,
+  );
+
+  return (
+    <div
+      className={`career-year-readout is-${transition.direction}`}
+      aria-label={`${company}, ${value}`}
+    >
+      <span className="career-year-ticker" aria-hidden="true">
+        {currentDigits.map((digit, index) => {
+          const previousDigit = previousDigits[index];
+          const changed = previousDigit !== digit;
+
+          return (
+            <span className="career-year-digit" key={`${index}-${transition.id}`}>
+              {changed ? (
+                <>
+                  <span
+                    className="career-year-number is-outgoing"
+                    style={{ "--digit-index": index }}
+                  >
+                    {previousDigit}
+                  </span>
+                  <span
+                    className="career-year-number is-incoming"
+                    onAnimationEnd={
+                      index === lastChangedDigit
+                        ? () =>
+                            setTransition((current) =>
+                              current.id === transition.id
+                                ? { ...current, from: current.to }
+                                : current,
+                            )
+                        : undefined
+                    }
+                    style={{ "--digit-index": index }}
+                  >
+                    {digit}
+                  </span>
+                </>
+              ) : (
+                <span className="career-year-number is-static">{digit}</span>
+              )}
+            </span>
+          );
+        })}
+      </span>
+    </div>
+  );
 }
 
 function App() {
-  const [activeWork, setActiveWork] = useState(0);
-  const [activeProject, setActiveProject] = useState(0);
-  const reelViewportRef = useRef(null);
-  const reelPointerStartRef = useRef(null);
-  const reelScrollEndTimerRef = useRef(null);
-  const activeTimelineStop = activeWork;
-  const selectedWork = work[activeWork];
-  const hasSelectedProjects = selectedWork.projects.length > 0;
-  const projectCount = selectedWork.projects.length;
-  const timelineProgress =
-    activeTimelineStop === work.length - 1
-      ? 1
-      : (activeTimelineStop + 0.5) / work.length;
+  const [activeStoryKey, setActiveStoryKey] = useState(portfolioStories[0].key);
+  const [showLauncher, setShowLauncher] = useState(true);
+  const [launcherPoweredOn, setLauncherPoweredOn] = useState(false);
+  const [activeTimelinePoint, setActiveTimelinePoint] = useState({
+    year: careerTimeline[0].timelineYears[0],
+    workIndex: 0,
+  });
+  const storyNodesRef = useRef(new Map());
+  const yearNodesRef = useRef(new Map());
+  const workHeaderRef = useRef(null);
+  const launcherAnimationPlayedRef = useRef(false);
+  const programmaticNavigationRef = useRef(null);
+  const programmaticNavigationTimerRef = useRef(null);
+  const activeStory =
+    portfolioStories.find((story) => story.key === activeStoryKey) ??
+    portfolioStories[0];
 
   useEffect(() => {
-    const viewport = reelViewportRef.current;
-    const activeCard = viewport?.querySelector(
-      `[data-project-index="${activeProject}"]`,
-    );
-
-    if (!viewport || !activeCard) {
-      return undefined;
-    }
-
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    const frame = window.requestAnimationFrame(() => {
-      viewport.scrollTo({
-        behavior: reducedMotion ? "auto" : "smooth",
-        left: getProjectScrollLeft(
-          viewport,
-          activeCard,
-          activeProject,
-          projectCount,
-        ),
-      });
-    });
 
-    return () => window.cancelAnimationFrame(frame);
-  }, [activeProject, activeWork, projectCount]);
+    if (reducedMotion) {
+      setLauncherPoweredOn(true);
+      return undefined;
+    }
+
+    const powerTimer = window.setTimeout(
+      () => setLauncherPoweredOn(true),
+      1600,
+    );
+
+    return () => window.clearTimeout(powerTimer);
+  }, []);
 
   useEffect(
-    () => () => window.clearTimeout(reelScrollEndTimerRef.current),
+    () => () => {
+      if (programmaticNavigationTimerRef.current) {
+        window.clearTimeout(programmaticNavigationTimerRef.current);
+      }
+    },
     [],
   );
 
   useEffect(() => {
-    const viewport = reelViewportRef.current;
+    const workHeader = workHeaderRef.current;
 
-    if (!viewport) {
-      return undefined;
-    }
+    if (!workHeader) return undefined;
 
-    let frame;
-    const alignActiveCard = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        const activeCard = viewport.querySelector(
-          `[data-project-index="${activeProject}"]`,
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowLauncher(
+          !entry.isIntersecting && entry.boundingClientRect.top > 0,
         );
-
-        if (activeCard) {
-          viewport.scrollTo({
-            behavior: "auto",
-            left: getProjectScrollLeft(
-              viewport,
-              activeCard,
-              activeProject,
-              projectCount,
-            ),
-          });
-        }
-      });
-    };
-
-    window.addEventListener("resize", alignActiveCard);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("resize", alignActiveCard);
-    };
-  }, [activeProject, activeWork, projectCount]);
-
-  function selectWork(index) {
-    setActiveWork(index);
-    setActiveProject(0);
-  }
-
-  function moveProject(direction) {
-    if (projectCount < 2) {
-      return;
-    }
-
-    setActiveProject(
-      (current) => (current + direction + projectCount) % projectCount,
+      },
+      {
+        rootMargin: "0px 0px -45% 0px",
+        threshold: 0,
+      },
     );
+
+    observer.observe(workHeader);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const nodes = [...storyNodesRef.current.values()];
+
+    if (!nodes.length) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const navigation = programmaticNavigationRef.current;
+
+        if (navigation) {
+          const targetReached = entries.some(
+            (entry) =>
+              entry.target === navigation.node && entry.isIntersecting,
+          );
+
+          if (!targetReached) return;
+
+          programmaticNavigationRef.current = null;
+
+          if (programmaticNavigationTimerRef.current) {
+            window.clearTimeout(programmaticNavigationTimerRef.current);
+            programmaticNavigationTimerRef.current = null;
+          }
+
+          return;
+        }
+
+        const centeredEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (first, second) =>
+              Math.abs(
+                  first.boundingClientRect.top +
+                    first.boundingClientRect.height / 2 -
+                    window.innerHeight * 0.5,
+              ) -
+              Math.abs(
+                  second.boundingClientRect.top +
+                    second.boundingClientRect.height / 2 -
+                    window.innerHeight * 0.5,
+              ),
+          )[0];
+
+        const previewKey = centeredEntry?.target.dataset.previewKey;
+
+        if (!previewKey) return;
+
+        setActiveStoryKey(previewKey);
+
+        if (centeredEntry.target.dataset.chapterStop === "true") {
+          const story = portfolioStories.find((item) => item.key === previewKey);
+          const company = story ? careerTimeline[story.workIndex] : undefined;
+
+          if (company) {
+            setActiveTimelinePoint({
+              year: company.timelineYears[0],
+              workIndex: company.workIndex,
+            });
+          }
+        }
+      },
+      {
+        rootMargin: "-48% 0px -48% 0px",
+        threshold: 0,
+      },
+    );
+
+    nodes.forEach((node) => observer.observe(node));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const nodes = [...yearNodesRef.current.values()];
+
+    if (!nodes.length) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (programmaticNavigationRef.current) return;
+
+        const centeredEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (first, second) =>
+              Math.abs(
+                first.boundingClientRect.top - window.innerHeight * 0.5,
+              ) -
+              Math.abs(
+                second.boundingClientRect.top - window.innerHeight * 0.5,
+              ),
+          )[0];
+
+        if (!centeredEntry?.target.dataset.timelineYear) return;
+
+        const nextPoint = {
+          year: centeredEntry.target.dataset.timelineYear,
+          workIndex: Number(centeredEntry.target.dataset.workIndex),
+        };
+
+        setActiveTimelinePoint((current) =>
+          current.year === nextPoint.year &&
+          current.workIndex === nextPoint.workIndex
+            ? current
+            : nextPoint,
+        );
+      },
+      {
+        rootMargin: "-48% 0px -48% 0px",
+        threshold: 0,
+      },
+    );
+
+    nodes.forEach((node) => observer.observe(node));
+    return () => observer.disconnect();
+  }, []);
+
+  function registerStoryNode(key, node) {
+    if (node) {
+      storyNodesRef.current.set(key, node);
+    } else {
+      storyNodesRef.current.delete(key);
+    }
   }
 
-  function handleReelPointerDown(event) {
-    if (event.pointerType === "mouse") {
-      return;
-    }
-
-    reelPointerStartRef.current = {
-      x: event.clientX,
-      y: event.clientY,
-    };
-  }
-
-  function handleReelPointerUp(event) {
-    const start = reelPointerStartRef.current;
-    reelPointerStartRef.current = null;
-
-    if (!start) {
-      return;
-    }
-
-    const deltaX = event.clientX - start.x;
-    const deltaY = event.clientY - start.y;
-
-    if (Math.abs(deltaX) > 44 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
-      moveProject(deltaX < 0 ? 1 : -1);
+  function registerYearNode(key, node) {
+    if (node) {
+      yearNodesRef.current.set(key, node);
+    } else {
+      yearNodesRef.current.delete(key);
     }
   }
 
-  function handleReelScroll() {
-    window.clearTimeout(reelScrollEndTimerRef.current);
-    reelScrollEndTimerRef.current = window.setTimeout(() => {
-      const viewport = reelViewportRef.current;
-      const cards = viewport?.querySelectorAll("[data-project-index]");
+  function selectStory(key) {
+    const node = storyNodesRef.current.get(key);
+    const story = portfolioStories.find((item) => item.key === key);
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
-      if (!viewport || !cards?.length) {
-        return;
-      }
+    setShowLauncher(false);
+    setActiveStoryKey(key);
 
-      const closestCard = [...cards].reduce((closest, card) =>
-        Math.abs(card.offsetLeft - viewport.scrollLeft) <
-        Math.abs(closest.offsetLeft - viewport.scrollLeft)
-          ? card
-          : closest,
-      );
-      const closestIndex = Number(closestCard.dataset.projectIndex);
+    if (story) {
+      const years = getCompanyTimelineYears(story.company);
+      const projectCount = story.company.projects.length;
+      const progress =
+        projectCount > 1 && story.projectIndex >= 0
+          ? story.projectIndex / (projectCount - 1)
+          : 0;
+      const yearIndex = Math.round(progress * (years.length - 1));
 
-      if (closestIndex !== activeProject) {
-        setActiveProject(closestIndex);
-      }
-    }, 120);
+      setActiveTimelinePoint({
+        year: years[yearIndex],
+        workIndex: story.workIndex,
+      });
+    }
+
+    node?.scrollIntoView({
+      behavior: reducedMotion ? "auto" : "smooth",
+      block: "center",
+    });
+  }
+
+  function selectLauncherStory(key) {
+    const story = portfolioStories.find((item) => item.key === key);
+
+    if (!story) return;
+
+    const nodeKey =
+      story.projectIndex === 0 && story.company.projects.length
+        ? `chapter-${story.key}`
+        : story.key;
+    const node = storyNodesRef.current.get(nodeKey);
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const years = getCompanyTimelineYears(story.company);
+    const projectCount = story.company.projects.length;
+    const progress =
+      projectCount > 1 && story.projectIndex >= 0
+        ? story.projectIndex / (projectCount - 1)
+        : 0;
+    const yearIndex = Math.round(progress * (years.length - 1));
+
+    if (programmaticNavigationTimerRef.current) {
+      window.clearTimeout(programmaticNavigationTimerRef.current);
+      programmaticNavigationTimerRef.current = null;
+    }
+
+    if (node) {
+      programmaticNavigationRef.current = { node };
+      programmaticNavigationTimerRef.current = window.setTimeout(() => {
+        programmaticNavigationRef.current = null;
+        programmaticNavigationTimerRef.current = null;
+      }, reducedMotion ? 250 : 2600);
+    }
+
+    setShowLauncher(false);
+    setActiveStoryKey(story.key);
+    setActiveTimelinePoint({
+      year: years[yearIndex],
+      workIndex: story.workIndex,
+    });
+
+    node?.scrollIntoView({
+      behavior: reducedMotion ? "auto" : "smooth",
+      block: "center",
+    });
+  }
+
+  function selectCompany(workIndex) {
+    const story = portfolioStories.find(
+      (item) => item.workIndex === workIndex,
+    );
+
+    if (!story) return;
+
+    const nodeKey = story.company.projects.length
+      ? `chapter-${story.key}`
+      : story.key;
+    const node = storyNodesRef.current.get(nodeKey);
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (programmaticNavigationTimerRef.current) {
+      window.clearTimeout(programmaticNavigationTimerRef.current);
+      programmaticNavigationTimerRef.current = null;
+    }
+
+    if (node) {
+      programmaticNavigationRef.current = { node };
+      programmaticNavigationTimerRef.current = window.setTimeout(() => {
+        programmaticNavigationRef.current = null;
+        programmaticNavigationTimerRef.current = null;
+      }, reducedMotion ? 250 : 2600);
+    }
+
+    setShowLauncher(false);
+    setActiveStoryKey(story.key);
+    setActiveTimelinePoint({
+      year: careerTimeline[workIndex].timelineYears[0],
+      workIndex,
+    });
+
+    node?.scrollIntoView({
+      behavior: reducedMotion ? "auto" : "smooth",
+      block: "center",
+    });
   }
 
   return (
@@ -1484,278 +2187,220 @@ function App() {
         Skip to content
       </a>
 
-      <main className="shell" id="main">
-        <section className="intro" id="top" aria-labelledby="intro-title">
-          <PointerPortrait />
-          <div className="intro-copy">
-            <p className="intro-greeting">Hello, I’m Will.</p>
-            <h1 id="intro-title">
-              A product-minded engineer in Brooklyn, currently an{" "}
-              <a href="https://ro.am/" target="_blank" rel="noreferrer">
-                !nventor at Roam
-              </a>
-              {" "}building its Android app. I also make independent software through{" "}
-              <EziStudioWordmark />
-              .
-            </h1>
+      <main className="portfolio-shell" id="main">
+        <section
+          className="portfolio-intro"
+          id="top"
+          aria-labelledby="intro-title"
+        >
+          <div className="portfolio-intro-inner">
+            <PointerPortrait />
+            <div className="intro-copy">
+              <h1 id="intro-title">Hello, I’m Will</h1>
+              <p className="intro-description">
+                A product-minded engineer in Brooklyn, currently an{" "}
+                <a href="https://ro.am/" target="_blank" rel="noreferrer">
+                  !nventor at Roam
+                </a>{" "}
+                building its Android app. I also make independent software through{" "}
+                <EziStudioWordmark />.
+              </p>
+            </div>
           </div>
         </section>
 
-        <section className="work-section" id="work" aria-labelledby="work-title">
+        <aside className="portfolio-preview-column" aria-label="Selected project preview">
           <div
-            className="career-divider"
-            style={{ "--timeline-progress": timelineProgress }}
-          >
-            <div className="career-divider-inner">
-              <span className="career-track" aria-hidden="true">
-                <span className="career-progress" />
-              </span>
-              <div
-                className="career-stops"
-                role="group"
-                aria-label="Work timeline, current to earliest"
-              >
-                {careerTimeline.map((item) => {
-                  const isActive = activeWork === item.workIndex;
-
-                  return (
-                    <button
-                      className={isActive ? "career-stop active" : "career-stop"}
-                      type="button"
-                      aria-controls="work-showcase"
-                      aria-pressed={isActive}
-                      key={item.name}
-                      onClick={() => selectWork(item.workIndex)}
-                      onFocus={() => selectWork(item.workIndex)}
-                      onMouseEnter={() => selectWork(item.workIndex)}
-                    >
-                      <span className="career-marker">
-                        <img
-                          className={item.logoClass}
-                          src={item.logo}
-                          alt=""
-                          width="20"
-                          height="20"
-                          loading="lazy"
-                        />
-                      </span>
-                      <span className="career-label">{item.name}</span>
-                    </button>
-                  );
-                })}
-              </div>
-              <span className="timeline-surprise timeline-future" aria-hidden="true">
-                <span className="pixel-ufo" />
-              </span>
-              <span className="timeline-surprise timeline-past" aria-hidden="true">
-                <span className="pixel-dino" />
-              </span>
-            </div>
-          </div>
-          <div className="section-head">
-            <h2 id="work-title">My journey</h2>
-          </div>
-          <div
-            className={`journey-showcase${
-              hasSelectedProjects ? "" : " journey-showcase-summary-only"
+            className={`portfolio-preview-surface preview-company-${activeStory.workIndex}${
+              showLauncher ? " is-launcher" : ""
             }`}
-            id="work-showcase"
-            key={selectedWork.name}
-            aria-label={`${selectedWork.name} work showcase`}
           >
-            <article className="journey-summary">
-              <div className="journey-identity">
-                <p className="period">{selectedWork.period}</p>
-                <h3 className="company-name">
-                  <img
-                    className={["company-logo", selectedWork.logoClass]
-                      .filter(Boolean)
-                      .join(" ")}
-                    src={selectedWork.logo}
-                    alt=""
-                    width="24"
-                    height="24"
-                  />
-                  <span>{selectedWork.name}</span>
-                </h3>
-                <p className="role-title">{selectedWork.discipline}</p>
+            {!showLauncher ? (
+              <div className="preview-year">
+                <YearTicker
+                  company={careerTimeline[activeTimelinePoint.workIndex].name}
+                  value={activeTimelinePoint.year}
+                />
               </div>
-              <RoleDetail copy={selectedWork.copy} />
-              <div className="role-links" aria-label={`${selectedWork.name} links`}>
-                {selectedWork.links.map((link) => (
-                  <a href={link.href} key={link.href} target="_blank" rel="noreferrer">
-                    {link.label} <Arrow />
-                  </a>
-                ))}
-              </div>
-            </article>
-
-            {hasSelectedProjects ? (
-              <div
-                className={`journey-projects project-reel${
-                  projectCount === 1 ? " is-single" : ""
-                }`}
-                aria-label={`${selectedWork.name} project highlights`}
-                aria-roledescription="carousel"
-              >
-                <div
-                  className="project-reel-viewport"
-                  ref={reelViewportRef}
-                  tabIndex="0"
-                  onKeyDown={(event) => {
-                    if (event.key === "ArrowRight") {
-                      event.preventDefault();
-                      moveProject(1);
-                    } else if (event.key === "ArrowLeft") {
-                      event.preventDefault();
-                      moveProject(-1);
-                    }
+            ) : null}
+            <div
+              className="preview-visual"
+              key={showLauncher ? "launcher" : activeStory.key}
+            >
+              {showLauncher ? (
+                <PortfolioLauncher
+                  animatePowerOn={!launcherAnimationPlayedRef.current}
+                  onPowerOnAnimationStart={() => {
+                    launcherAnimationPlayedRef.current = true;
                   }}
-                  onPointerDown={handleReelPointerDown}
-                  onPointerUp={handleReelPointerUp}
-                  onScroll={handleReelScroll}
-                  onPointerCancel={() => {
-                    reelPointerStartRef.current = null;
-                  }}
-                >
-                  <div className="project-reel-track">
-                    {selectedWork.projects.map((project, index) => (
-                      <article
-                        className={`project-feature project-reel-card ${
-                          activeProject === index ? "is-active" : "is-preview"
-                        }${
-                          projectCount > 1 && index === projectCount - 1
-                            ? " is-last"
-                            : ""
-                        }`}
-                        aria-roledescription="slide"
-                        aria-label={`${index + 1} of ${projectCount}: ${project.title}`}
-                        data-project-index={index}
-                        key={project.title}
-                      >
-                        <div
-                          className="project-reel-card-content"
-                          inert={activeProject !== index}
-                        >
-                          <PrototypeVisual
-                            title={project.title}
-                            visual={project.visual}
-                          />
-                          <div className="project-feature-copy">
-                            <h3>{project.title}</h3>
-                            <p>
-                              {project.description}
-                              {project.descriptionLink ? (
-                                <>
-                                  <a
-                                    href={project.descriptionLink.href}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                  >
-                                    {project.descriptionLink.label}
-                                  </a>
-                                  {project.descriptionSuffix}
-                                </>
-                              ) : null}
-                            </p>
-                          </div>
-                        </div>
-                        {activeProject !== index ? (
-                          <button
-                            type="button"
-                            className="project-reel-preview-button"
-                            aria-label={`Show ${project.title}`}
-                            onClick={() => setActiveProject(index)}
-                          />
-                        ) : null}
-                      </article>
-                    ))}
-                  </div>
-                </div>
-                {projectCount > 1 ? (
-                  <div className="project-reel-controls">
-                    <div
-                      className="project-reel-pagination"
-                      aria-label={`${selectedWork.name} project highlights`}
-                      role="group"
-                    >
-                      <button
-                        type="button"
-                        className="project-reel-step project-reel-previous"
-                        aria-label="Show previous project"
-                        onClick={() => moveProject(-1)}
-                      >
-                        <span aria-hidden="true" />
-                      </button>
-                      <div
-                        className="project-reel-scrubber"
-                        style={{
-                          "--reel-progress": `${
-                            projectCount > 1
-                              ? (activeProject / (projectCount - 1)) * 100
-                              : 0
-                          }%`,
-                          "--reel-node-count": projectCount,
-                        }}
-                      >
-                        <span
-                          className="project-reel-progress"
-                          aria-hidden="true"
-                        >
-                          <span />
-                        </span>
-                        <span className="project-reel-markers">
-                          {selectedWork.projects.map((project, index) => (
-                            <button
-                              type="button"
-                              className={`project-reel-dot ${
-                                activeProject === index ? "active" : ""
-                              } ${index < activeProject ? "complete" : ""}`}
-                              aria-label={`Show ${project.title}`}
-                              aria-pressed={activeProject === index}
-                              key={project.title}
-                              onClick={() => setActiveProject(index)}
-                            />
-                          ))}
-                        </span>
-                      </div>
-                      <button
-                        type="button"
-                        className="project-reel-step project-reel-next"
-                        aria-label="Show next project"
-                        onClick={() => moveProject(1)}
-                      >
-                        <span aria-hidden="true" />
-                      </button>
-                    </div>
-                  </div>
-                ) : null}
+                  onSelectStory={selectLauncherStory}
+                  poweredOn={launcherPoweredOn}
+                />
+              ) : (
+                <DevicePreview story={activeStory} />
+              )}
+            </div>
+            {!showLauncher ? (
+              <div className="preview-caption" aria-live="polite">
+                <span>{activeStory.company.name}</span>
+                <strong>{activeStory.title}</strong>
               </div>
             ) : null}
           </div>
+        </aside>
+
+        <section
+          className="portfolio-work"
+          id="work"
+          aria-labelledby="work-title"
+        >
+          <header className="portfolio-work-header" ref={workHeaderRef}>
+            <h2 id="work-title">My work over the years</h2>
+          </header>
+
+          <div className="vertical-career" aria-label="Work timeline, newest first">
+            {careerTimeline.map((company) => {
+              const companyStories = portfolioStories.filter(
+                (story) => story.workIndex === company.workIndex,
+              );
+              const firstStory = companyStories[0];
+              const hasProjects = company.projects.length > 0;
+              const isActive = activeStory.workIndex === company.workIndex;
+
+              return (
+                <article
+                  className={`career-chapter${isActive ? " is-active" : ""}${
+                    hasProjects ? "" : " is-summary"
+                  }`}
+                  key={company.name}
+                  style={{ "--chapter-year-count": company.timelineYears.length }}
+                >
+                  {!hasProjects ? (
+                    <CareerYearStops
+                      company={company}
+                      registerYearNode={registerYearNode}
+                      withinProjects={false}
+                    />
+                  ) : null}
+
+                  <div className="career-chapter-marker">
+                    <div className="career-logo-anchor">
+                      <button
+                        type="button"
+                        className="career-logo-button"
+                        aria-label={`Show ${company.name} work`}
+                        aria-pressed={isActive}
+                        onClick={() => selectStory(firstStory.key)}
+                      >
+                        <img
+                          className={company.logoClass}
+                          src={company.logo}
+                          alt=""
+                          width="28"
+                          height="28"
+                          loading="lazy"
+                        />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="career-chapter-content">
+                    <header className="career-chapter-header">
+                      <div className="career-chapter-heading">
+                        <span
+                          className="career-story-stop"
+                          data-preview-key={firstStory.key}
+                          data-chapter-stop="true"
+                          aria-hidden="true"
+                          ref={(node) =>
+                            registerStoryNode(
+                              hasProjects
+                                ? `chapter-${firstStory.key}`
+                                : firstStory.key,
+                              node,
+                            )
+                          }
+                        />
+                        <h3>{company.name}</h3>
+                        <RoleDetail copy={company.copy} />
+                      </div>
+                    </header>
+
+                    {hasProjects ? (
+                      <div className="career-projects">
+                        <CareerYearStops
+                          company={company}
+                          registerYearNode={registerYearNode}
+                          withinProjects
+                        />
+                        {companyStories.map((story) => {
+                          const storyIsActive = activeStory.key === story.key;
+
+                          return (
+                            <article
+                              className={`career-project${
+                                storyIsActive ? " is-active" : ""
+                              }`}
+                              data-preview-key={story.key}
+                              key={story.key}
+                              ref={(node) => registerStoryNode(story.key, node)}
+                            >
+                              <button
+                                type="button"
+                                className="career-project-select"
+                                aria-pressed={storyIsActive}
+                                onClick={() => selectStory(story.key)}
+                              >
+                                <span>{story.title}</span>
+                              </button>
+                              <p>
+                                {story.description}
+                                {story.descriptionLink ? (
+                                  <>
+                                    <a
+                                      href={story.descriptionLink.href}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      {story.descriptionLink.label}
+                                    </a>
+                                    {story.descriptionSuffix}
+                                  </>
+                                ) : null}
+                              </p>
+                            </article>
+                          );
+                        })}
+                      </div>
+                    ) : null}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </section>
 
+        <footer className="portfolio-footer">
+          <p className="footer-identity">
+            © {new Date().getFullYear()} Will Hou <span aria-hidden="true">·</span>{" "}
+            <a
+              href="https://www.linkedin.com/in/william-hou-07282130/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LinkedIn
+            </a>{" "}
+            <span aria-hidden="true">·</span>{" "}
+            <a href="https://github.com/willhou" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+          </p>
+          <p className="footer-note">
+            All rights reserved. I know it is unlikely for you to steal this, but
+            just in case.
+          </p>
+        </footer>
       </main>
-
-      <footer className="shell site-footer">
-        <p className="footer-identity">
-          © {new Date().getFullYear()} Will Hou <span aria-hidden="true">·</span>{" "}
-          <a
-            href="https://www.linkedin.com/in/william-hou-07282130/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            LinkedIn
-          </a>{" "}
-          <span aria-hidden="true">·</span>{" "}
-          <a href="https://github.com/willhou" target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-        </p>
-        <p className="footer-note">
-          All rights reserved. I know it is unlikely for you to steal this, but just in case.
-        </p>
-      </footer>
     </>
   );
 }
