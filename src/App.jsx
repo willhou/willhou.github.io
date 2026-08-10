@@ -1570,17 +1570,33 @@ function DevicePreview({ story }) {
 
   if (preview.kind === "education") {
     return (
-      <div
-        className="device-preview device-preview-education"
-        role="img"
-        aria-label="University of Waterloo crest with Bachelor of Mathematics in Computer Science"
-      >
-        <img src={story.company.logo} alt="" width="96" height="96" />
-        <p>University of Waterloo</p>
-        <strong>BMath, Computer Science</strong>
+    <div
+      className="device-preview device-preview-education"
+      role="img"
+      aria-label="Stylized University of Waterloo graduation certificate for William Hou, Bachelor of Mathematics in Computer Science"
+    >
+      <div className="education-certificate">
+        <div className="education-certificate-copy-block">
+          <p className="education-certificate-school">University of Waterloo</p>
+          <span className="education-certificate-intro">The Senate confers that</span>
+          <strong className="education-certificate-name">William Hou</strong>
+          <span className="education-certificate-copy">is admitted to the degree</span>
+          <b className="education-certificate-degree">Bachelor of Mathematics</b>
+          <small>Computer Science</small>
+          <span className="education-certificate-rights">
+            with all associated rights, privileges and obligations.
+          </span>
+        </div>
+
+        <div className="education-certificate-footer" aria-hidden="true">
+          <span>President and Vice-Chancellor</span>
+          <img src={story.company.logo} alt="" width="96" height="96" />
+          <span>Registrar</span>
+        </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className={`device-preview device-preview-${preview.kind}`}>

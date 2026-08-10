@@ -3953,42 +3953,124 @@ button:focus-visible {
 }
 
 .device-preview-education {
-  align-content: center;
+  place-items: center;
   color: var(--ink);
   text-align: center;
 }
 
-.device-preview-education img {
-  width: clamp(4.5rem, 8vw, 6rem);
-  height: clamp(4.5rem, 8vw, 6rem);
-  margin-bottom: 2rem;
-  object-fit: contain;
+.education-certificate {
+  position: relative;
+  display: grid;
+  width: min(82%, 34rem);
+  aspect-ratio: 1.48 / 1;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  grid-template-rows: 1fr auto;
+  border: 1px solid #cfd1cf;
+  border-radius: 0.35rem;
+  background: #fffefa;
+  box-shadow:
+    0 1.4rem 2.7rem rgb(66 72 74 / 12%),
+    0 0.2rem 0.5rem rgb(66 72 74 / 6%);
+  transform: rotate(-0.45deg);
 }
 
-.device-preview-education p,
-.device-preview-education strong,
-.device-preview-education span {
-  display: block;
+.education-certificate::before {
+  position: absolute;
+  inset: 0.65rem;
+  border: 1px solid #dedbd2;
+  border-radius: 0.16rem;
+  content: "";
+  pointer-events: none;
 }
 
-.device-preview-education p {
-  margin: 0 0 0.7rem;
-  color: var(--muted);
-  font-size: 0.82rem;
+.education-certificate-copy-block {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  padding: 0 clamp(0.4rem, 1.6vw, 1.3rem);
 }
 
-.device-preview-education strong {
-  max-width: 24rem;
-  font-size: clamp(1.8rem, 3.4vw, 3.4rem);
-  font-weight: 520;
-  letter-spacing: -0.045em;
-  line-height: 1.04;
+.education-certificate-school {
+  margin: 0 0 clamp(0.35rem, 1vw, 0.65rem);
+  font-family: "UnifrakturCook", "Old English Text MT", fantasy;
+  font-size: clamp(1.45rem, 3.3vw, 2.65rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
 }
 
-.device-preview-education span {
-  margin-top: 1.1rem;
+.education-certificate-intro,
+.education-certificate-copy,
+.education-certificate-rights {
   color: var(--faint);
-  font-size: 0.72rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(0.5rem, 0.88vw, 0.66rem);
+  font-style: italic;
+  letter-spacing: 0;
+}
+
+.education-certificate-name {
+  margin: clamp(0.14rem, 0.42vw, 0.28rem) 0 clamp(0.18rem, 0.48vw, 0.32rem);
+  font-family: "UnifrakturCook", "Old English Text MT", fantasy;
+  font-size: clamp(1.3rem, 2.85vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  line-height: 1.05;
+}
+
+.education-certificate-copy {
+  max-width: 24rem;
+  line-height: 1.45;
+}
+
+.education-certificate-degree {
+  margin-top: clamp(0.18rem, 0.5vw, 0.32rem);
+  font-family: "UnifrakturCook", "Old English Text MT", fantasy;
+  font-size: clamp(1.2rem, 2.55vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  line-height: 1.05;
+}
+
+.education-certificate small {
+  margin-top: 0.15rem;
+  color: var(--muted);
+  font-size: clamp(0.56rem, 0.92vw, 0.7rem);
+}
+
+.education-certificate-rights {
+  margin-top: clamp(0.22rem, 0.55vw, 0.38rem);
+}
+
+.education-certificate-footer {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  margin-top: clamp(0.55rem, 1.4vw, 0.95rem);
+  padding: 0 clamp(0.25rem, 0.8vw, 0.65rem);
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: clamp(0.6rem, 2vw, 1.5rem);
+}
+
+.education-certificate-footer span {
+  padding-bottom: 0.22rem;
+  border-bottom: 1px solid #d8d5ce;
+  color: var(--faint);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  font-size: clamp(0.34rem, 0.62vw, 0.48rem);
+  letter-spacing: 0.035em;
+  text-align: left;
+}
+
+.education-certificate-footer span:last-child {
+  text-align: right;
+}
+
+.education-certificate-footer img {
+  width: clamp(2.4rem, 4.8vw, 3.8rem);
+  height: clamp(2.4rem, 4.8vw, 3.8rem);
+  object-fit: contain;
 }
 
 .portfolio-work {
@@ -4556,18 +4638,26 @@ button:focus-visible {
     transform: none;
   }
 
-  .device-preview-education img {
-    width: 3.5rem;
-    height: 3.5rem;
-    margin-bottom: 0.75rem;
+  .education-certificate {
+    width: min(84%, 28rem, 64svh);
+    padding: clamp(0.9rem, 3.2vw, 1.5rem);
   }
 
-  .device-preview-education strong {
-    font-size: 1.5rem;
+  .education-certificate::before {
+    inset: 0.45rem;
   }
 
-  .device-preview-education span {
-    margin-top: 0.45rem;
+  .education-certificate-copy-block {
+    padding: 0 clamp(0.2rem, 1.5vw, 0.7rem);
+  }
+
+  .education-certificate-footer {
+    gap: clamp(0.4rem, 1.5vw, 0.8rem);
+  }
+
+  .education-certificate-footer img {
+    width: clamp(1.9rem, 6vw, 2.65rem);
+    height: clamp(1.9rem, 6vw, 2.65rem);
   }
 
   .portfolio-work {
@@ -4621,6 +4711,37 @@ button:focus-visible {
 
   .device-preview-phone img {
     max-height: 31svh;
+  }
+
+  .launcher-phone {
+    width: min(72%, 13rem, 19.4svh);
+  }
+
+  .launcher-desktop {
+    padding-right: 0.46rem;
+    padding-left: 0.46rem;
+  }
+
+  .launcher-grid {
+    width: 100%;
+    column-gap: 0.18rem;
+  }
+
+  .launcher-app {
+    width: 100%;
+  }
+
+  .launcher-app-icon {
+    width: clamp(1.4rem, 3.6svh, 1.85rem);
+    padding: 0.34rem;
+  }
+
+  .launcher-app-label {
+    display: block;
+    width: 100%;
+    font-size: 0.38rem;
+    letter-spacing: -0.02em;
+    text-align: center;
   }
 
   .device-preview-studio .surface-studio-real {
