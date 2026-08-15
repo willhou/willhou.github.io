@@ -3326,6 +3326,8 @@ button:focus-visible {
 
 .launcher-phone {
   position: relative;
+  container-name: launcher-phone;
+  container-type: inline-size;
   width: min(78%, 21rem, 37.4svh);
   aspect-ratio: 10 / 19.5;
   padding: 0.58rem;
@@ -3646,15 +3648,16 @@ button:focus-visible {
 .launcher-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(1.7rem, 4.5svh, 3.2rem) 0.55rem;
+  gap: clamp(1.7rem, 4.5svh, 3.2rem) min(2.6cqw, 0.55rem);
   margin-top: clamp(2.1rem, 5.4svh, 3.8rem);
 }
 
 .launcher-app {
   display: grid;
   min-width: 0;
+  width: 100%;
   padding: 0;
-  gap: 0.45rem;
+  gap: min(2cqw, 0.45rem);
   place-items: center;
   border: 0;
   background: transparent;
@@ -3666,9 +3669,9 @@ button:focus-visible {
 
 .launcher-app-icon {
   display: grid;
-  width: clamp(2.6rem, 4.2vw, 3.35rem);
+  width: min(18cqw, 3.35rem);
   aspect-ratio: 1;
-  padding: 0.65rem;
+  padding: min(3.5cqw, 0.65rem);
   place-items: center;
   border: 1px solid rgb(30 47 55 / 8%);
   border-radius: 25%;
@@ -3694,11 +3697,15 @@ button:focus-visible {
 }
 
 .launcher-app-label {
+  display: block;
+  width: 100%;
   max-width: 100%;
   overflow: hidden;
   color: rgb(245 247 248 / 92%);
-  font-size: clamp(0.46rem, 0.62vw, 0.56rem);
+  font-size: clamp(0.25rem, 3cqw, 0.56rem);
   font-weight: 550;
+  letter-spacing: -0.02em;
+  text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -4564,24 +4571,28 @@ button:focus-visible {
     height: 0.2rem;
   }
 
-  .launcher-status,
-  .launcher-app-label {
+  .launcher-status {
     font-size: 0.42rem;
+  }
+
+  .launcher-app-label {
+    font-size: clamp(0.25rem, 3cqw, 0.42rem);
   }
 
   .launcher-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(0.55rem, 1.7svh, 0.9rem) 0.22rem;
+    row-gap: clamp(0.55rem, 1.7svh, 0.9rem);
+    column-gap: 2cqw;
     margin-top: clamp(0.85rem, 2.5svh, 1.4rem);
   }
 
   .launcher-app {
-    gap: 0.22rem;
+    gap: min(1.8cqw, 0.22rem);
   }
 
   .launcher-app-icon {
-    width: clamp(1.55rem, 4.3svh, 2rem);
-    padding: 0.4rem;
+    width: min(18cqw, 2rem);
+    padding: min(3.5cqw, 0.4rem);
   }
 
   .launcher-skeleton {
@@ -4724,7 +4735,7 @@ button:focus-visible {
 
   .launcher-grid {
     width: 100%;
-    column-gap: 0.18rem;
+    column-gap: 2cqw;
   }
 
   .launcher-app {
@@ -4732,16 +4743,12 @@ button:focus-visible {
   }
 
   .launcher-app-icon {
-    width: clamp(1.4rem, 3.6svh, 1.85rem);
-    padding: 0.34rem;
+    width: min(18cqw, 1.85rem);
+    padding: min(3.5cqw, 0.34rem);
   }
 
   .launcher-app-label {
-    display: block;
-    width: 100%;
-    font-size: 0.38rem;
-    letter-spacing: -0.02em;
-    text-align: center;
+    font-size: clamp(0.25rem, 3cqw, 0.38rem);
   }
 
   .device-preview-studio .surface-studio-real {
