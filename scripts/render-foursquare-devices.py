@@ -21,17 +21,153 @@ def rounded_mask(size, radius):
     return mask
 
 
-def render_device(source_name, output_name, crop_box=None):
+def straighten_city_guide_perspective(source):
+    """Level the promo artwork's sloped bottom navigation without cropping it."""
+    width, height = source.size
+    scale_y = height / 1672
+    anchor_y = round(1200 * scale_y)
+    left_divider_y = round(1561 * scale_y)
+    right_divider_y = round(1527 * scale_y)
+    level_divider_y = round((left_divider_y + right_divider_y) / 2)
+
+    mesh = [
+        (
+            (0, 0, width, anchor_y),
+            (0, 0, 0, anchor_y, width, anchor_y, width, 0),
+        ),
+        (
+            (0, anchor_y, width, level_divider_y),
+            (
+                0,
+                anchor_y,
+                0,
+                left_divider_y,
+                width,
+                right_divider_y,
+                width,
+                anchor_y,
+            ),
+        ),
+        (
+            (0, level_divider_y, width, height),
+            (
+                0,
+                left_divider_y,
+                0,
+                height,
+                width,
+                height,
+                width,
+                right_divider_y,
+            ),
+        ),
+    ]
+    return source.transform(
+        source.size,
+        Image.Transform.MESH,
+        mesh,
+        resample=Image.Resampling.BICUBIC,
+    )
+
+
+def prepare_city_guide_screen(source):
+    """Replace the archival iOS chrome and add breathing room below the tabs."""
+    source = straighten_city_guide_perspective(source)
+    width, height = source.size
+    bottom_inset = round(height * 0.019)
+    content_height = height - bottom_inset
+
+    canvas = Image.new("RGB", source.size, (251, 251, 251))
+    canvas.paste(
+        source.resize((width, content_height), Image.Resampling.LANCZOS),
+        (0, 0),
+    )
+
+    draw = ImageDraw.Draw(canvas)
+    status_height = round(height * 0.042)
+    draw.rectangle((0, 0, width, status_height), fill=(27, 33, 36))
+
+    font_path = Path("/System/Library/Fonts/SFNS.ttf")
+    status_font = (
+        ImageFont.truetype(font_path, 28)
+        if font_path.exists()
+        else ImageFont.load_default(size=28)
+    )
+    chrome_color = (248, 249, 249)
+    draw.text((34, 18), "4:16", fill=chrome_color, font=status_font)
+
+    signal_left = width - 190
+    for index, bar_height in enumerate((8, 14, 20, 27)):
+        x = signal_left + index * 14
+        draw.rounded_rectangle(
+            (x, status_height - 17 - bar_height, x + 8, status_height - 17),
+            radius=2,
+            fill=chrome_color,
+        )
+
+    wifi_center_x = width - 101
+    wifi_center_y = status_height - 28
+    for inset in (0, 8, 16):
+        draw.arc(
+            (
+                wifi_center_x - 26 + inset,
+                wifi_center_y - 18 + inset,
+                wifi_center_x + 26 - inset,
+                wifi_center_y + 18 - inset,
+            ),
+            205,
+            335,
+            fill=chrome_color,
+            width=4,
+        )
+    draw.ellipse(
+        (wifi_center_x - 3, wifi_center_y + 12, wifi_center_x + 3, wifi_center_y + 18),
+        fill=chrome_color,
+    )
+
+    battery_left = width - 66
+    battery_top = 18
+    draw.rounded_rectangle(
+        (battery_left, battery_top, width - 18, battery_top + 30),
+        radius=5,
+        outline=chrome_color,
+        width=4,
+    )
+    draw.rectangle(
+        (width - 17, battery_top + 9, width - 11, battery_top + 21),
+        fill=chrome_color,
+    )
+    draw.rounded_rectangle(
+        (battery_left + 6, battery_top + 6, width - 27, battery_top + 24),
+        radius=2,
+        fill=chrome_color,
+    )
+
+    return canvas
+
+
+def render_device(
+    source_name,
+    output_name,
+    crop_box=None,
+    preprocess=None,
+    fit_mode="cover",
+):
     source = Image.open(ASSET_DIR / source_name).convert("RGB")
     if crop_box is not None:
         source = source.crop(crop_box)
+    if preprocess is not None:
+        source = preprocess(source)
 
-    screen = ImageOps.fit(
-        source,
-        SCREEN_SIZE,
-        method=Image.Resampling.LANCZOS,
-        centering=(0.5, 0.5),
-    ).convert("RGBA")
+    if fit_mode == "full-width":
+        screen = source.resize(SCREEN_SIZE, Image.Resampling.LANCZOS).convert("RGBA")
+    else:
+        screen = ImageOps.fit(
+            source,
+            SCREEN_SIZE,
+            method=Image.Resampling.LANCZOS,
+            centering=(0.5, 0.5),
+        ).convert("RGBA")
     screen.putalpha(rounded_mask(SCREEN_SIZE, 20))
 
     canvas = Image.new("RGBA", CANVAS_SIZE, (0, 0, 0, 0))
@@ -96,23 +232,14 @@ def render_device(source_name, output_name, crop_box=None):
 
 def fill_swarm_notch(image):
     top_bar_color = image.getpixel((550, 105))
-    ImageDraw.Draw(image).rectangle((160, 46, 503, 102), fill=top_bar_color)
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((160, 46, 503, 102), fill=top_bar_color)
+    draw.line((160, 46, 503, 46), fill=(218, 218, 214, 220), width=2)
 
 
-def add_low_fidelity_chrome(image):
-    screen_left, screen_top, screen_right, screen_bottom = (54, 46, 610, 1266)
-    nav_top = 1215
-    app_content = image.crop(
-        (screen_left, screen_top, screen_right, screen_bottom)
-    ).resize(
-        (screen_right - screen_left, nav_top - screen_top),
-        Image.Resampling.LANCZOS,
-    )
-    image.paste(app_content, (screen_left, screen_top))
-
+def add_swarm_status_bar(image):
     draw = ImageDraw.Draw(image)
     chrome_color = (255, 255, 255, 235)
-    nav_color = (122, 132, 138, 230)
     font_path = Path("/System/Library/Fonts/SFNS.ttf")
     font = (
         ImageFont.truetype(font_path, 19)
@@ -120,30 +247,19 @@ def add_low_fidelity_chrome(image):
         else ImageFont.load_default(size=19)
     )
 
-    draw.text((70, 59), "9:41", fill=chrome_color, font=font)
+    draw.text((82, 61), "9:41", fill=chrome_color, font=font)
 
     for index, height in enumerate((6, 10, 14, 18)):
-        x = 521 + index * 8
-        draw.rectangle((x, 78 - height, x + 5, 78), fill=chrome_color)
+        x = 507 + index * 8
+        draw.rectangle((x, 84 - height, x + 5, 84), fill=chrome_color)
 
     draw.rounded_rectangle(
-        (568, 58, 603, 77),
+        (550, 64, 585, 83),
         radius=3,
         outline=chrome_color,
         width=3,
     )
-    draw.rectangle((604, 64, 608, 71), fill=chrome_color)
-
-    draw.rectangle(
-        (screen_left, nav_top, screen_right, screen_bottom),
-        fill=(250, 250, 250, 245),
-    )
-    draw.polygon(
-        ((265, 1231), (265, 1254), (245, 1242)),
-        outline=nav_color,
-    )
-    draw.ellipse((340, 1231, 363, 1254), outline=nav_color, width=3)
-    draw.rectangle((435, 1232, 457, 1254), outline=nav_color, width=3)
+    draw.rectangle((586, 70, 590, 77), fill=chrome_color)
 
 
 def extract_transparent_asset(
@@ -151,14 +267,14 @@ def extract_transparent_asset(
     output_name,
     crop_box,
     fill_notch=False,
-    add_chrome=False,
+    add_status_bar=False,
 ):
     source = Image.open(ASSET_DIR / source_name).convert("RGBA")
     asset = source.crop(crop_box)
     if fill_notch:
         fill_swarm_notch(asset)
-    if add_chrome:
-        add_low_fidelity_chrome(asset)
+    if add_status_bar:
+        add_swarm_status_bar(asset)
     asset.save(ASSET_DIR / output_name, optimize=True)
 
 
@@ -166,7 +282,8 @@ def main():
     render_device(
         "foursquare-android-2012.jpg",
         "foursquare-device-2012.png",
-        (4, 4, 284, 475),
+        (4, 4, 285, 475),
+        fit_mode="full-width",
     )
     render_device(
         "foursquare-adventures-promo-extract.png",
@@ -175,27 +292,28 @@ def main():
     render_device(
         "foursquare-city-guide-promo-extract.png",
         "foursquare-device-city-guide.png",
+        preprocess=prepare_city_guide_screen,
     )
     extract_transparent_asset(
         "swarm-case-study-phones.webp",
         "swarm-device-checkin.png",
         (120, 160, 830, 1555),
         fill_notch=True,
-        add_chrome=True,
+        add_status_bar=True,
     )
     extract_transparent_asset(
         "swarm-case-study-phones.webp",
         "swarm-device-nearby.png",
         (850, 160, 1560, 1555),
         fill_notch=True,
-        add_chrome=True,
+        add_status_bar=True,
     )
     extract_transparent_asset(
         "swarm-case-study-phones.webp",
         "swarm-device-activity.png",
         (1585, 160, 2295, 1555),
         fill_notch=True,
-        add_chrome=True,
+        add_status_bar=True,
     )
 
 

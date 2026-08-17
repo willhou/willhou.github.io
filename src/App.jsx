@@ -230,14 +230,46 @@ const projectPreviews = {
     alt: "Sunrise Meet keyboard composing an invitation on Android",
   },
   foursquare: {
-    kind: "phone",
-    src: "/images/projects/foursquare/foursquare-device-city-guide.png",
-    alt: "Foursquare City Guide on Android",
+    kind: "slideshow",
+    label: "Foursquare",
+    slides: [
+      {
+        src: "/images/projects/foursquare/foursquare-device-2012.png",
+        alt: "Foursquare for Android in 2012",
+        label: "2012 app",
+      },
+      {
+        src: "/images/projects/foursquare/foursquare-device-adventures.png",
+        alt: "Foursquare Adventures on Android",
+        label: "Adventures",
+      },
+      {
+        src: "/images/projects/foursquare/foursquare-device-city-guide.png",
+        alt: "Foursquare City Guide on Android",
+        label: "City Guide",
+      },
+    ],
   },
   swarm: {
-    kind: "phone",
-    src: "/images/projects/foursquare/swarm-device-checkin.png",
-    alt: "Swarm check-in experience on Android",
+    kind: "slideshow",
+    label: "Swarm",
+    slides: [
+      {
+        src: "/images/projects/foursquare/swarm-device-activity.png",
+        alt: "Swarm activity experience on Android",
+        label: "Activity",
+      },
+      {
+        src: "/images/projects/foursquare/swarm-device-checkin.png",
+        alt: "Swarm check-in experience on Android",
+        label: "Check-in",
+      },
+      {
+        src: "/images/projects/foursquare/swarm-device-nearby.png",
+        alt: "Swarm nearby friends experience on Android",
+        label: "Nearby friends",
+      },
+    ],
   },
 };
 
@@ -1557,6 +1589,79 @@ function PointerPortrait() {
   );
 }
 
+function ArchiveSlideshow({ label, slides }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (isPaused || prefersReducedMotion || slides.length < 2) {
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => {
+      setActiveIndex((currentIndex) => (currentIndex + 1) % slides.length);
+    }, 3800);
+
+    return () => window.clearTimeout(timer);
+  }, [activeIndex, isPaused, slides.length]);
+
+  const pauseForFocus = () => setIsPaused(true);
+  const resumeAfterFocus = (event) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      setIsPaused(false);
+    }
+  };
+
+  return (
+    <div
+      className="device-preview device-preview-slideshow"
+      role="group"
+      aria-roledescription="carousel"
+      aria-label={`${label} app screens`}
+      onPointerEnter={() => setIsPaused(true)}
+      onPointerLeave={() => setIsPaused(false)}
+      onFocusCapture={pauseForFocus}
+      onBlurCapture={resumeAfterFocus}
+    >
+      <div className="archive-slideshow-stage">
+        {slides.map((slide, index) => {
+          const isActive = index === activeIndex;
+
+          return (
+            <img
+              className={`archive-slideshow-slide${isActive ? " is-active" : ""}`}
+              src={slide.src}
+              alt={isActive ? slide.alt : ""}
+              aria-hidden={!isActive}
+              loading={index === 0 ? "eager" : "lazy"}
+              key={slide.src}
+            />
+          );
+        })}
+      </div>
+
+      <div
+        className="archive-slideshow-controls"
+        aria-label={`Choose a ${label} screen`}
+      >
+        {slides.map((slide, index) => (
+          <button
+            type="button"
+            aria-label={`Show ${slide.label}`}
+            aria-current={index === activeIndex ? "true" : undefined}
+            onClick={() => setActiveIndex(index)}
+            key={slide.src}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function DevicePreview({ story }) {
   const preview = story.preview;
 
@@ -1597,6 +1702,10 @@ function DevicePreview({ story }) {
     </div>
   );
 }
+
+  if (preview.kind === "slideshow") {
+    return <ArchiveSlideshow label={preview.label} slides={preview.slides} />;
+  }
 
   return (
     <div className={`device-preview device-preview-${preview.kind}`}>
