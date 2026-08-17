@@ -211,18 +211,45 @@ const projectPreviews = {
     alt: "DoorDash desktop experience supported by shared product infrastructure",
   },
   mail: {
-    kind: "phone",
-    src: "/images/projects/outlook-device-inbox.png",
-    alt: "Outlook Mobile inbox on Android",
+    kind: "slideshow",
+    label: "Outlook Mobile",
+    slides: [
+      {
+        src: "/images/projects/outlook-device-inbox.png",
+        alt: "Outlook Mobile inbox on Android",
+        label: "Inbox",
+      },
+      {
+        src: "/images/projects/outlook-device-dark-inbox.png",
+        alt: "Outlook Mobile dark inbox on Android",
+        label: "Dark inbox",
+      },
+      {
+        src: "/images/projects/outlook-device-calendar.png",
+        alt: "Outlook Mobile calendar on Android",
+        label: "Calendar",
+      },
+    ],
   },
   fluent: {
     kind: "studio",
     alt: "Microsoft Surface Studio displaying a Fluent Design System demo",
   },
   calendar: {
-    kind: "phone",
-    src: "/images/projects/sunrise-device-agenda.png",
-    alt: "Sunrise Calendar agenda on Android",
+    kind: "slideshow",
+    label: "Sunrise Calendar",
+    slides: [
+      {
+        src: "/images/projects/sunrise-device-agenda.png",
+        alt: "Sunrise Calendar agenda on Android",
+        label: "Agenda",
+      },
+      {
+        src: "/images/projects/sunrise-device-event-detail.png",
+        alt: "Sunrise Calendar event details on Android",
+        label: "Event details",
+      },
+    ],
   },
   meet: {
     kind: "phone",
