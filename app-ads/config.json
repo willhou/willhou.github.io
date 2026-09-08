@@ -1,0 +1,12 @@
+{
+  "ownerdomain": "ezi.am",
+  "sources": [
+    "admob.txt",
+    "unity.txt",
+    "inmobi.txt",
+    "vungle.txt",
+    "meta.txt",
+    "pangle.txt",
+    "others.txt"
+  ]
+}

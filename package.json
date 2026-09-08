@@ -4,11 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "ads:build": "node tools/build-app-ads.mjs",
+    "ads:check": "node tools/build-app-ads.mjs --check",
+    "ads:test": "node --test tools/build-app-ads.test.mjs",
+    "predev": "npm run ads:build",
     "dev": "vite",
+    "prebuild": "npm run ads:build",
     "build": "vite build",
     "build:sites": "npm run verify && node tools/prepare-sites.mjs",
     "preview": "vite preview",
-    "verify": "npm run build && node tools/verify-content.mjs"
+    "verify": "npm run ads:test && npm run build && npm run ads:check && node tools/verify-content.mjs"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "5.3.0",

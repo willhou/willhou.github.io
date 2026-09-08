@@ -1,0 +1,43 @@
+{
+  "ownerdomain": "ezi.am",
+  "sources": [
+    {
+      "name": "admob.txt",
+      "records": 1,
+      "emitted": 1
+    },
+    {
+      "name": "unity.txt",
+      "records": 69,
+      "emitted": 69
+    },
+    {
+      "name": "inmobi.txt",
+      "records": 95,
+      "emitted": 95
+    },
+    {
+      "name": "vungle.txt",
+      "records": 387,
+      "emitted": 374
+    },
+    {
+      "name": "meta.txt",
+      "records": 1,
+      "emitted": 1
+    },
+    {
+      "name": "pangle.txt",
+      "records": 45,
+      "emitted": 36
+    },
+    {
+      "name": "others.txt",
+      "records": 150,
+      "emitted": 150
+    }
+  ],
+  "records": 726,
+  "duplicatesRemoved": 22,
+  "warnings": []
+}
