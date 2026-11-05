@@ -9,7 +9,10 @@ Reviewed November 4, 2026. Public documents:
 
 The terms were adapted from the owner's completed `docs/legal/terms-of-service.txt`
 in the Digital Clock Widget checkout. All twelve sections and body paragraphs
-were preserved; headings, links, and layout were formatted for the website.
+were preserved in the initial publication; headings, links, and layout were
+formatted for the website. At the owner's subsequent request, the postal address
+and phone number were removed from both public pages, retaining company and email
+contact details.
 
 The Android source reviewed was `willhou/digitalclock` at
 `3aa6754cb78e52a2dff82476ebec3009f7ad253b`, the `6.5.0` release tag. The review
