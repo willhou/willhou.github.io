@@ -18,7 +18,21 @@ npm run verify
 `npm run verify` tests the app-ads.txt generator, creates the production site in
 `dist`, and checks that the generated `app-ads.txt` is current and identical in
 the repository root, `public`, and published output. It also confirms that
-`CNAME`, `robots.txt`, and every privacy policy remain unchanged.
+`CNAME`, `robots.txt`, the privacy and terms pages, and their shared stylesheet
+match across those three locations.
+
+## Digital Clock Widget legal pages
+
+The Android app links to `https://ezi.am/privacy/dcw.html`; keep that URL stable.
+Its Terms of Service are at `https://ezi.am/terms/dcw.html`. Both are standalone
+HTML pages with shared styles at `/legal/dcw.css` and links from the home-page
+footer. They work without JavaScript.
+
+Update the matching files in the repository root and `public` together, then
+run `npm run verify`. The build copies `public` into `dist`. See the
+[source review and maintenance notes](docs/legal/dcw-review.md) before updating
+data-practice disclosures. Changes pushed to `master` deploy through the GitHub
+Pages workflow.
 
 ## Updating app-ads.txt
 

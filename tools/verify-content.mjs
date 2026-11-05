@@ -8,6 +8,8 @@ const preservedFiles = [
   "privacy/card.html",
   "privacy/dcw.html",
   "privacy/mastermind.html",
+  "terms/dcw.html",
+  "legal/dcw.css",
 ];
 
 for (const file of preservedFiles) {

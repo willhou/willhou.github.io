@@ -2551,6 +2551,11 @@ function App() {
             All rights reserved. I know it is unlikely for you to steal this, but
             just in case.
           </p>
+          <nav className="footer-legal" aria-label="Digital Clock Widget legal pages">
+            <span>Digital Clock Widget</span>
+            <a href="/privacy/dcw.html">Privacy Policy</a>
+            <a href="/terms/dcw.html">Terms of Service</a>
+          </nav>
         </footer>
       </main>
     </>

@@ -1,0 +1,54 @@
+:root {
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #1f272b;
+  background: #fff;
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+a { color: #3f6489; text-underline-offset: 0.2em; }
+a:hover { color: #1f272b; }
+a:focus-visible { outline: 2px solid #31577d; outline-offset: 4px; }
+.page { width: min(100% - 3rem, 48rem); margin-inline: auto; }
+.site-header { padding-block: 1.5rem; border-bottom: 1px solid #d9dddc; }
+.site-header .page { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.site-header a { text-decoration: none; }
+.site-name { font-weight: 600; }
+nav { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; }
+nav a[aria-current="page"] { color: #1f272b; text-decoration: underline; }
+main { padding-block: 3rem; font-size: 1rem; line-height: 1.75; overflow-wrap: anywhere; }
+.eyebrow { color: #59656b; font-size: 0.875rem; margin: 0 0 0.5rem; }
+h1 { font-size: clamp(2rem, 6vw, 3.25rem); line-height: 1.15; letter-spacing: -0.035em; margin: 0; }
+.updated { color: #59656b; font-size: 0.875rem; margin-block: 1rem 2rem; }
+h2 { font-size: 1.4rem; line-height: 1.35; letter-spacing: -0.015em; margin: 2.75rem 0 1rem; }
+h3 { font-size: 1.05rem; line-height: 1.5; margin-top: 1.5rem; }
+p, ul { margin-block: 0 1rem; }
+li { margin-bottom: 0.5rem; }
+ul { padding-left: 1.4rem; }
+address { font-style: normal; margin-bottom: 1rem; }
+.contents { display: block; border-block: 1px solid #d9dddc; padding-block: 1.25rem; margin-block: 2rem; }
+.contents p { font-weight: 600; margin-bottom: 0.5rem; }
+.contents ol { columns: 2; column-gap: 2.5rem; padding-left: 1.4rem; margin: 0; font-size: 0.9rem; }
+.contents li { break-inside: avoid; }
+.note { border-left: 3px solid #3f6489; padding-left: 1.25rem; }
+section { scroll-margin-top: 1.5rem; }
+.site-footer { border-top: 1px solid #d9dddc; padding-block: 1.5rem 2.5rem; font-size: 0.875rem; color: #59656b; }
+.site-footer p { margin-top: 1rem; }
+.skip-link { position: absolute; left: 1rem; top: -5rem; background: #fff; padding: 0.5rem; }
+.skip-link:focus { top: 0.5rem; }
+@media (max-width: 480px) {
+  .page { width: calc(100% - 2rem); }
+  main { padding-block: 2rem; }
+  .contents ol { columns: 1; }
+}
+@media print {
+  .site-header, .site-footer, .contents, .skip-link { display: none; }
+  .page { width: 100%; }
+  main { padding: 0; font-size: 11pt; }
+  h2, h3 { break-after: avoid; }
+  a { color: inherit; }
+}

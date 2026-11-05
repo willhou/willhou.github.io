@@ -4511,6 +4511,19 @@ button:focus-visible {
   text-decoration: none;
 }
 
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+}
+
+.footer-legal a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 @media (prefers-color-scheme: no-preference) and (prefers-color-scheme: dark) {
   .portfolio-preview-surface {
     border-color: var(--rule);
